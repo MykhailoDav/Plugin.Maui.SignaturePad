@@ -7,7 +7,7 @@ internal readonly record struct InkStyle(Color Color, float MinWidth, float MaxW
 
 /// <summary>
 /// The state of a pad: the committed signature, the stroke being drawn, the undo history and the signature's clock.
-/// It lives as long as the <c>SignaturePadView</c>, not its handler, so the ink survives the native view being
+/// It lives as long as the <see cref="SignaturePadView"/>, not its handler, so the ink survives the native view being
 /// recreated by navigation, tabs or recycling.
 /// </summary>
 internal sealed class SignatureSession : IInkInputSink
@@ -166,8 +166,10 @@ internal sealed class SignatureSession : IInkInputSink
         Current = AddedStroke.Append(Current, stroke, CanvasSize);
         _undo.Push(new AddedStroke(stroke));
         _redo.Clear();
-        StrokeCompleted?.Invoke(stroke);
+
+        // Changed first, so a StrokeCompleted handler already sees the stroke in the signature.
         Changed?.Invoke();
+        StrokeCompleted?.Invoke(stroke);
     }
 
     /// <summary>

@@ -1,7 +1,7 @@
 namespace Plugin.Maui.SignaturePad;
 
 /// <summary>
-/// Data for an event about a stroke, such as the pad's <c>StrokeCompleted</c> event.
+/// Data for an event about a stroke, such as <see cref="SignaturePadView.StrokeCompleted"/>.
 /// </summary>
 public sealed class SignatureStrokeEventArgs : EventArgs
 {

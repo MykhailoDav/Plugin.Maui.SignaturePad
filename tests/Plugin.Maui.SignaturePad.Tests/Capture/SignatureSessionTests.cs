@@ -44,7 +44,7 @@ public class SignatureSessionTests
 
         Draw(session, start: 1000);
 
-        Assert.Equal(["started", "active", "active", "active", "active", "completed:5", "changed"], events);
+        Assert.Equal(["started", "active", "active", "active", "active", "changed", "completed:5"], events);
         var stroke = Assert.Single(session.Current.Strokes);
         Assert.Equal(new SizeF(300, 200), session.Current.CanvasSize);
         Assert.Null(session.Active);
