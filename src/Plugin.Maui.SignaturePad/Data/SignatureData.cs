@@ -90,6 +90,14 @@ public sealed class SignatureData : IEquatable<SignatureData>
     /// </exception>
     public static SignatureData FromJson(string json) => SignatureJson.Read(json);
 
+    /// <summary>
+    /// Writes the signature as SVG, with one filled path per stroke that has exactly the shape of the ink on screen.
+    /// </summary>
+    /// <param name="options">The export options, or <see langword="null"/> for the defaults.</param>
+    /// <returns>The SVG document, without an XML declaration.</returns>
+    /// <exception cref="InvalidOperationException">The signature is empty.</exception>
+    public string ToSvg(SignatureSvgExportOptions? options = null) => SvgExporter.Export(this, options ?? new SignatureSvgExportOptions());
+
     /// <inheritdoc/>
     public bool Equals(SignatureData? other)
     {

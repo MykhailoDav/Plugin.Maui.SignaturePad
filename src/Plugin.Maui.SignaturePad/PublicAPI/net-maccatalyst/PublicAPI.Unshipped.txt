@@ -14,6 +14,26 @@ Plugin.Maui.SignaturePad.SignatureData.PointCount.get -> int
 Plugin.Maui.SignaturePad.SignatureData.SignatureData(System.Collections.Generic.IEnumerable<Plugin.Maui.SignaturePad.SignatureStroke!>! strokes, Microsoft.Maui.Graphics.SizeF canvasSize) -> void
 Plugin.Maui.SignaturePad.SignatureData.Strokes.get -> System.Collections.Generic.IReadOnlyList<Plugin.Maui.SignaturePad.SignatureStroke!>!
 Plugin.Maui.SignaturePad.SignatureData.ToJson() -> string!
+Plugin.Maui.SignaturePad.SignatureData.ToSvg(Plugin.Maui.SignaturePad.SignatureSvgExportOptions? options = null) -> string!
+Plugin.Maui.SignaturePad.SignatureImageExportOptions
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.BackgroundColor.get -> Microsoft.Maui.Graphics.Color?
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.BackgroundColor.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.CropToContent.get -> bool
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.CropToContent.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Format.get -> Plugin.Maui.SignaturePad.SignatureImageFormat
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Format.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.JpegQuality.get -> int
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.JpegQuality.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Padding.get -> float
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Padding.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Scale.get -> float
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Scale.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.SignatureImageExportOptions() -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.StrokeColor.get -> Microsoft.Maui.Graphics.Color?
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.StrokeColor.set -> void
+Plugin.Maui.SignaturePad.SignatureImageFormat
+Plugin.Maui.SignaturePad.SignatureImageFormat.Jpeg = 1 -> Plugin.Maui.SignaturePad.SignatureImageFormat
+Plugin.Maui.SignaturePad.SignatureImageFormat.Png = 0 -> Plugin.Maui.SignaturePad.SignatureImageFormat
 Plugin.Maui.SignaturePad.SignatureInputDevice
 Plugin.Maui.SignaturePad.SignatureInputDevice.Mouse = 3 -> Plugin.Maui.SignaturePad.SignatureInputDevice
 Plugin.Maui.SignaturePad.SignatureInputDevice.Pen = 2 -> Plugin.Maui.SignaturePad.SignatureInputDevice
@@ -46,6 +66,16 @@ Plugin.Maui.SignaturePad.SignatureStroke.StartTime.get -> double
 Plugin.Maui.SignaturePad.SignatureStrokeEventArgs
 Plugin.Maui.SignaturePad.SignatureStrokeEventArgs.SignatureStrokeEventArgs(Plugin.Maui.SignaturePad.SignatureStroke! stroke) -> void
 Plugin.Maui.SignaturePad.SignatureStrokeEventArgs.Stroke.get -> Plugin.Maui.SignaturePad.SignatureStroke!
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.BackgroundColor.get -> Microsoft.Maui.Graphics.Color?
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.BackgroundColor.set -> void
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.CropToContent.get -> bool
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.CropToContent.set -> void
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.Padding.get -> float
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.Padding.set -> void
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.SignatureSvgExportOptions() -> void
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.StrokeColor.get -> Microsoft.Maui.Graphics.Color?
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.StrokeColor.set -> void
 static Plugin.Maui.SignaturePad.SignatureData.Empty.get -> Plugin.Maui.SignaturePad.SignatureData!
 static Plugin.Maui.SignaturePad.SignatureData.FromJson(string! json) -> Plugin.Maui.SignaturePad.SignatureData!
 static Plugin.Maui.SignaturePad.SignaturePoint.operator !=(Plugin.Maui.SignaturePad.SignaturePoint left, Plugin.Maui.SignaturePad.SignaturePoint right) -> bool
