@@ -306,9 +306,13 @@ public class SignaturePadViewTests
         view.ActiveStrokeUpdated += () => active++;
 
         Draw(view, 0);
-
         Assert.Equal(2, active);
-        Assert.Equal(1, full);
+        Assert.Equal(2, full);
+
+        // Only the first stroke on an empty pad hides the placeholder, which needs the whole pad drawn.
+        Draw(view, 100, y: 50);
+        Assert.Equal(4, active);
+        Assert.Equal(3, full);
     }
 
     [Fact]

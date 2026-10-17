@@ -22,7 +22,7 @@ internal static class StrokeOutline
 
     // perfect-freehand adds 0.0001 to π because exact half turns make some renderers leave a hairline gap.
     private const float FixedPi = MathF.PI + 0.0001f;
-    private const float EndNoiseThreshold = 3f;
+    internal const float EndNoiseThreshold = 3f;
     private const float MinRadius = 0.01f;
     private const float Smoothing = 0.5f;
     private const float DotExtent = 0.5f;

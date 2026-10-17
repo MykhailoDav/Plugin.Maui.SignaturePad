@@ -38,6 +38,9 @@ internal sealed class SignatureSession : IInkInputSink
     /// <summary>The stroke being drawn, if any.</summary>
     public StrokeBuilder? Active { get; private set; }
 
+    /// <summary>The color of the stroke being drawn, captured when it started.</summary>
+    public Color ActiveColor => _activeColor;
+
     public bool CanUndo => _undo.Count > 0;
 
     public bool CanRedo => _redo.Count > 0;

@@ -233,7 +233,14 @@ public partial class SignaturePadView : View
 
     private void OnActiveStrokeChanged() => ActiveStrokeUpdated?.Invoke();
 
-    private void OnStrokeStarted() => StrokeStarted?.Invoke(this, EventArgs.Empty);
+    private void OnStrokeStarted()
+    {
+        // The first stroke on an empty pad hides the placeholder, which is outside the stroke's own area.
+        if (Session.Current.IsEmpty)
+            InvalidateRequested?.Invoke();
+
+        StrokeStarted?.Invoke(this, EventArgs.Empty);
+    }
 
     private void OnStrokeCompleted(SignatureStroke stroke)
     {
