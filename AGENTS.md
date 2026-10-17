@@ -21,8 +21,9 @@ Inside the library, code is grouped by feature (`Data`, `Ink`, `Capture`, `Contr
 
 ```bash
 dotnet build Plugin.Maui.SignaturePad.slnx                      # every TFM this OS can build
-dotnet test tests/Plugin.Maui.SignaturePad.Tests                 # unit tests
-dotnet test tests/Plugin.Maui.SignaturePad.Tests /p:CollectCoverage=true   # fails below 100% line or branch coverage
+dotnet test --project tests/Plugin.Maui.SignaturePad.Tests      # unit tests (Microsoft.Testing.Platform, see global.json)
+dotnet test --project tests/Plugin.Maui.SignaturePad.Tests --coverlet --coverlet-threshold 100 \
+  --coverlet-threshold-type line,branch --coverlet-threshold-stat total   # fails below 100% line or branch coverage
 cd tests/Plugin.Maui.SignaturePad.UITests && npm ci && ./run.sh ios        # UI tests (also: android, maccatalyst)
 dotnet pack src/Plugin.Maui.SignaturePad -c Release -o artifacts            # NuGet package
 ```

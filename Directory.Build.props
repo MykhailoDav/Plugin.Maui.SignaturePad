@@ -1,0 +1,33 @@
+<Project>
+
+  <!-- Settings shared by the library, the tests and the apps. Project-specific settings stay in each project. -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- The build reports unused usings (IDE0005) only when XML docs are generated. Only the library requires docs
+         (CS1591 is an error there); the other projects turn CS1591 off. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <Authors>Mykhailo Davydenko</Authors>
+    <Copyright>Copyright © Mykhailo Davydenko and contributors</Copyright>
+    <RepositoryUrl>https://github.com/MykhailoDav/Plugin.Maui.SignaturePad</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/MykhailoDav/Plugin.Maui.SignaturePad</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <!-- Source Link is built into the SDK; this also records the repository URL in the package. -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <!-- Warnings fail CI and Release builds, so they never reach main or a package. GitHub Actions sets CI=true. -->
+  <PropertyGroup Condition="'$(CI)' == 'true' or '$(Configuration)' == 'Release'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CI)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+</Project>

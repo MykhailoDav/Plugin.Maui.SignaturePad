@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- xUnit v3 test projects are executables that run on Microsoft.Testing.Platform (see global.json). -->
+    <OutputType>Exe</OutputType>
+    <!-- Run on Microsoft.Testing.Platform even when the executable is started directly, so extensions such as coverlet load. -->
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>Plugin.Maui.SignaturePad.Tests</RootNamespace>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+    <!--
+      Code coverage: dotnet test - -coverlet - -coverlet-threshold 100 - -coverlet-threshold-type line,branch - -coverlet-threshold-stat total
+      (without the spaces in the dashes; see AGENTS.md). testconfig.json limits it to the library's net10.0 build, which holds
+      all of the shared code.
+    -->
+    <PackageReference Include="coverlet.MTP" />
+    <PackageReference Include="Microsoft.Maui.Controls" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Plugin.Maui.SignaturePad\Plugin.Maui.SignaturePad.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="testconfig.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>

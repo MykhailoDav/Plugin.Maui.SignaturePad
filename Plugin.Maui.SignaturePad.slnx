@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Plugin.Maui.SignaturePad/Plugin.Maui.SignaturePad.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Plugin.Maui.SignaturePad.Tests/Plugin.Maui.SignaturePad.Tests.csproj" />
+  </Folder>
+</Solution>
