@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Plugin.Maui.SignaturePad.Ink;
 
 namespace Plugin.Maui.SignaturePad;
 
@@ -9,6 +10,11 @@ namespace Plugin.Maui.SignaturePad;
 public sealed class SignatureStroke : IEquatable<SignatureStroke>
 {
     private readonly SignaturePoint[] _points;
+
+    // Computed on first use and then shared: a stroke is immutable, so its geometry never changes. Both are assigned by
+    // reference, which is atomic, so threads that race here only compute the same value twice.
+    private PointF[]? _outline;
+    private object? _bounds;
 
     /// <summary>
     /// Creates a stroke.
@@ -77,6 +83,15 @@ public sealed class SignatureStroke : IEquatable<SignatureStroke>
 
     /// <summary>The time of the last point, in milliseconds since the first point of the signature.</summary>
     public double EndTime => _points[^1].Time;
+
+    /// <summary>
+    /// The area the ink of the stroke covers, in device-independent units, including the width of the ink and its
+    /// round ends.
+    /// </summary>
+    public RectF Bounds => (RectF)(_bounds ??= StrokeGeometry.Bounds(Outline));
+
+    /// <summary>The closed outline of the ink, as drawn on screen and written to SVG.</summary>
+    internal PointF[] Outline => _outline ??= StrokeOutline.Build(StrokeBuilder.ComputeRenderPoints(this));
 
     /// <summary>The points without the read-only wrapper, for the engine's hot paths.</summary>
     internal ReadOnlySpan<SignaturePoint> PointSpan => _points;

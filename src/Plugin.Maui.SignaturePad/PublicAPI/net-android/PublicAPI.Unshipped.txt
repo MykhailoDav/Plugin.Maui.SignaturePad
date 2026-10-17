@@ -5,6 +5,7 @@ override Plugin.Maui.SignaturePad.SignaturePoint.GetHashCode() -> int
 override Plugin.Maui.SignaturePad.SignatureStroke.Equals(object? obj) -> bool
 override Plugin.Maui.SignaturePad.SignatureStroke.GetHashCode() -> int
 Plugin.Maui.SignaturePad.SignatureData
+Plugin.Maui.SignaturePad.SignatureData.Bounds.get -> Microsoft.Maui.Graphics.RectF
 Plugin.Maui.SignaturePad.SignatureData.CanvasSize.get -> Microsoft.Maui.Graphics.SizeF
 Plugin.Maui.SignaturePad.SignatureData.Duration.get -> double
 Plugin.Maui.SignaturePad.SignatureData.Equals(Plugin.Maui.SignaturePad.SignatureData? other) -> bool
@@ -32,6 +33,7 @@ Plugin.Maui.SignaturePad.SignaturePoint.X.init -> void
 Plugin.Maui.SignaturePad.SignaturePoint.Y.get -> float
 Plugin.Maui.SignaturePad.SignaturePoint.Y.init -> void
 Plugin.Maui.SignaturePad.SignatureStroke
+Plugin.Maui.SignaturePad.SignatureStroke.Bounds.get -> Microsoft.Maui.Graphics.RectF
 Plugin.Maui.SignaturePad.SignatureStroke.Color.get -> Microsoft.Maui.Graphics.Color!
 Plugin.Maui.SignaturePad.SignatureStroke.Device.get -> Plugin.Maui.SignaturePad.SignatureInputDevice
 Plugin.Maui.SignaturePad.SignatureStroke.EndTime.get -> double

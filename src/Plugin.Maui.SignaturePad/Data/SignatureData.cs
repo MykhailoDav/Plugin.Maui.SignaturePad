@@ -10,6 +10,9 @@ public sealed class SignatureData : IEquatable<SignatureData>
 {
     private readonly SignatureStroke[] _strokes;
 
+    // Boxed so that assigning it is atomic; see SignatureStroke.
+    private object? _bounds;
+
     /// <summary>A signature without strokes.</summary>
     public static SignatureData Empty { get; } = new([], SizeF.Zero);
 
@@ -62,6 +65,12 @@ public sealed class SignatureData : IEquatable<SignatureData>
     public double Duration { get; }
 
     /// <summary>
+    /// The area the ink of all strokes covers, in device-independent units, or an empty rectangle at the origin when
+    /// there are no strokes.
+    /// </summary>
+    public RectF Bounds => (RectF)(_bounds ??= ComputeBounds());
+
+    /// <summary>
     /// Writes the signature as JSON. The text keeps every point exactly, so <see cref="FromJson"/> gives back an equal
     /// signature, and it is versioned, so later versions of the package can still read it.
     /// </summary>
@@ -94,6 +103,17 @@ public sealed class SignatureData : IEquatable<SignatureData>
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => Equals(obj as SignatureData);
+
+    private RectF ComputeBounds()
+    {
+        if (_strokes.Length == 0)
+            return RectF.Zero;
+
+        var bounds = _strokes[0].Bounds;
+        for (var i = 1; i < _strokes.Length; i++)
+            bounds = RectF.Union(bounds, _strokes[i].Bounds);
+        return bounds;
+    }
 
     /// <inheritdoc/>
     public override int GetHashCode() =>
