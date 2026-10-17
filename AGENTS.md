@@ -38,7 +38,8 @@ The Windows target builds only on Windows. On macOS and Linux the library builds
 - **Public API.**
   - Default to `internal`. Public API must have a demonstrated use.
   - Every public member has XML documentation; a missing doc is a build error.
-  - Every public member is listed in `PublicAPI.Unshipped.txt` (Microsoft.CodeAnalysis.PublicApiAnalyzers). Never disable the analyzer, and keep the `~` markers that the analyzer generates.
+  - Every public member is listed in `PublicAPI/<target>/PublicAPI.Unshipped.txt` (Microsoft.CodeAnalysis.PublicApiAnalyzers). Never disable the analyzer, and keep the `~` markers that the analyzer generates.
+  - Run `eng/update-public-api.sh` after an API change; it records the change for every target this machine can build. The Windows list can only be generated on Windows, so on other machines copy the shared entries into `PublicAPI/net-windows` by hand.
 - **No reflection.** The library is marked `IsAotCompatible`, and JSON is read and written with `Utf8JsonReader`/`Utf8JsonWriter`.
 - **Comments explain why**, not what.
 

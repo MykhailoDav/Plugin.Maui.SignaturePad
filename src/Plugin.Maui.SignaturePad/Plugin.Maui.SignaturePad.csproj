@@ -10,6 +10,8 @@
     <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
     <!-- The Windows App SDK builds only on Windows. -->
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+    <!-- eng/update-public-api.sh builds one target at a time, because dotnet format fixes only the first target. -->
+    <TargetFrameworks Condition="'$(SIGNATUREPAD_SINGLE_TARGET)' != ''">$(SIGNATUREPAD_SINGLE_TARGET)</TargetFrameworks>
 
     <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>

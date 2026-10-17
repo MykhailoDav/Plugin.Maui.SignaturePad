@@ -1,1 +1,50 @@
 #nullable enable
+override Plugin.Maui.SignaturePad.SignatureData.Equals(object? obj) -> bool
+override Plugin.Maui.SignaturePad.SignatureData.GetHashCode() -> int
+override Plugin.Maui.SignaturePad.SignaturePoint.GetHashCode() -> int
+override Plugin.Maui.SignaturePad.SignatureStroke.Equals(object? obj) -> bool
+override Plugin.Maui.SignaturePad.SignatureStroke.GetHashCode() -> int
+Plugin.Maui.SignaturePad.SignatureData
+Plugin.Maui.SignaturePad.SignatureData.CanvasSize.get -> Microsoft.Maui.Graphics.SizeF
+Plugin.Maui.SignaturePad.SignatureData.Duration.get -> double
+Plugin.Maui.SignaturePad.SignatureData.Equals(Plugin.Maui.SignaturePad.SignatureData? other) -> bool
+Plugin.Maui.SignaturePad.SignatureData.IsEmpty.get -> bool
+Plugin.Maui.SignaturePad.SignatureData.PointCount.get -> int
+Plugin.Maui.SignaturePad.SignatureData.SignatureData(System.Collections.Generic.IEnumerable<Plugin.Maui.SignaturePad.SignatureStroke!>! strokes, Microsoft.Maui.Graphics.SizeF canvasSize) -> void
+Plugin.Maui.SignaturePad.SignatureData.Strokes.get -> System.Collections.Generic.IReadOnlyList<Plugin.Maui.SignaturePad.SignatureStroke!>!
+Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignatureInputDevice.Mouse = 3 -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignatureInputDevice.Pen = 2 -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignatureInputDevice.Touch = 1 -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignatureInputDevice.Unknown = 0 -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignaturePoint
+Plugin.Maui.SignaturePad.SignaturePoint.Deconstruct(out float X, out float Y, out double Time, out float? Pressure) -> void
+Plugin.Maui.SignaturePad.SignaturePoint.Equals(Plugin.Maui.SignaturePad.SignaturePoint other) -> bool
+Plugin.Maui.SignaturePad.SignaturePoint.Pressure.get -> float?
+Plugin.Maui.SignaturePad.SignaturePoint.Pressure.init -> void
+Plugin.Maui.SignaturePad.SignaturePoint.SignaturePoint() -> void
+Plugin.Maui.SignaturePad.SignaturePoint.SignaturePoint(float X, float Y, double Time, float? Pressure = null) -> void
+Plugin.Maui.SignaturePad.SignaturePoint.Time.get -> double
+Plugin.Maui.SignaturePad.SignaturePoint.Time.init -> void
+Plugin.Maui.SignaturePad.SignaturePoint.X.get -> float
+Plugin.Maui.SignaturePad.SignaturePoint.X.init -> void
+Plugin.Maui.SignaturePad.SignaturePoint.Y.get -> float
+Plugin.Maui.SignaturePad.SignaturePoint.Y.init -> void
+Plugin.Maui.SignaturePad.SignatureStroke
+Plugin.Maui.SignaturePad.SignatureStroke.Color.get -> Microsoft.Maui.Graphics.Color!
+Plugin.Maui.SignaturePad.SignatureStroke.Device.get -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignatureStroke.EndTime.get -> double
+Plugin.Maui.SignaturePad.SignatureStroke.Equals(Plugin.Maui.SignaturePad.SignatureStroke? other) -> bool
+Plugin.Maui.SignaturePad.SignatureStroke.MaxWidth.get -> float
+Plugin.Maui.SignaturePad.SignatureStroke.MinWidth.get -> float
+Plugin.Maui.SignaturePad.SignatureStroke.Points.get -> System.Collections.Generic.IReadOnlyList<Plugin.Maui.SignaturePad.SignaturePoint>!
+Plugin.Maui.SignaturePad.SignatureStroke.SignatureStroke(System.Collections.Generic.IEnumerable<Plugin.Maui.SignaturePad.SignaturePoint>! points, Microsoft.Maui.Graphics.Color! color, float minWidth, float maxWidth, Plugin.Maui.SignaturePad.SignatureInputDevice device) -> void
+Plugin.Maui.SignaturePad.SignatureStroke.StartTime.get -> double
+Plugin.Maui.SignaturePad.SignatureStrokeEventArgs
+Plugin.Maui.SignaturePad.SignatureStrokeEventArgs.SignatureStrokeEventArgs(Plugin.Maui.SignaturePad.SignatureStroke! stroke) -> void
+Plugin.Maui.SignaturePad.SignatureStrokeEventArgs.Stroke.get -> Plugin.Maui.SignaturePad.SignatureStroke!
+static Plugin.Maui.SignaturePad.SignatureData.Empty.get -> Plugin.Maui.SignaturePad.SignatureData!
+static Plugin.Maui.SignaturePad.SignaturePoint.operator !=(Plugin.Maui.SignaturePad.SignaturePoint left, Plugin.Maui.SignaturePad.SignaturePoint right) -> bool
+static Plugin.Maui.SignaturePad.SignaturePoint.operator ==(Plugin.Maui.SignaturePad.SignaturePoint left, Plugin.Maui.SignaturePad.SignaturePoint right) -> bool
+~override Plugin.Maui.SignaturePad.SignaturePoint.Equals(object obj) -> bool
+~override Plugin.Maui.SignaturePad.SignaturePoint.ToString() -> string
