@@ -61,6 +61,26 @@ public sealed class SignatureData : IEquatable<SignatureData>
     /// <summary>The time from the start of the first stroke to the end of the last one, in milliseconds.</summary>
     public double Duration { get; }
 
+    /// <summary>
+    /// Writes the signature as JSON. The text keeps every point exactly, so <see cref="FromJson"/> gives back an equal
+    /// signature, and it is versioned, so later versions of the package can still read it.
+    /// </summary>
+    /// <returns>The JSON text.</returns>
+    public string ToJson() => SignatureJson.Write(this);
+
+    /// <summary>
+    /// Reads a signature from the JSON that <see cref="ToJson"/> writes. The input is validated completely before
+    /// anything is returned, so it is safe to call with untrusted text.
+    /// </summary>
+    /// <param name="json">The JSON text.</param>
+    /// <returns>The signature.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="json"/> is <see langword="null"/>.</exception>
+    /// <exception cref="FormatException">
+    /// The text is not valid JSON, is not signature data, has an unsupported version, has missing or invalid values,
+    /// or has more than 10,000 strokes or 100,000 points. The message says where the problem is.
+    /// </exception>
+    public static SignatureData FromJson(string json) => SignatureJson.Read(json);
+
     /// <inheritdoc/>
     public bool Equals(SignatureData? other)
     {

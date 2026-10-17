@@ -12,6 +12,7 @@ Plugin.Maui.SignaturePad.SignatureData.IsEmpty.get -> bool
 Plugin.Maui.SignaturePad.SignatureData.PointCount.get -> int
 Plugin.Maui.SignaturePad.SignatureData.SignatureData(System.Collections.Generic.IEnumerable<Plugin.Maui.SignaturePad.SignatureStroke!>! strokes, Microsoft.Maui.Graphics.SizeF canvasSize) -> void
 Plugin.Maui.SignaturePad.SignatureData.Strokes.get -> System.Collections.Generic.IReadOnlyList<Plugin.Maui.SignaturePad.SignatureStroke!>!
+Plugin.Maui.SignaturePad.SignatureData.ToJson() -> string!
 Plugin.Maui.SignaturePad.SignatureInputDevice
 Plugin.Maui.SignaturePad.SignatureInputDevice.Mouse = 3 -> Plugin.Maui.SignaturePad.SignatureInputDevice
 Plugin.Maui.SignaturePad.SignatureInputDevice.Pen = 2 -> Plugin.Maui.SignaturePad.SignatureInputDevice
@@ -44,6 +45,7 @@ Plugin.Maui.SignaturePad.SignatureStrokeEventArgs
 Plugin.Maui.SignaturePad.SignatureStrokeEventArgs.SignatureStrokeEventArgs(Plugin.Maui.SignaturePad.SignatureStroke! stroke) -> void
 Plugin.Maui.SignaturePad.SignatureStrokeEventArgs.Stroke.get -> Plugin.Maui.SignaturePad.SignatureStroke!
 static Plugin.Maui.SignaturePad.SignatureData.Empty.get -> Plugin.Maui.SignaturePad.SignatureData!
+static Plugin.Maui.SignaturePad.SignatureData.FromJson(string! json) -> Plugin.Maui.SignaturePad.SignatureData!
 static Plugin.Maui.SignaturePad.SignaturePoint.operator !=(Plugin.Maui.SignaturePad.SignaturePoint left, Plugin.Maui.SignaturePad.SignaturePoint right) -> bool
 static Plugin.Maui.SignaturePad.SignaturePoint.operator ==(Plugin.Maui.SignaturePad.SignaturePoint left, Plugin.Maui.SignaturePad.SignaturePoint right) -> bool
 ~override Plugin.Maui.SignaturePad.SignaturePoint.Equals(object obj) -> bool

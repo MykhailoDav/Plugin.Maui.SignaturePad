@@ -92,7 +92,7 @@ public sealed class SignatureStroke : IEquatable<SignatureStroke>
             && Device == other.Device
             && MinWidth.Equals(other.MinWidth)
             && MaxWidth.Equals(other.MaxWidth)
-            && Color.ToInt() == other.Color.ToInt()
+            && ColorBytes.ToRgba(Color) == ColorBytes.ToRgba(other.Color)
             && PointSpan.SequenceEqual(other.PointSpan);
     }
 
@@ -101,5 +101,5 @@ public sealed class SignatureStroke : IEquatable<SignatureStroke>
 
     /// <inheritdoc/>
     public override int GetHashCode() =>
-        HashCode.Combine(_points.Length, _points[0], _points[^1], Color.ToInt(), MinWidth, MaxWidth, Device);
+        HashCode.Combine(_points.Length, _points[0], _points[^1], ColorBytes.ToRgba(Color), MinWidth, MaxWidth, Device);
 }
