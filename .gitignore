@@ -484,3 +484,19 @@ $RECYCLE.BIN/
 # Personal planning notes and Claude Code instructions (kept local, not published)
 CLAUDE.local.md
 .planning/
+
+## Project-specific
+
+# Build output of `dotnet pack -o artifacts`
+artifacts/
+
+# Local agent settings
+.claude/settings.local.json
+
+# Agent skills copied from the maintainer's other projects; kept local (see .claude/skills/README.md)
+.claude/skills/csharp-code-review/
+.claude/skills/maui/
+.claude/skills/maui-data-binding/
+.claude/skills/maui-dependency-injection/
+.claude/skills/maui-shell-navigation/
+.claude/skills/mvvm/
