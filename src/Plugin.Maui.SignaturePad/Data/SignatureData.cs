@@ -47,6 +47,7 @@ public sealed class SignatureData : IEquatable<SignatureData>
         }
 
         Duration = _strokes.Length == 0 ? 0 : end - start;
+        LastTime = _strokes.Length == 0 ? 0 : end;
     }
 
     /// <summary>The strokes in the order they were drawn.</summary>
@@ -63,6 +64,9 @@ public sealed class SignatureData : IEquatable<SignatureData>
 
     /// <summary>The time from the start of the first stroke to the end of the last one, in milliseconds.</summary>
     public double Duration { get; }
+
+    /// <summary>The time the last stroke ended, in milliseconds since the first point of the signature (0 when empty).</summary>
+    internal double LastTime { get; }
 
     /// <summary>
     /// The area the ink of all strokes covers, in device-independent units, or an empty rectangle at the origin when
