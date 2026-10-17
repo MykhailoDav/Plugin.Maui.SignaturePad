@@ -1,6 +1,7 @@
 #nullable enable
 override Plugin.Maui.SignaturePad.SignatureData.Equals(object? obj) -> bool
 override Plugin.Maui.SignaturePad.SignatureData.GetHashCode() -> int
+override Plugin.Maui.SignaturePad.SignaturePadHandler.CreatePlatformView() -> object!
 override Plugin.Maui.SignaturePad.SignaturePadView.OnPropertyChanged(string? propertyName = null) -> void
 override Plugin.Maui.SignaturePad.SignaturePadView.OnSizeAllocated(double width, double height) -> void
 override Plugin.Maui.SignaturePad.SignaturePoint.GetHashCode() -> int
@@ -41,6 +42,10 @@ Plugin.Maui.SignaturePad.SignatureInputDevice.Mouse = 3 -> Plugin.Maui.Signature
 Plugin.Maui.SignaturePad.SignatureInputDevice.Pen = 2 -> Plugin.Maui.SignaturePad.SignatureInputDevice
 Plugin.Maui.SignaturePad.SignatureInputDevice.Touch = 1 -> Plugin.Maui.SignaturePad.SignatureInputDevice
 Plugin.Maui.SignaturePad.SignatureInputDevice.Unknown = 0 -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignaturePadAppBuilderExtensions
+Plugin.Maui.SignaturePad.SignaturePadHandler
+Plugin.Maui.SignaturePad.SignaturePadHandler.SignaturePadHandler() -> void
+Plugin.Maui.SignaturePad.SignaturePadHandler.SignaturePadHandler(Microsoft.Maui.IPropertyMapper? mapper, Microsoft.Maui.CommandMapper? commandMapper = null) -> void
 Plugin.Maui.SignaturePad.SignaturePadView
 Plugin.Maui.SignaturePad.SignaturePadView.CanRedo.get -> bool
 Plugin.Maui.SignaturePad.SignaturePadView.CanUndo.get -> bool
@@ -113,8 +118,12 @@ Plugin.Maui.SignaturePad.SignatureSvgExportOptions.StrokeColor.get -> Microsoft.
 Plugin.Maui.SignaturePad.SignatureSvgExportOptions.StrokeColor.set -> void
 static Plugin.Maui.SignaturePad.SignatureData.Empty.get -> Plugin.Maui.SignaturePad.SignatureData!
 static Plugin.Maui.SignaturePad.SignatureData.FromJson(string! json) -> Plugin.Maui.SignaturePad.SignatureData!
+static Plugin.Maui.SignaturePad.SignaturePadAppBuilderExtensions.UseSignaturePad(this Microsoft.Maui.Hosting.MauiAppBuilder! builder) -> Microsoft.Maui.Hosting.MauiAppBuilder!
+static Plugin.Maui.SignaturePad.SignaturePadHandler.MapInvalidate(Plugin.Maui.SignaturePad.SignaturePadHandler! handler, Plugin.Maui.SignaturePad.SignaturePadView! view) -> void
 static Plugin.Maui.SignaturePad.SignaturePoint.operator !=(Plugin.Maui.SignaturePad.SignaturePoint left, Plugin.Maui.SignaturePad.SignaturePoint right) -> bool
 static Plugin.Maui.SignaturePad.SignaturePoint.operator ==(Plugin.Maui.SignaturePad.SignaturePoint left, Plugin.Maui.SignaturePad.SignaturePoint right) -> bool
+static readonly Plugin.Maui.SignaturePad.SignaturePadHandler.CommandMapper -> Microsoft.Maui.CommandMapper<Plugin.Maui.SignaturePad.SignaturePadView!, Plugin.Maui.SignaturePad.SignaturePadHandler!>!
+static readonly Plugin.Maui.SignaturePad.SignaturePadHandler.Mapper -> Microsoft.Maui.IPropertyMapper<Plugin.Maui.SignaturePad.SignaturePadView!, Plugin.Maui.SignaturePad.SignaturePadHandler!>!
 static readonly Plugin.Maui.SignaturePad.SignaturePadView.CanRedoProperty -> Microsoft.Maui.Controls.BindableProperty!
 static readonly Plugin.Maui.SignaturePad.SignaturePadView.CanUndoProperty -> Microsoft.Maui.Controls.BindableProperty!
 static readonly Plugin.Maui.SignaturePad.SignaturePadView.IsEmptyProperty -> Microsoft.Maui.Controls.BindableProperty!
