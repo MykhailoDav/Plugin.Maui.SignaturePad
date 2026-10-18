@@ -115,6 +115,20 @@ public sealed class SignaturePadApp : IDisposable
 
     public bool Exists(string automationId) => _driver.FindElements(ByAutomationId(automationId)).Count > 0;
 
+    /// <summary>Whether the element with <paramref name="automationId"/> exists within <paramref name="timeout"/>.</summary>
+    public bool Appears(string automationId, TimeSpan timeout)
+    {
+        try
+        {
+            Element(automationId, timeout);
+            return true;
+        }
+        catch (WebDriverTimeoutException)
+        {
+            return false;
+        }
+    }
+
     /// <summary>The text of the label with <paramref name="automationId"/>.</summary>
     public string Text(string automationId)
     {
@@ -174,11 +188,13 @@ public sealed class SignaturePadApp : IDisposable
     /// <summary>Opens the scenario of the host app named <paramref name="name"/> (see ScenarioCatalog).</summary>
     public void OpenScenario(string name)
     {
+        // Back returns to the scenario list. When it does not, an earlier test left the app stuck (an iOS simulator under
+        // load can leave a synthesized touch down), and the app starts over rather than failing every test after it.
         if (!Exists("ScenarioEntry"))
         {
             if (Exists("BackButton"))
                 Tap("BackButton");
-            else
+            if (!Appears("ScenarioEntry", TimeSpan.FromSeconds(5)))
                 Restart();
         }
 
