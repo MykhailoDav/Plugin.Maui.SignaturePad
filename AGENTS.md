@@ -13,9 +13,14 @@ This guide is for contributors and AI coding agents. The README is for people wh
 | `tests/Plugin.Maui.SignaturePad.UITests.HostApp` | The app the UI tests drive. Every page is a scenario in a known state. |
 | `tests/Plugin.Maui.SignaturePad.UITests` | Appium UI tests (NUnit), screenshot baselines and Appium itself (`package.json`). |
 | `samples/Plugin.Maui.SignaturePad.Sample` | The sample app for people who want to see the control. |
-| `docs/` | Architecture and manual testing notes. |
+| `docs/` | `architecture.md` (how the library works inside) and `manual-testing.md` (the checks on real devices). |
+| `eng/` | Scripts for maintainers, such as `update-public-api.sh`. |
+| `.github/` | CI (`ci.yml`), UI tests (`ui-tests.yml`), CodeQL, the release workflow and Dependabot. |
+| `README.md`, `llms.txt`, `llms-full.txt` | Documentation for people, and the reference for AI coding assistants that ships in the package. |
+| `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md` | Changes per version, how to contribute and release, how to report a vulnerability. |
 
-Inside the library, code is grouped by feature (`Data`, `Ink`, `Capture`, `Controls`, `Rendering`, `Export`, `Handlers`, `Platforms`).
+Inside the library, code is grouped by feature (`Data`, `Ink`, `Capture`, `Controls`, `Rendering`, `Export`, `Handlers`,
+`PlatformViews`). [docs/architecture.md](docs/architecture.md) explains each part.
 
 ## Commands
 
@@ -68,11 +73,22 @@ These are adapted from the dotnet/maui repository's own instructions (MIT).
   - Record baselines with `--update-baselines` and review the images before committing them.
 - **Pen pressure and coalesced input** cannot be automated. Check them by hand with the matrix in `docs/manual-testing.md`.
 
+## Documentation
+
+- When the public API or its behavior changes, update `README.md`, `llms-full.txt` and `CHANGELOG.md` in the same
+  change, and `docs/architecture.md` when the internals change.
+- The C# samples of `README.md` and `llms-full.txt` are copied into `tests/Plugin.Maui.SignaturePad.Tests/Docs`, so they
+  keep compiling. Change both together.
+- The docs describe the package itself. They do not compare it with or judge other packages beyond the neutral note in
+  the README.
+
 ## Commits
 
 - Use Conventional Commits: `feat:`, `fix:`, `perf:`, `test:`, `docs:`, `ci:`, `chore:`.
 - No `Co-Authored-By` or other attribution trailers.
 - Keep commits small and buildable.
+- Releases are made by tagging a commit on `main`; see CONTRIBUTING.md. Never push tags or publish packages without the
+  maintainer's explicit approval.
 
 ## Agent skills
 

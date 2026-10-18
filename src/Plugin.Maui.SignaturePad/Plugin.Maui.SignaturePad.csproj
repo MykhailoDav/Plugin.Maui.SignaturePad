@@ -97,6 +97,8 @@
   <!-- Package content -->
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <!-- The reference for AI coding assistants, at the package root as in other Plugin.Maui packages. -->
+    <None Include="..\..\llms-full.txt" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
