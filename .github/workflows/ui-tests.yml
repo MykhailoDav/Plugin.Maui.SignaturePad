@@ -120,12 +120,13 @@ jobs:
     - name: Build the host app
       run: dotnet build tests/Plugin.Maui.SignaturePad.UITests.HostApp -f net10.0-android
     - name: Start an emulator
-      # Android 17, as on the Pixel 10 emulator the baselines were recorded on; its packages are named after the minor
-      # version, android-37.0. The runner's Android tools have no Pixel 10 profile, so a phone of the same size stands
-      # in; the screenshots are not compared here anyway.
+      # Android 16. On the runner's software GPU, Android 17's SurfaceFlinger aborts in its region sampling thread
+      # (hasReadColorBufferDma) and restarts the system server again and again, with either SwiftShader mode; Android 17
+      # is tested on the Pixel 10 emulator the baselines were recorded on (run.sh). The runner's Android tools have no
+      # Pixel 10 profile, so a phone of the same size stands in; the screenshots are not compared here anyway.
       run: |
         tools="$ANDROID_HOME/cmdline-tools/latest/bin"
-        image='system-images;android-37.0;google_apis;x86_64'
+        image='system-images;android-36;google_apis;x86_64'
         # avdmanager and the emulator otherwise disagree about where the AVD lives.
         export ANDROID_AVD_HOME="$HOME/.android/avd"
         mkdir -p "$ANDROID_AVD_HOME"
@@ -133,11 +134,9 @@ jobs:
         "$tools/sdkmanager" --install emulator platform-tools "$image" > /dev/null
         echo no | "$tools/avdmanager" create avd --force --name test --package "$image" --device pixel_7
         echo 'hw.cpu.ncore=4' >> "$ANDROID_AVD_HOME/test.avd/config.ini"
-        # The default data partition is too small to install the host app, whose Debug APK carries its assemblies. With
-        # swiftshader_indirect, Android 17's SurfaceFlinger aborts in its region sampling thread (hasReadColorBufferDma)
-        # and takes the system server down with it, so the GPU is SwiftShader through ANGLE.
+        # The default data partition is too small to install the host app, whose Debug APK carries its assemblies.
         nohup "$ANDROID_HOME/emulator/emulator" -avd test -port 5554 -partition-size 6144 -no-window \
-          -gpu swangle_indirect -no-snapshot -noaudio -no-boot-anim > "$RUNNER_TEMP/emulator.log" 2>&1 &
+          -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim > "$RUNNER_TEMP/emulator.log" 2>&1 &
         echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
     - name: Wait for the emulator
       # sys.boot_completed is set before every system service is up, and the system server can still restart on a slow
