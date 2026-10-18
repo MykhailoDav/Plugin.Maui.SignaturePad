@@ -90,6 +90,10 @@ The UiAutomator2 driver turns every W3C pointer action into a finger. So the sty
 
 On iOS, a simulator has no Apple Pencil, and Mac Catalyst has only a mouse. Pencil pressure and coalesced touches are covered by the unit tests of the shared input code and by the manual checks in `docs/manual-testing.md`.
 
+### Gesture timing on iOS
+
+XCUITest plays a gesture back frame by frame. When the steps of a pointer move are shorter than a frame (about 16 ms), every touch of the stroke gets the same timestamp. The pad then records the stroke as drawn in no time, and its ink is as thin as fast ink. A test that depends on the speed of a stroke has to use steps of 20 ms or longer.
+
 ## Screenshots and baselines
 
 A screenshot of the pad is compared with `Baselines/<platform>/<name>.png`. A pixel counts as different when a color channel differs by more than 32 (out of 255). The comparison fails when more than 0.1 % of the pixels differ.
