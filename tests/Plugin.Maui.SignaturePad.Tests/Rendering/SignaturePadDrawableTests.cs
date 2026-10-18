@@ -168,14 +168,15 @@ public class SignaturePadDrawableTests
         var view = Pad();
         Draw(view, 0, y: 10);
         Draw(view, 100, y: 60);
-        var drawable = new SignaturePadDrawable(view);
+        var ink = new PathCacheInkRenderer();
+        var drawable = new SignaturePadDrawable(view, ink);
         Render(drawable);
-        Assert.Equal(2, drawable.CachedPathCount);
+        Assert.Equal(2, ink.CachedPathCount);
 
         view.Undo();
         Render(drawable);
 
-        Assert.Equal(1, drawable.CachedPathCount);
+        Assert.Equal(1, ink.CachedPathCount);
     }
 
     [Fact]
@@ -183,14 +184,15 @@ public class SignaturePadDrawableTests
     {
         var view = Pad();
         Draw(view, 0, y: 10);
-        var drawable = new SignaturePadDrawable(view);
+        var ink = new PathCacheInkRenderer();
+        var drawable = new SignaturePadDrawable(view, ink);
         var first = Render(drawable).Fills[0].Path;
 
         Draw(view, 100, y: 60);
         var canvas = Render(drawable);
 
         Assert.Same(first, canvas.Fills[0].Path);
-        Assert.Equal(2, drawable.CachedPathCount);
+        Assert.Equal(2, ink.CachedPathCount);
     }
 
     [Fact]
@@ -209,12 +211,13 @@ public class SignaturePadDrawableTests
     {
         var view = Pad();
         Draw(view, 0);
-        var drawable = new SignaturePadDrawable(view);
+        var ink = new PathCacheInkRenderer();
+        var drawable = new SignaturePadDrawable(view, ink);
         Render(drawable);
 
         drawable.Dispose();
 
-        Assert.Equal(0, drawable.CachedPathCount);
+        Assert.Equal(0, ink.CachedPathCount);
     }
 
     [Fact]
@@ -279,14 +282,26 @@ public class SignaturePadDrawableTests
     }
 
     [Fact]
-    public void InkRenderer_UsesTheOverrideColor_WithoutACache()
+    public void InkRenderer_ForBitmaps_MovesAndScalesTheGeometry_AndUsesTheOverrideColor()
     {
         var view = Pad();
         Draw(view, 0);
+        var stroke = view.Signature.Strokes[0];
         var canvas = new RecordingCanvas();
 
-        InkRenderer.DrawStrokes(canvas, view.Signature.Strokes, Colors.Magenta, cache: null);
+        InkRenderer.DrawStrokes(canvas, view.Signature.Strokes, Colors.Magenta, new PointF(5, 3), 2.5f);
 
-        Assert.Equal(Colors.Magenta, Assert.Single(canvas.Fills).Color);
+        var fill = Assert.Single(canvas.Fills);
+        Assert.Equal(Colors.Magenta, fill.Color);
+        using var untransformed = StrokeGeometry.ToPath(stroke.Outline);
+        Assert.Equal(untransformed.Count, fill.Path.Count);
+        for (var i = 0; i < untransformed.Count; i++)
+        {
+            Assert.Equal((untransformed[i].X - 5) * 2.5f, fill.Path[i].X, 0.001f);
+            Assert.Equal((untransformed[i].Y - 3) * 2.5f, fill.Path[i].Y, 0.001f);
+        }
+
+        Assert.Empty(canvas.Scales);
+        Assert.Empty(canvas.Translations);
     }
 }

@@ -15,7 +15,7 @@ public partial class SignaturePadHandler : ViewHandler<SignaturePadView, Platfor
     {
         base.ConnectHandler(platformView);
 
-        _drawable = new SignaturePadDrawable(VirtualView);
+        _drawable = new SignaturePadDrawable(VirtualView, new CommittedInkLayer(platformView.PixelSize));
         platformView.Drawable = _drawable;
         platformView.Sink = VirtualView.Session;
         VirtualView.InvalidateRequested += InvalidatePlatformView;

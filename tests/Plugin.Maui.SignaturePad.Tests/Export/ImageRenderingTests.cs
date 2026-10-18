@@ -20,17 +20,30 @@ public class ImageRenderingTests
     }
 
     [Fact]
-    public void Png_HasNoBackground_AndScalesThenMovesTheSourceToTheOrigin()
+    public void Png_HasNoBackground_AndDrawsTheSourceAreaAtTheOriginInPixels()
     {
         var options = new SignatureImageExportOptions { Scale = 3 };
-        var source = ExportLayout.Compute(Data(), true, 8, 3).Source;
+        var data = Data();
+        var layout = ExportLayout.Compute(data, true, 8, 3);
 
         var canvas = Render(options);
 
         Assert.Empty(canvas.FilledRectangles);
-        Assert.Equal([(3f, 3f)], canvas.Scales);
-        Assert.Equal([(-source.X, -source.Y)], canvas.Translations);
-        Assert.Equal(["Scale", "Translate", "FillPath", "FillPath"], canvas.Calls);
+        Assert.Equal(["FillPath", "FillPath"], canvas.Calls);
+
+        // Every point is moved by the exported area's corner and scaled to pixels in the geometry itself; nothing relies on
+        // canvas transforms, which Android's canvas does not apply to paths.
+        for (var s = 0; s < 2; s++)
+        {
+            using var untransformed = Plugin.Maui.SignaturePad.Ink.StrokeGeometry.ToPath(data.Strokes[s].Outline);
+            var path = canvas.Fills[s].Path;
+            Assert.Equal(untransformed.Count, path.Count);
+            for (var i = 0; i < path.Count; i++)
+            {
+                Assert.Equal((untransformed[i].X - layout.Source.X) * 3, path[i].X, 0.001f);
+                Assert.Equal((untransformed[i].Y - layout.Source.Y) * 3, path[i].Y, 0.001f);
+            }
+        }
     }
 
     [Fact]

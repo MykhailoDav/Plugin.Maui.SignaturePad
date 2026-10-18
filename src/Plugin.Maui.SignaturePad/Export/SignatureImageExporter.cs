@@ -19,7 +19,8 @@ internal static partial class SignatureImageExporter
 
     /// <summary>
     /// Draws the export on a canvas of <see cref="ExportLayout.PixelWidth"/> by <see cref="ExportLayout.PixelHeight"/>
-    /// pixels: the background, then the strokes scaled to pixels with the exported area moved to the origin.
+    /// pixels, without canvas transforms: the background, then the strokes with the exported area moved to the origin and
+    /// scaled to pixels.
     /// </summary>
     internal static void Render(ICanvas canvas, SignatureData data, ExportLayout layout, SignatureImageExportOptions options)
     {
@@ -31,9 +32,7 @@ internal static partial class SignatureImageExporter
             canvas.FillRectangle(0, 0, layout.PixelWidth, layout.PixelHeight);
         }
 
-        canvas.Scale(options.Scale, options.Scale);
-        canvas.Translate(-layout.Source.X, -layout.Source.Y);
-        InkRenderer.DrawStrokes(canvas, data.Strokes, options.StrokeColor, cache: null);
+        InkRenderer.DrawStrokes(canvas, data.Strokes, options.StrokeColor, layout.Source.Location, options.Scale);
     }
 
     private static partial Task<Stream> ExportCoreAsync(

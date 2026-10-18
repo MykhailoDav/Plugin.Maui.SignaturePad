@@ -13,18 +13,25 @@ namespace Plugin.Maui.SignaturePad.Ink;
 /// </remarks>
 internal static class StrokeGeometry
 {
-    public static PathF ToPath(ReadOnlySpan<PointF> outline)
+    public static PathF ToPath(ReadOnlySpan<PointF> outline) => ToPath(outline, default, 1f);
+
+    /// <summary>
+    /// Builds the path of the outline moved by <c>-offset</c> and then scaled. Platform canvases do not apply their own
+    /// transforms to paths alike (Android's ignores its scale for paths), so drawing into a bitmap transforms the
+    /// geometry itself.
+    /// </summary>
+    public static PathF ToPath(ReadOnlySpan<PointF> outline, PointF offset, float scale)
     {
         var path = new PathF();
         if (outline.Length == 0)
             return path;
 
         var count = outline.Length;
-        path.MoveTo(Mid(outline[0], outline[1 % count]));
+        path.MoveTo(Transform(Mid(outline[0], outline[1 % count]), offset, scale));
         for (var i = 1; i <= count; i++)
         {
             var control = outline[i % count];
-            path.QuadTo(control, Mid(control, outline[(i + 1) % count]));
+            path.QuadTo(Transform(control, offset, scale), Transform(Mid(control, outline[(i + 1) % count]), offset, scale));
         }
 
         path.Close();
@@ -87,4 +94,7 @@ internal static class StrokeGeometry
     }
 
     private static PointF Mid(PointF a, PointF b) => new((a.X + b.X) / 2f, (a.Y + b.Y) / 2f);
+
+    private static PointF Transform(PointF point, PointF offset, float scale) =>
+        new((point.X - offset.X) * scale, (point.Y - offset.Y) * scale);
 }

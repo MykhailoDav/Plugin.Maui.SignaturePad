@@ -6,32 +6,27 @@ namespace Plugin.Maui.SignaturePad.Rendering;
 /// Draws a pad: the signature line, the placeholder while the pad is empty, the committed strokes and the stroke being
 /// drawn. Guides are drawn only here, so they never appear in an export.
 /// </summary>
-internal sealed class SignaturePadDrawable(SignaturePadView view) : IDrawable, IDisposable
+/// <param name="view">The pad.</param>
+/// <param name="committedInk">How the committed strokes are drawn; the path cache when <see langword="null"/>.</param>
+internal sealed class SignaturePadDrawable(SignaturePadView view, ICommittedInkRenderer? committedInk = null) : IDrawable, IDisposable
 {
     internal const float LineInset = 16f;
     internal const float LinePosition = 0.75f;
     internal const float PlaceholderFontSize = 16f;
 
-    private readonly StrokePathCache _cache = new();
-    private SignatureData? _cachedFor;
+    private readonly ICommittedInkRenderer _committedInk = committedInk ?? new PathCacheInkRenderer();
     private StrokeBuilder? _trackedActive;
     private int _trackedActiveCount;
-
-    internal int CachedPathCount => _cache.Count;
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
         var session = view.Session;
         var signature = session.Current;
-        if (!ReferenceEquals(signature, _cachedFor))
-        {
-            _cache.Retain(signature.Strokes);
-            _cachedFor = signature;
-        }
+        var size = new SizeF((float)view.Width, (float)view.Height);
 
         // The guides are laid out on the whole pad; dirtyRect can be just the part being redrawn.
-        DrawGuides(canvas, (float)view.Width, (float)view.Height, showPlaceholder: signature.IsEmpty && session.Active is null);
-        InkRenderer.DrawStrokes(canvas, signature.Strokes, strokeColorOverride: null, _cache);
+        DrawGuides(canvas, size.Width, size.Height, showPlaceholder: signature.IsEmpty && session.Active is null);
+        _committedInk.Draw(canvas, signature, size);
         if (session.Active is { } active)
             InkRenderer.DrawActive(canvas, active, session.ActiveColor);
     }
@@ -75,11 +70,7 @@ internal sealed class SignaturePadDrawable(SignaturePadView view) : IDrawable, I
         return new RectF(left - margin, top - margin, right - left + (2 * margin), bottom - top + (2 * margin));
     }
 
-    public void Dispose()
-    {
-        _cache.Dispose();
-        _cachedFor = null;
-    }
+    public void Dispose() => _committedInk.Dispose();
 
     private void DrawGuides(ICanvas canvas, float width, float height, bool showPlaceholder)
     {

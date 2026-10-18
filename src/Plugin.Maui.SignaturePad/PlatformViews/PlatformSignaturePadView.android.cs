@@ -28,6 +28,9 @@ public sealed class PlatformSignaturePadView : PlatformGraphicsView
     /// <summary>Where input goes; <see langword="null"/> while the handler is disconnected.</summary>
     internal IInkInputSink? Sink { get; set; }
 
+    /// <summary>The view's size in pixels and the density it is drawn at, for the committed ink layer.</summary>
+    internal (int Width, int Height, float Density) PixelSize() => (Width, Height, _density);
+
     /// <inheritdoc/>
     public override bool OnTouchEvent(MotionEvent? e)
     {

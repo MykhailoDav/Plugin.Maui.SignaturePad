@@ -8,27 +8,39 @@ namespace Plugin.Maui.SignaturePad.Rendering;
 /// </summary>
 internal static class InkRenderer
 {
-    /// <summary>Fills the outline of every stroke, in drawing order.</summary>
+    /// <summary>Fills the outline of every stroke, in drawing order, with paths from <paramref name="cache"/>.</summary>
     /// <param name="canvas">The canvas to draw on.</param>
     /// <param name="strokes">The strokes.</param>
+    /// <param name="cache">The paths to reuse between frames.</param>
+    public static void DrawStrokes(ICanvas canvas, IReadOnlyList<SignatureStroke> strokes, StrokePathCache cache)
+    {
+        canvas.Antialias = true;
+        for (var i = 0; i < strokes.Count; i++)
+        {
+            var stroke = strokes[i];
+            canvas.FillColor = stroke.Color;
+            canvas.FillPath(cache.Get(stroke), WindingMode.NonZero);
+        }
+    }
+
+    /// <summary>
+    /// Fills the outline of every stroke, moved by <c>-offset</c> and scaled to pixels, building each path once. For
+    /// drawing into bitmaps, where a canvas transform cannot be relied on.
+    /// </summary>
+    /// <param name="canvas">The canvas to draw on, in pixels.</param>
+    /// <param name="strokes">The strokes.</param>
     /// <param name="strokeColorOverride">A color for all strokes instead of their own, or <see langword="null"/>.</param>
-    /// <param name="cache">Paths to reuse between frames, or <see langword="null"/> to build each path once and release it.</param>
-    public static void DrawStrokes(ICanvas canvas, IReadOnlyList<SignatureStroke> strokes, Color? strokeColorOverride, StrokePathCache? cache)
+    /// <param name="offset">The point of the pad that becomes the origin.</param>
+    /// <param name="scale">The pixels per DIP.</param>
+    public static void DrawStrokes(ICanvas canvas, IReadOnlyList<SignatureStroke> strokes, Color? strokeColorOverride, PointF offset, float scale)
     {
         canvas.Antialias = true;
         for (var i = 0; i < strokes.Count; i++)
         {
             var stroke = strokes[i];
             canvas.FillColor = strokeColorOverride ?? stroke.Color;
-            if (cache is not null)
-            {
-                canvas.FillPath(cache.Get(stroke), WindingMode.NonZero);
-            }
-            else
-            {
-                using var path = StrokeGeometry.ToPath(stroke.Outline);
-                canvas.FillPath(path, WindingMode.NonZero);
-            }
+            using var path = StrokeGeometry.ToPath(stroke.Outline, offset, scale);
+            canvas.FillPath(path, WindingMode.NonZero);
         }
     }
 
