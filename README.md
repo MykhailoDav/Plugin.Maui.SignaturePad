@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/vpre/Plugin.Maui.SignaturePad.svg)](https://www.nuget.org/packages/Plugin.Maui.SignaturePad)
 [![CI](https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/actions/workflows/ci.yml/badge.svg)](https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/blob/main/LICENSE)
 
 A signature pad for .NET MAUI with ink that behaves like a pen: strokes get thinner when drawn fast and thicker when
 drawn slowly or pressed harder with a pen. Every stroke keeps its points with their timing and pressure, and a signature
@@ -25,7 +25,8 @@ managed code.
   - PNG and JPEG at any scale, cropped to the ink or covering the whole pad.
   - SVG with exactly the shape on screen.
   - JSON that restores the signature exactly.
-- **Stroke data.** Every point has its time and pen pressure, and every stroke knows the device that drew it.
+- **Stroke data.** Every point has its time and, from a pen, its pressure, and every stroke knows the device that drew
+  it.
 - **Works inside layouts.**
   - Drawing on the pad inside a `ScrollView` does not scroll the page, and swiping outside the pad still does.
   - The ink survives Shell tabs and navigation.
