@@ -46,7 +46,9 @@ The unit tests in `tests/Plugin.Maui.SignaturePad.Tests` check all of the shared
   - the .NET 10 SDK with the MAUI workload;
   - Node.js 20 or later, then once `npm ci` in this folder. This installs Appium and its drivers here. The tests start this Appium themselves, listening on 127.0.0.1 only and with `APPIUM_HOME` set to this folder, so nothing is installed globally.
 - **iOS:** Xcode and the simulator the baselines were recorded on (see below). The first run builds Appium's WebDriverAgent, which takes a few minutes.
-- **Android:** the Android SDK, Java 17 or later, and either an emulator that is running or an AVD named in `UITEST_DEVICE`.
+- **Android:** the Android SDK, Java 17 or later, and the AVD the baselines were recorded on (see below), or another AVD named in
+  `UITEST_DEVICE`. Appium starts the AVD, or uses it when it is already running. A phone that is connected at the same time,
+  for example over wireless debugging, is left alone: adb commands go to the device of the test session.
 - **Mac Catalyst:**
   - Xcode and macOS *Automation Mode*. To turn off the password prompt once, run `sudo automationmodetool enable-automationmode-without-authentication`.
   - Allow the terminal to control the computer (System Settings › Privacy & Security › Accessibility).
@@ -74,7 +76,7 @@ UITEST_PLATFORM=android dotnet test --project tests/Plugin.Maui.SignaturePad.UIT
 | Variable | Meaning |
 | --- | --- |
 | `UITEST_PLATFORM` | `ios`, `android`, `maccatalyst` or `windows` (default: `ios` on macOS, `windows` on Windows) |
-| `UITEST_DEVICE` | The iOS simulator (default `iPhone 17`) or the Android AVD to start |
+| `UITEST_DEVICE` | The iOS simulator (default `iPhone 17`) or the Android AVD to use (`run.sh` uses `Pixel_10`) |
 | `UITEST_PLATFORM_VERSION` | The iOS or Android version of that device |
 | `UITEST_CONFIGURATION` | The configuration the host app was built with (default `Debug`) |
 | `UITEST_APP` | An app to test instead of the host app's build output |
@@ -108,7 +110,7 @@ Rendering differs between devices and OS versions, so the baselines only match o
 | Platform | Device the baselines were recorded on |
 | --- | --- |
 | iOS | iPhone 17 simulator, iOS 26.5 (Xcode 26.6) |
-| Android | Pixel 8 emulator (`Pixel_8` AVD), Android 14 (API 34) |
+| Android | Pixel 10 emulator (`Pixel_10` AVD), Android 17 (API 37, 16 KB pages) |
 | Mac Catalyst, Windows | No baselines yet: record them with `--update-baselines` on the machine that runs the tests |
 
 On another device, run with `UITEST_SCREENSHOTS=off` to check the behavior only, or record baselines for it.

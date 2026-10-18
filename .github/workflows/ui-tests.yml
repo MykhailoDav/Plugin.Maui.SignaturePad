@@ -122,8 +122,10 @@ jobs:
     - name: Run the UI tests on an emulator
       uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
       with:
-        # Android 14, as on the Pixel 8 emulator the tests were written on. The stylus test needs `input stylus`.
-        api-level: 34
+        # Android 17, as on the Pixel 10 emulator the baselines were recorded on. The runner's Android tools have no
+        # Pixel 10 profile, so a phone of the same size stands in; the screenshots are not compared here anyway.
+        api-level: 37
+        system-image-api-level: '37.0'
         arch: x86_64
         target: google_apis
         profile: pixel_7

@@ -5,6 +5,9 @@ namespace Plugin.Maui.SignaturePad.UITests.Infrastructure;
 /// <summary>Runs adb from the Android SDK, for what Appium's Android driver cannot do.</summary>
 internal static class Adb
 {
+    /// <summary>Runs adb on the device with <paramref name="serial"/>, which is needed when several devices are connected.</summary>
+    public static string Run(string serial, string arguments) => Run($"-s {serial} {arguments}");
+
     public static string Run(string arguments)
     {
         var sdk = Environment.GetEnvironmentVariable("ANDROID_HOME") is { Length: > 0 } home ? home

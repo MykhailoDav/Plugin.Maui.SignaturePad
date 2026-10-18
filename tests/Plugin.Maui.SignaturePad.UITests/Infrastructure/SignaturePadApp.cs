@@ -20,7 +20,14 @@ public sealed class SignaturePadApp : IDisposable
 
     private readonly AppiumDriver _driver;
 
-    private SignaturePadApp(AppiumDriver driver) => _driver = driver;
+    // The Android device of the session (such as emulator-5554), for the adb commands that go to the same device.
+    private readonly string? _androidSerial;
+
+    private SignaturePadApp(AppiumDriver driver, string? androidSerial = null)
+    {
+        _driver = driver;
+        _androidSerial = androidSerial;
+    }
 
     /// <summary>Whether the platform's pointer is a finger; otherwise it is a mouse.</summary>
     public static bool IsTouch => UITestSettings.Platform is TestPlatform.iOS or TestPlatform.Android;
@@ -90,7 +97,13 @@ public sealed class SignaturePadApp : IDisposable
         }
 
         driver.Manage().Timeouts().ImplicitWait = TimeSpan.Zero;
-        return new SignaturePadApp(driver);
+
+        // UiAutomator2 reports the device it chose. adb needs it when more than one device is connected, such as an
+        // emulator and a phone on wireless debugging.
+        var androidSerial = UITestSettings.Platform == TestPlatform.Android
+            ? driver.Capabilities.GetCapability("deviceUDID") as string ?? driver.Capabilities.GetCapability("udid") as string
+            : null;
+        return new SignaturePadApp(driver, androidSerial);
     }
 
     // ── Elements ─────────────────────────────────────────────────────────────
@@ -240,7 +253,11 @@ public sealed class SignaturePadApp : IDisposable
         var rect = new Rectangle(element.Location, element.Size);
         var start = ToViewport(rect, from);
         var end = ToViewport(rect, to);
-        Adb.Run($"shell input stylus swipe {start.X} {start.Y} {end.X} {end.Y} {(int)duration.TotalMilliseconds}");
+        var swipe = $"shell input stylus swipe {start.X} {start.Y} {end.X} {end.Y} {(int)duration.TotalMilliseconds}";
+        if (_androidSerial is { } serial)
+            Adb.Run(serial, swipe);
+        else
+            Adb.Run(swipe);
     }
 
     /// <summary>Draws a zigzag across the element, as a quick signature.</summary>

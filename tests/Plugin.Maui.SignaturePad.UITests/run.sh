@@ -2,7 +2,7 @@
 # Builds the UI test host app for a platform and runs the UI tests against it (macOS).
 #
 #   ./run.sh ios                            iOS simulator (iPhone 17 by default, UITEST_DEVICE to change)
-#   ./run.sh android                        the running Android emulator, or the AVD named by UITEST_DEVICE
+#   ./run.sh android                        the Pixel_10 AVD the Android baselines were recorded on (UITEST_DEVICE to change)
 #   ./run.sh maccatalyst                    the Mac (needs macOS Automation Mode, see README.md)
 #   ./run.sh ios --update-baselines         save the screenshots as the new baselines
 #   ./run.sh ios --filter DrawingTests      run some of the tests (a dotnet test filter expression)
@@ -30,6 +30,11 @@ while [[ $# -gt 0 ]]; do
 	esac
 	shift
 done
+
+# Appium starts this AVD, or uses it when it is running. Naming it also keeps the tests off a phone that is connected too.
+if [[ "$platform" == android && -z "${UITEST_DEVICE:-}" ]]; then
+	export UITEST_DEVICE=Pixel_10
+fi
 
 if [[ ! -d "$here/node_modules" ]]; then
 	(cd "$here" && npm ci)
