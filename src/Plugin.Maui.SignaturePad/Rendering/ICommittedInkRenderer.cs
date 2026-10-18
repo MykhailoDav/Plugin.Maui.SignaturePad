@@ -6,6 +6,9 @@ namespace Plugin.Maui.SignaturePad.Rendering;
 /// </summary>
 internal interface ICommittedInkRenderer : IDisposable
 {
-    /// <summary>Draws the strokes of <paramref name="signature"/> on a pad of <paramref name="size"/> DIP.</summary>
-    void Draw(ICanvas canvas, SignatureData signature, SizeF size);
+    /// <summary>
+    /// Draws the strokes of <paramref name="signature"/> on a pad of <paramref name="size"/> DIP, in
+    /// <paramref name="strokeColorOverride"/> when it is set and otherwise in their own colors.
+    /// </summary>
+    void Draw(ICanvas canvas, SignatureData signature, SizeF size, Color? strokeColorOverride);
 }

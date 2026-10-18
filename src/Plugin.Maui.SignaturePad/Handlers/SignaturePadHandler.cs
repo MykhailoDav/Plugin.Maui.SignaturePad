@@ -19,6 +19,7 @@ public partial class SignaturePadHandler
             [nameof(SignaturePadView.PlaceholderColor)] = MapInvalidate,
             [nameof(SignaturePadView.ShowSignatureLine)] = MapInvalidate,
             [nameof(SignaturePadView.SignatureLineColor)] = MapInvalidate,
+            [nameof(SignaturePadView.DisplayStrokeColor)] = MapInvalidate,
         };
 
     /// <summary>The command mapper.</summary>

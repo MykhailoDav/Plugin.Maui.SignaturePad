@@ -31,6 +31,7 @@ public class RegistrationTests
     [InlineData(nameof(SignaturePadView.PlaceholderColor))]
     [InlineData(nameof(SignaturePadView.ShowSignatureLine))]
     [InlineData(nameof(SignaturePadView.SignatureLineColor))]
+    [InlineData(nameof(SignaturePadView.DisplayStrokeColor))]
     public void Mapper_RedrawsOnVisualProperties(string property) =>
         Assert.Contains(property, SignaturePadHandler.Mapper.GetKeys());
 

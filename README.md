@@ -140,6 +140,7 @@ All are bindable properties.
 | `PlaceholderColor` | `Color` | `#9E9E9E` | The color of the placeholder. |
 | `ShowSignatureLine` | `bool` | `true` | Whether a line to sign on crosses the pad, three quarters of the way down. |
 | `SignatureLineColor` | `Color` | `#BDBDBD` | The color of the signature line. |
+| `DisplayStrokeColor` | `Color?` | none | The color the pad shows every stroke in, instead of the strokes' own colors. It changes only the screen; see [Dark theme](#dark-theme). |
 | `StrokeCompletedCommand` | `ICommand?` | none | Executed with the `SignatureStroke` when a stroke is finished. |
 | `IsEmpty` | `bool` | `true` | Read-only. Whether the pad has no strokes. |
 | `CanUndo` | `bool` | `false` | Read-only. Whether there is something to undo. |
@@ -147,6 +148,23 @@ All are bindable properties.
 
 - `IsEnabled="False"` turns input off. A stroke being drawn at that moment ends and keeps its ink.
 - The pad itself is transparent: set `BackgroundColor`, or put it in a `Border` as above.
+
+### Dark theme
+
+A signature is usually dark ink for paper, while a dark theme needs light ink on the screen. Keep `StrokeColor` dark and
+show the strokes in a light color while the theme is dark:
+
+```xml
+<Border BackgroundColor="{AppThemeBinding Light=White, Dark=#18211C}" StrokeShape="RoundRectangle 12">
+  <sp:SignaturePadView HeightRequest="200"
+                       Placeholder="Sign here"
+                       DisplayStrokeColor="{AppThemeBinding Light={x:Null}, Dark=White}"
+                       SignatureLineColor="{AppThemeBinding Light=#BDBDBD, Dark=#3A4A41}" />
+</Border>
+```
+
+The strokes in `Signature` stay black, so exports and saved JSON stay dark ink, and switching the theme recolors the ink
+already on the pad. Setting `StrokeColor` to white instead would store white strokes, which then export as white ink.
 
 ### Methods, commands and events
 

@@ -11,7 +11,7 @@ internal sealed class PathCacheInkRenderer : ICommittedInkRenderer
 
     public int CachedPathCount => _cache.Count;
 
-    public void Draw(ICanvas canvas, SignatureData signature, SizeF size)
+    public void Draw(ICanvas canvas, SignatureData signature, SizeF size, Color? strokeColorOverride)
     {
         if (!ReferenceEquals(signature, _cachedFor))
         {
@@ -19,7 +19,7 @@ internal sealed class PathCacheInkRenderer : ICommittedInkRenderer
             _cachedFor = signature;
         }
 
-        InkRenderer.DrawStrokes(canvas, signature.Strokes, _cache);
+        InkRenderer.DrawStrokes(canvas, signature.Strokes, _cache, strokeColorOverride);
     }
 
     public void Dispose()

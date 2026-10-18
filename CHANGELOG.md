@@ -20,6 +20,8 @@ The first preview.
 - Export as PNG and JPEG (`ExportImageAsync`, `SignatureData.ToImageAsync`), as SVG (`ExportSvg`,
   `SignatureData.ToSvg`) and as versioned JSON that round-trips exactly (`ToJson`, `FromJson`).
 - `StrokeStarted` and `StrokeCompleted` events and `StrokeCompletedCommand`.
+- `DisplayStrokeColor`, which shows the ink on the pad in another color than the strokes keep, such as light ink on a
+  dark pad in a dark theme while the signature and its exports stay dark ink.
 - Drawing inside a `ScrollView` does not scroll it, the ink survives Shell tabs and navigation, and `IsEnabled` turns
   input off.
 

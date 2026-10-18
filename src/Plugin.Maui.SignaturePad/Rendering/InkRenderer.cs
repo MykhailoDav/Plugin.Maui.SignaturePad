@@ -12,13 +12,14 @@ internal static class InkRenderer
     /// <param name="canvas">The canvas to draw on.</param>
     /// <param name="strokes">The strokes.</param>
     /// <param name="cache">The paths to reuse between frames.</param>
-    public static void DrawStrokes(ICanvas canvas, IReadOnlyList<SignatureStroke> strokes, StrokePathCache cache)
+    /// <param name="strokeColorOverride">A color for all strokes instead of their own, or <see langword="null"/>.</param>
+    public static void DrawStrokes(ICanvas canvas, IReadOnlyList<SignatureStroke> strokes, StrokePathCache cache, Color? strokeColorOverride)
     {
         canvas.Antialias = true;
         for (var i = 0; i < strokes.Count; i++)
         {
             var stroke = strokes[i];
-            canvas.FillColor = stroke.Color;
+            canvas.FillColor = strokeColorOverride ?? stroke.Color;
             canvas.FillPath(cache.Get(stroke), WindingMode.NonZero);
         }
     }

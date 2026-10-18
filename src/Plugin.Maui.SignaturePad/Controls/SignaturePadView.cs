@@ -53,6 +53,10 @@ public partial class SignaturePadView : View
     public static readonly BindableProperty SignatureLineColorProperty =
         BindableProperty.Create(nameof(SignatureLineColor), typeof(Color), typeof(SignaturePadView), Color.FromArgb("#BDBDBD"));
 
+    /// <summary>Bindable property for <see cref="DisplayStrokeColor"/>.</summary>
+    public static readonly BindableProperty DisplayStrokeColorProperty =
+        BindableProperty.Create(nameof(DisplayStrokeColor), typeof(Color), typeof(SignaturePadView));
+
     /// <summary>Bindable property for <see cref="Signature"/>.</summary>
     public static readonly BindableProperty SignatureProperty = BindableProperty.Create(
         nameof(Signature), typeof(SignatureData), typeof(SignaturePadView), SignatureData.Empty, BindingMode.TwoWay,
@@ -162,6 +166,22 @@ public partial class SignaturePadView : View
     {
         get => (Color)GetValue(SignatureLineColorProperty);
         set => SetValue(SignatureLineColorProperty, value);
+    }
+
+    /// <summary>
+    /// The color the pad shows every stroke in, instead of the strokes' own colors, or <see langword="null"/> (the
+    /// default) to show each stroke in its own color. It changes only what the pad shows: the strokes keep their
+    /// colors, and exports use them.
+    /// </summary>
+    /// <remarks>
+    /// For a dark theme, keep <see cref="StrokeColor"/> dark, so the signature data and its exports are dark ink for
+    /// paper, and show the strokes in a light color while the theme is dark:
+    /// <c>DisplayStrokeColor="{AppThemeBinding Light={x:Null}, Dark=White}"</c>.
+    /// </remarks>
+    public Color? DisplayStrokeColor
+    {
+        get => (Color?)GetValue(DisplayStrokeColorProperty);
+        set => SetValue(DisplayStrokeColorProperty, value);
     }
 
     /// <summary>

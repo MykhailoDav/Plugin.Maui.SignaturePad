@@ -47,6 +47,41 @@ public class SignaturePadDrawableTests
     }
 
     [Fact]
+    public void DisplayStrokeColor_DrawsEveryStrokeInIt_WithoutChangingTheSignature()
+    {
+        var view = Pad();
+        view.StrokeColor = Colors.Black;
+        Draw(view, 0);
+        view.StrokeColor = Colors.Red;
+        Draw(view, 100, y: 60);
+        view.DisplayStrokeColor = Colors.White;
+
+        // A stroke being drawn is shown in the display color too.
+        IInkInputSink sink = view.Session;
+        sink.BeginStroke(Touch(10, 120, 200));
+        sink.ContinueStroke([Touch(60, 120, 210)]);
+        var canvas = Render(new SignaturePadDrawable(view));
+
+        Assert.Equal(3, canvas.Fills.Count);
+        Assert.All(canvas.Fills, fill => Assert.Equal(Colors.White, fill.Color));
+        Assert.Equal([Colors.Black, Colors.Red], view.Signature.Strokes.Select(stroke => stroke.Color));
+    }
+
+    [Fact]
+    public void WithoutDisplayStrokeColor_EachStrokeHasItsOwnColor()
+    {
+        var view = Pad();
+        view.StrokeColor = Colors.Black;
+        Draw(view, 0);
+        view.StrokeColor = Colors.Red;
+        Draw(view, 100, y: 60);
+
+        var canvas = Render(new SignaturePadDrawable(view));
+
+        Assert.Equal([Colors.Black, Colors.Red], canvas.Fills.Select(fill => fill.Color));
+    }
+
+    [Fact]
     public void Empty_WithoutPlaceholder_DrawsNoText()
     {
         var canvas = Render(new SignaturePadDrawable(Pad()));

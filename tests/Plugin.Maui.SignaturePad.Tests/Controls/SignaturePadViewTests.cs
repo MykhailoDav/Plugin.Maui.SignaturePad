@@ -31,6 +31,7 @@ public class SignaturePadViewTests
         Assert.Equal(Color.FromArgb("#9E9E9E"), view.PlaceholderColor);
         Assert.True(view.ShowSignatureLine);
         Assert.Equal(Color.FromArgb("#BDBDBD"), view.SignatureLineColor);
+        Assert.Null(view.DisplayStrokeColor);
         Assert.Same(SignatureData.Empty, view.Signature);
         Assert.Null(view.StrokeCompletedCommand);
         Assert.True(view.IsEmpty);

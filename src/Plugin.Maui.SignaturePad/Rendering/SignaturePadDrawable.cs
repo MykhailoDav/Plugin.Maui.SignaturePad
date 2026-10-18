@@ -26,9 +26,10 @@ internal sealed class SignaturePadDrawable(SignaturePadView view, ICommittedInkR
 
         // The guides are laid out on the whole pad; dirtyRect can be just the part being redrawn.
         DrawGuides(canvas, size.Width, size.Height, showPlaceholder: signature.IsEmpty && session.Active is null);
-        _committedInk.Draw(canvas, signature, size);
+        var displayColor = view.DisplayStrokeColor;
+        _committedInk.Draw(canvas, signature, size, displayColor);
         if (session.Active is { } active)
-            InkRenderer.DrawActive(canvas, active, session.ActiveColor);
+            InkRenderer.DrawActive(canvas, active, displayColor ?? session.ActiveColor);
     }
 
     /// <summary>

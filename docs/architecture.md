@@ -170,7 +170,8 @@ line inside every turn. A completed stroke ends exactly at its last sample.
 3. The committed strokes.
 4. The stroke being drawn, rebuilt from the builder's points every frame.
 
-The guides are drawn only here, so they never appear in an export.
+The guides are drawn only here, so they never appear in an export. When `DisplayStrokeColor` is set, the committed
+strokes and the stroke being drawn are filled with it instead of their own colors; the data does not change.
 
 Committed strokes are drawn differently per platform, behind `ICommittedInkRenderer`:
 - **iOS, Mac Catalyst and Windows.**
@@ -182,7 +183,7 @@ Committed strokes are drawn differently per platform, behind `ICommittedInkRende
     ink so far. So `CommittedInkLayer` keeps the committed ink in a bitmap the size of the view, and a frame draws one
     bitmap.
   - A new stroke is added to the bitmap.
-  - Undo, clear, loading or a new size redraws it.
+  - Undo, clear, loading, a new size or a new display color redraws it.
 
 Invalidation:
 - **Android and Windows.** The whole view is invalidated; the platforms draw at most once a frame.

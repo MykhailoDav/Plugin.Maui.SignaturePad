@@ -56,6 +56,8 @@ Plugin.Maui.SignaturePad.SignaturePadView.CanRedo.get -> bool
 Plugin.Maui.SignaturePad.SignaturePadView.CanUndo.get -> bool
 Plugin.Maui.SignaturePad.SignaturePadView.Clear() -> void
 Plugin.Maui.SignaturePad.SignaturePadView.ClearCommand.get -> System.Windows.Input.ICommand!
+Plugin.Maui.SignaturePad.SignaturePadView.DisplayStrokeColor.get -> Microsoft.Maui.Graphics.Color?
+Plugin.Maui.SignaturePad.SignaturePadView.DisplayStrokeColor.set -> void
 Plugin.Maui.SignaturePad.SignaturePadView.ExportImageAsync(Plugin.Maui.SignaturePad.SignatureImageExportOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<System.IO.Stream!>!
 Plugin.Maui.SignaturePad.SignaturePadView.ExportSvg(Plugin.Maui.SignaturePad.SignatureSvgExportOptions? options = null) -> string!
 Plugin.Maui.SignaturePad.SignaturePadView.IsEmpty.get -> bool
@@ -131,6 +133,7 @@ static readonly Plugin.Maui.SignaturePad.SignaturePadHandler.CommandMapper -> Mi
 static readonly Plugin.Maui.SignaturePad.SignaturePadHandler.Mapper -> Microsoft.Maui.IPropertyMapper<Plugin.Maui.SignaturePad.SignaturePadView!, Plugin.Maui.SignaturePad.SignaturePadHandler!>!
 static readonly Plugin.Maui.SignaturePad.SignaturePadView.CanRedoProperty -> Microsoft.Maui.Controls.BindableProperty!
 static readonly Plugin.Maui.SignaturePad.SignaturePadView.CanUndoProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.DisplayStrokeColorProperty -> Microsoft.Maui.Controls.BindableProperty!
 static readonly Plugin.Maui.SignaturePad.SignaturePadView.IsEmptyProperty -> Microsoft.Maui.Controls.BindableProperty!
 static readonly Plugin.Maui.SignaturePad.SignaturePadView.MaxStrokeWidthProperty -> Microsoft.Maui.Controls.BindableProperty!
 static readonly Plugin.Maui.SignaturePad.SignaturePadView.MinStrokeWidthProperty -> Microsoft.Maui.Controls.BindableProperty!

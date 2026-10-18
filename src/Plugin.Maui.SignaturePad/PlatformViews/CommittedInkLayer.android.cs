@@ -1,6 +1,7 @@
 using Android.Graphics;
 using Microsoft.Maui.Graphics.Platform;
 using Plugin.Maui.SignaturePad.Rendering;
+using Color = Microsoft.Maui.Graphics.Color;
 
 namespace Plugin.Maui.SignaturePad;
 
@@ -8,15 +9,16 @@ namespace Plugin.Maui.SignaturePad;
 /// Keeps the committed strokes in a bitmap the size of the view, so a frame draws one bitmap however much ink there is.
 /// Android's canvas turns a <see cref="PathF"/> into a native path on every fill, which would make each frame cost as
 /// much as all the ink drawn so far. A new stroke is added to the bitmap; anything else (undo, clear, a new signature,
-/// a new size) draws the bitmap again from the strokes.
+/// a new size, a new display color) draws the bitmap again from the strokes.
 /// </summary>
 internal sealed class CommittedInkLayer(Func<(int Width, int Height, float Density)> pixelSize) : ICommittedInkRenderer
 {
     private Bitmap? _bitmap;
     private PlatformImage? _image;
     private SignatureData? _drawn;
+    private Color? _drawnColor;
 
-    public void Draw(ICanvas canvas, SignatureData signature, SizeF size)
+    public void Draw(ICanvas canvas, SignatureData signature, SizeF size, Color? strokeColorOverride)
     {
         var (width, height, density) = pixelSize();
         if (width <= 0 || height <= 0 || signature.IsEmpty)
@@ -29,8 +31,15 @@ internal sealed class CommittedInkLayer(Func<(int Width, int Height, float Densi
             _image = new PlatformImage(_bitmap);
         }
 
+        if (!Equals(strokeColorOverride, _drawnColor))
+        {
+            // Every stroke changes color, so the bitmap is drawn again from scratch.
+            _drawn = null;
+            _drawnColor = strokeColorOverride;
+        }
+
         if (!ReferenceEquals(signature, _drawn))
-            Update(signature, density);
+            Update(signature, density, strokeColorOverride);
 
         // The bitmap has exactly the view's pixels, so it is drawn at the view's size in DIP: one pixel per pixel.
         canvas.DrawImage(_image, 0, 0, width / density, height / density);
@@ -38,7 +47,7 @@ internal sealed class CommittedInkLayer(Func<(int Width, int Height, float Densi
 
     public void Dispose() => Release();
 
-    private void Update(SignatureData signature, float density)
+    private void Update(SignatureData signature, float density, Color? strokeColorOverride)
     {
         var strokes = signature.Strokes;
         var first = 0;
@@ -54,7 +63,7 @@ internal sealed class CommittedInkLayer(Func<(int Width, int Height, float Densi
                 added[i] = strokes[first + i];
 
             using var androidCanvas = new Canvas(_bitmap!);
-            InkRenderer.DrawStrokes(new PlatformCanvas { Canvas = androidCanvas }, added, strokeColorOverride: null, Microsoft.Maui.Graphics.PointF.Zero, density);
+            InkRenderer.DrawStrokes(new PlatformCanvas { Canvas = androidCanvas }, added, strokeColorOverride, Microsoft.Maui.Graphics.PointF.Zero, density);
         }
 
         _drawn = signature;
@@ -83,5 +92,6 @@ internal sealed class CommittedInkLayer(Func<(int Width, int Height, float Densi
         _image = null;
         _bitmap = null;
         _drawn = null;
+        _drawnColor = null;
     }
 }

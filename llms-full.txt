@@ -49,6 +49,7 @@ All are bindable properties (`<Name>Property` static fields exist for each).
 | PlaceholderColor | Color | #9E9E9E | |
 | ShowSignatureLine | bool | true | A 1-DIP line at 75% of the height, 16 DIP from each side. Never exported |
 | SignatureLineColor | Color | #BDBDBD | |
+| DisplayStrokeColor | Color? | null | Shows EVERY stroke in this color on screen only; strokes keep their own colors in Signature and exports. null = each stroke in its own color. For dark themes: `{AppThemeBinding Light={x:Null}, Dark=White}` |
 | StrokeCompletedCommand | ICommand? | null | Executed with the finished SignatureStroke as parameter (if CanExecute returns true) |
 | IsEmpty | bool | true | Read-only. Whether Signature has no strokes |
 | CanUndo | bool | false | Read-only |
@@ -161,6 +162,7 @@ Undo, Redo and Clear first finish a stroke that is being drawn, as if the pointe
 13. The pad has no natural size: set `HeightRequest` (for example 200) or size it with the layout.
 14. Pressure exists only for pens (Apple Pencil, Windows pen, Android stylus). Touch and mouse points have `Pressure == null`.
 15. Image export on plain `net10.0` throws PlatformNotSupportedException; in unit tests, test JSON/SVG/data instead.
+16. Dark theme: do NOT bind StrokeColor to white for dark mode. Strokes store their color, so a white StrokeColor makes white strokes that export as white ink and vanish on a light pad after a theme switch. Keep StrokeColor dark and set `DisplayStrokeColor="{AppThemeBinding Light={x:Null}, Dark=White}"` with a dark pad background.
 
 ## 8. Recipes
 
@@ -230,6 +232,16 @@ if (json.Length > 0)
 }
 ```
 For large signatures prefer a file in `FileSystem.AppDataDirectory` over Preferences.
+
+### Dark theme
+```xml
+<Border BackgroundColor="{AppThemeBinding Light=White, Dark=#18211C}" StrokeShape="RoundRectangle 12">
+  <sp:SignaturePadView HeightRequest="200" Placeholder="Sign here"
+                       DisplayStrokeColor="{AppThemeBinding Light={x:Null}, Dark=White}"
+                       SignatureLineColor="{AppThemeBinding Light=#BDBDBD, Dark=#3A4A41}" />
+</Border>
+```
+The strokes stay black in `Signature`, so exports and JSON stay dark ink; the pad shows them white in the dark theme.
 
 ### Ink style
 ```xml
