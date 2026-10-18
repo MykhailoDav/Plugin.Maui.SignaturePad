@@ -129,18 +129,26 @@ public class StrokeBuilderTests
     }
 
     [Fact]
-    public void Width_AtTheStart_IsHalfTheWidest() =>
-        Assert.Equal(Max / 4f, Start(Touch(0, 0, 0)).RenderPoints[0].Radius, Tolerance);
+    public void Width_AtTheStart_IsHalfwayBetweenTheExtremes() =>
+        Assert.Equal((Min + Max) / 4f, Start(Touch(0, 0, 0)).RenderPoints[0].Radius, Tolerance);
+
+    [Fact]
+    public void Width_AtTheStart_IsHalfwayBetweenTheExtremes_ForOtherWidths() =>
+        Assert.Equal((0.5f + 8f) / 4f, new StrokeBuilder(Touch(0, 0, 0), 0.5f, 8f, 0).RenderPoints[0].Radius, Tolerance);
+
+    [Fact]
+    public void Width_AtTheStart_IsTheWidth_WhenTheWidthIsFixed() =>
+        Assert.Equal(1f, new StrokeBuilder(Touch(0, 0, 0), 2f, 2f, 0).RenderPoints[0].Radius, Tolerance);
 
     [Fact]
     public void Width_FollowsTheFilteredVelocityFormula()
     {
-        // vf₁ = 0.7·(5 DIP / 10 ms) + 0.3·V0 = 0.65; width = max / (1 + 0.65).
+        // vf₀ = (max − min) / (max + min)·V0 = 5/9; vf₁ = 0.7·(5 DIP / 10 ms) + 0.3·5/9; width = max / (1 + vf₁).
         var builder = Start(Touch(0, 0, 0));
 
         builder.Add(Touch(3, 4, 10));
 
-        Assert.Equal(Max / 1.65f / 2f, builder.RenderPoints[1].Radius, Tolerance);
+        Assert.Equal(Max / (1f + 0.35f + (0.3f * 5f / 9f)) / 2f, builder.RenderPoints[1].Radius, Tolerance);
     }
 
     [Fact]
@@ -183,8 +191,9 @@ public class StrokeBuilderTests
     [Fact]
     public void Width_PenFullPressure_IsNearMaxAtRest_AndReachesMaxWhenSlow()
     {
+        // At the start, kv = 1 / (1 + 5/9) = 9/14.
         var builder = Start(Pen(0, 0, 0, 1f));
-        Assert.Equal(Radius(0.85f), builder.RenderPoints[0].Radius, Tolerance);
+        Assert.Equal(Radius(0.7f + (0.3f * 9f / 14f)), builder.RenderPoints[0].Radius, Tolerance);
 
         for (var i = 1; i <= 30; i++)
             builder.Add(Pen(i * 0.3f, 0, i * 10, 1f));
