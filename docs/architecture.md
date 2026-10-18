@@ -121,13 +121,19 @@ The constants are internal (`Ink/InkDefaults.cs`). The unit tests pin the formul
 ```
 dt  = max(tᵢ − tᵢ₋₁, 1 ms)
 v   = distance / dt
-vf₀ = 1 DIP/ms;  vfᵢ = 0.7·v + 0.3·vfᵢ₋₁          (filtered velocity)
+vf₀ = (MaxWidth − MinWidth) / (MaxWidth + MinWidth) DIP/ms
+vfᵢ = 0.7·v + 0.3·vfᵢ₋₁                            (filtered velocity)
 kv  = 1 / (1 + vf / 1 DIP/ms)                      (0.5 at 1 DIP/ms)
-k   = pen with pressure p ? p·(0.7 + 0.3·kv) : kv
-width = MinWidth + (MaxWidth − MinWidth)·k
+
+without pressure:     width = max(MinWidth, MaxWidth·kv)
+pen with pressure p:  width = MinWidth + (MaxWidth − MinWidth)·p·(0.7 + 0.3·kv)
 ```
 
-A stroke starts from the reference velocity, so it does not begin with a blob.
+- **Without pressure**, speed alone thins the ink, as a pen's does. The ink is the widest at rest and half that at
+  1 DIP/ms. From (MaxWidth / MinWidth − 1) DIP/ms on, 2.5 with the default widths, it is the narrowest.
+- **A pen's** pressure sets the width, and speed thins it by at most 30%.
+- **The start.** A stroke starts at the velocity at which ink without pressure is halfway between its extreme widths.
+  It does not begin with a blob, and a tap leaves a dot of the average width.
 
 **3. Streamline.** The drawn centre line trails the input to smooth out jitter:
 

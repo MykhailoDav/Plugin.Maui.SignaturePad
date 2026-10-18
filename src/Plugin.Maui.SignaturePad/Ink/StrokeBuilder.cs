@@ -143,9 +143,10 @@ internal sealed class StrokeBuilder
 
         if (Count == 0)
         {
-            // A stroke starts from the reference velocity, which puts the first point halfway between the extreme
-            // widths: starting at rest would give every stroke a blob at its start.
-            _filteredVelocity = InkDefaults.ReferenceVelocity;
+            // A stroke starts at the velocity that puts ink without pressure halfway between its extreme widths, where
+            // MaxWidth / (1 + v / V0) = (MinWidth + MaxWidth) / 2. Starting at rest would give every stroke a blob at
+            // its start, and a tap leaves a dot of the average width.
+            _filteredVelocity = InkDefaults.ReferenceVelocity * (MaxWidth - MinWidth) / (MaxWidth + MinWidth);
             _smoothX = point.X;
             _smoothY = point.Y;
         }
@@ -170,10 +171,19 @@ internal sealed class StrokeBuilder
         }
 
         var velocityWeight = 1f / (1f + (_filteredVelocity / InkDefaults.ReferenceVelocity));
-        var weight = point.Pressure is { } pressure
-            ? pressure * (1f - InkDefaults.PenVelocityInfluence + (InkDefaults.PenVelocityInfluence * velocityWeight))
-            : velocityWeight;
-        var width = MinWidth + ((MaxWidth - MinWidth) * weight);
+        float width;
+        if (point.Pressure is { } pressure)
+        {
+            // A pen's pressure sets the width, and speed thins it a little.
+            var weight = pressure * (1f - InkDefaults.PenVelocityInfluence + (InkDefaults.PenVelocityInfluence * velocityWeight));
+            width = MinWidth + ((MaxWidth - MinWidth) * weight);
+        }
+        else
+        {
+            // Without pressure, speed alone thins the ink, as a pen's does: the widest at rest, half that at the
+            // reference velocity, and the narrowest from (MaxWidth / MinWidth − 1) times it on.
+            width = MathF.Max(MinWidth, MaxWidth * velocityWeight);
+        }
 
         _points[Count] = point;
         _render[Count] = isLast ? new InkPoint(point.X, point.Y, width / 2f) : new InkPoint(_smoothX, _smoothY, width / 2f);
