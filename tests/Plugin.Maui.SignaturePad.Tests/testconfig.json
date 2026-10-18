@@ -1,0 +1,9 @@
+{
+  "platformOptions": {
+    "Coverlet": {
+      "include": "[Plugin.Maui.SignaturePad]*",
+      "excludeByFile": "**/obj/**/*.cs",
+      "format": "cobertura"
+    }
+  }
+}

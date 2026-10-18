@@ -1,0 +1,1 @@
+source: https://github.com/dotnet/skills/tree/10d85e25fb42d5f65c568d5e979a005ee69eecb3/plugins/dotnet-msbuild/skills/directory-build-organization

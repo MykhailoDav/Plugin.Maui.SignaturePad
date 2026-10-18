@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- What a signature records, and saving it as JSON to restore it exactly. -->
+<ContentPage x:Class="Plugin.Maui.SignaturePad.Sample.Pages.DataPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sp="clr-namespace:Plugin.Maui.SignaturePad;assembly=Plugin.Maui.SignaturePad"
+             xmlns:vm="clr-namespace:Plugin.Maui.SignaturePad.Sample.ViewModels"
+             x:DataType="vm:DataViewModel"
+             Title="Data">
+
+  <ScrollView>
+    <VerticalStackLayout Padding="16" Spacing="12">
+
+      <Label Style="{StaticResource Intro}"
+             Text="Every point of a stroke keeps its time and pen pressure. Save the signature as JSON and restore it exactly, even after the app restarts." />
+
+      <Border Style="{StaticResource PadFrame}">
+        <sp:SignaturePadView x:Name="Pad"
+                             HeightRequest="200"
+                             Placeholder="Sign here"
+                             Signature="{Binding Signature}"
+                             SemanticProperties.Description="Signature pad" />
+      </Border>
+
+      <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+        <Button Style="{StaticResource SecondaryButton}"
+                Text="Undo"
+                Command="{Binding UndoCommand, Source={x:Reference Pad}, x:DataType=sp:SignaturePadView}" />
+        <Button Grid.Column="1"
+                Style="{StaticResource SecondaryButton}"
+                Text="Clear"
+                Command="{Binding ClearCommand, Source={x:Reference Pad}, x:DataType=sp:SignaturePadView}" />
+      </Grid>
+
+      <Border Style="{StaticResource Card}">
+        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="6">
+          <Label Text="Strokes" />
+          <Label Grid.Column="1" Style="{StaticResource Value}" Text="{Binding StrokeCount}" />
+          <Label Grid.Row="1" Text="Points" />
+          <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource Value}" Text="{Binding PointCount}" />
+          <Label Grid.Row="2" Text="Drawing time" />
+          <Label Grid.Row="2" Grid.Column="1" Style="{StaticResource Value}" Text="{Binding Duration}" />
+          <Label Grid.Row="3" Text="Input" />
+          <Label Grid.Row="3" Grid.Column="1" Style="{StaticResource Value}" Text="{Binding Devices}" />
+        </Grid>
+      </Border>
+
+      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+        <Button Text="Save" Command="{Binding SaveCommand}" />
+        <Button Grid.Column="1"
+                Style="{StaticResource SecondaryButton}"
+                Text="Restore"
+                Command="{Binding RestoreCommand}" />
+        <Button Grid.Column="2"
+                Style="{StaticResource SecondaryButton}"
+                Text="Copy"
+                Command="{Binding CopyCommand}"
+                SemanticProperties.Description="Copy the JSON" />
+      </Grid>
+      <Label Style="{StaticResource Caption}" Text="{Binding Status}" />
+
+      <Label Style="{StaticResource Section}" Text="JSON" />
+      <Border Style="{StaticResource Card}">
+        <Label FontSize="12"
+               Text="{Binding Json}"
+               LineBreakMode="CharacterWrap" />
+      </Border>
+
+    </VerticalStackLayout>
+  </ScrollView>
+
+</ContentPage>

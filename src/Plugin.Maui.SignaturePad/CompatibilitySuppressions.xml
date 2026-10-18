@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids
+  A MAUI handler derives from ViewHandler<TVirtualView, TPlatformView>, and the platform view is a different type on
+  every platform (object on plain net10.0), so the handler's base type differs between the targets by design.
+  The Windows entry was written by hand: the package for Windows is only built on Windows.
+-->
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0007</DiagnosticId>
+    <Target>T:Plugin.Maui.SignaturePad.SignaturePadHandler</Target>
+    <Left>lib/net10.0/Plugin.Maui.SignaturePad.dll</Left>
+    <Right>lib/net10.0-android36.0/Plugin.Maui.SignaturePad.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0007</DiagnosticId>
+    <Target>T:Plugin.Maui.SignaturePad.SignaturePadHandler</Target>
+    <Left>lib/net10.0/Plugin.Maui.SignaturePad.dll</Left>
+    <Right>lib/net10.0-ios26.0/Plugin.Maui.SignaturePad.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0007</DiagnosticId>
+    <Target>T:Plugin.Maui.SignaturePad.SignaturePadHandler</Target>
+    <Left>lib/net10.0/Plugin.Maui.SignaturePad.dll</Left>
+    <Right>lib/net10.0-maccatalyst26.0/Plugin.Maui.SignaturePad.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0007</DiagnosticId>
+    <Target>T:Plugin.Maui.SignaturePad.SignaturePadHandler</Target>
+    <Left>lib/net10.0/Plugin.Maui.SignaturePad.dll</Left>
+    <Right>lib/net10.0-windows10.0.19041/Plugin.Maui.SignaturePad.dll</Right>
+  </Suppression>
+</Suppressions>

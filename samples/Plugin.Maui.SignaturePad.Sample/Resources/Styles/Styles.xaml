@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Styles for the controls the sample uses, with light and dark theme colors. -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:sp="clr-namespace:Plugin.Maui.SignaturePad;assembly=Plugin.Maui.SignaturePad">
+
+  <Style TargetType="Page" ApplyToDerivedTypes="True">
+    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Surface}, Dark={StaticResource SurfaceDark}}" />
+  </Style>
+
+  <Style TargetType="Shell" ApplyToDerivedTypes="True">
+    <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource Surface}, Dark={StaticResource SurfaceDark}}" />
+    <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+    <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource Text}, Dark={StaticResource TextDark}}" />
+    <Setter Property="Shell.NavBarHasShadow" Value="False" />
+    <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource Surface}, Dark={StaticResource SurfaceDark}}" />
+    <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+    <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+    <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource TextMuted}, Dark={StaticResource TextMutedDark}}" />
+  </Style>
+
+  <Style TargetType="Label">
+    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Text}, Dark={StaticResource TextDark}}" />
+    <Setter Property="FontSize" Value="15" />
+  </Style>
+
+  <Style x:Key="Intro" TargetType="Label">
+    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextMuted}, Dark={StaticResource TextMutedDark}}" />
+    <Setter Property="FontSize" Value="14" />
+  </Style>
+
+  <Style x:Key="Caption" TargetType="Label">
+    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextMuted}, Dark={StaticResource TextMutedDark}}" />
+    <Setter Property="FontSize" Value="13" />
+  </Style>
+
+  <Style x:Key="Section" TargetType="Label">
+    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextMuted}, Dark={StaticResource TextMutedDark}}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="FontAttributes" Value="Bold" />
+    <Setter Property="TextTransform" Value="Uppercase" />
+    <Setter Property="Margin" Value="0,8,0,0" />
+    <Setter Property="SemanticProperties.HeadingLevel" Value="Level2" />
+  </Style>
+
+  <Style x:Key="Value" TargetType="Label">
+    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Text}, Dark={StaticResource TextDark}}" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontAttributes" Value="Bold" />
+    <Setter Property="HorizontalOptions" Value="End" />
+  </Style>
+
+  <Style TargetType="Button">
+    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource OnPrimary}, Dark={StaticResource OnPrimaryDark}}" />
+    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="FontAttributes" Value="Bold" />
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Padding" Value="16,10" />
+    <Setter Property="MinimumHeightRequest" Value="44" />
+    <Setter Property="MinimumWidthRequest" Value="44" />
+    <Setter Property="VisualStateManager.VisualStateGroups">
+      <VisualStateGroupList>
+        <VisualStateGroup x:Name="CommonStates">
+          <VisualState x:Name="Normal" />
+          <VisualState x:Name="Disabled">
+            <VisualState.Setters>
+              <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextMuted}, Dark={StaticResource TextMutedDark}}" />
+              <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Card}, Dark={StaticResource CardDark}}" />
+            </VisualState.Setters>
+          </VisualState>
+          <VisualState x:Name="PointerOver" />
+        </VisualStateGroup>
+      </VisualStateGroupList>
+    </Setter>
+  </Style>
+
+  <Style x:Key="SecondaryButton" TargetType="Button">
+    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+    <Setter Property="BackgroundColor" Value="Transparent" />
+    <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Outline}, Dark={StaticResource OutlineDark}}" />
+    <Setter Property="BorderWidth" Value="1" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Padding" Value="12,10" />
+    <Setter Property="MinimumHeightRequest" Value="44" />
+    <Setter Property="MinimumWidthRequest" Value="44" />
+    <Setter Property="VisualStateManager.VisualStateGroups">
+      <VisualStateGroupList>
+        <VisualStateGroup x:Name="CommonStates">
+          <VisualState x:Name="Normal" />
+          <VisualState x:Name="Disabled">
+            <VisualState.Setters>
+              <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Outline}, Dark={StaticResource OutlineDark}}" />
+            </VisualState.Setters>
+          </VisualState>
+          <VisualState x:Name="PointerOver" />
+        </VisualStateGroup>
+      </VisualStateGroupList>
+    </Setter>
+  </Style>
+
+  <!-- A panel that groups related content. -->
+  <Style x:Key="Card" TargetType="Border">
+    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Card}, Dark={StaticResource CardDark}}" />
+    <Setter Property="StrokeThickness" Value="0" />
+    <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+    <Setter Property="Padding" Value="16,12" />
+  </Style>
+
+  <!-- The frame of a signature pad, white in the light theme and dark in the dark one. -->
+  <Style x:Key="PadFrame" TargetType="Border">
+    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Pad}, Dark={StaticResource PadDark}}" />
+    <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Outline}, Dark={StaticResource OutlineDark}}" />
+    <Setter Property="StrokeThickness" Value="1" />
+    <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <!-- White paper with a thin outline, for what is shown as it prints: exported images, ink colors. -->
+  <Style x:Key="Paper" TargetType="Border">
+    <Setter Property="BackgroundColor" Value="{StaticResource Paper}" />
+    <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Outline}, Dark={StaticResource OutlineDark}}" />
+    <Setter Property="StrokeThickness" Value="1" />
+    <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <!--
+    The pads keep their ink black, so signatures and their exports are dark ink for paper. In the dark theme the pad is
+    dark, and DisplayStrokeColor shows the ink light without changing the strokes.
+  -->
+  <Style TargetType="sp:SignaturePadView">
+    <Setter Property="DisplayStrokeColor" Value="{AppThemeBinding Light={x:Null}, Dark={StaticResource InkDark}}" />
+    <Setter Property="SignatureLineColor" Value="{AppThemeBinding Light={StaticResource PadLine}, Dark={StaticResource PadLineDark}}" />
+    <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource PadPlaceholder}, Dark={StaticResource PadPlaceholderDark}}" />
+  </Style>
+
+  <!-- A pad on paper in both themes, showing the strokes in their own colors. -->
+  <Style x:Key="PaperPad" TargetType="sp:SignaturePadView">
+    <Setter Property="DisplayStrokeColor" Value="{x:Null}" />
+    <Setter Property="SignatureLineColor" Value="{StaticResource PadLine}" />
+    <Setter Property="PlaceholderColor" Value="{StaticResource PadPlaceholder}" />
+  </Style>
+
+  <Style TargetType="Entry">
+    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Text}, Dark={StaticResource TextDark}}" />
+    <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource TextMuted}, Dark={StaticResource TextMutedDark}}" />
+    <Setter Property="BackgroundColor" Value="Transparent" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="MinimumHeightRequest" Value="44" />
+  </Style>
+
+  <Style TargetType="Switch">
+    <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+  </Style>
+
+  <Style TargetType="Slider">
+    <Setter Property="MinimumTrackColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+    <Setter Property="MaximumTrackColor" Value="{AppThemeBinding Light={StaticResource Outline}, Dark={StaticResource OutlineDark}}" />
+    <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+  </Style>
+
+  <Style TargetType="CheckBox">
+    <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+    <Setter Property="MinimumHeightRequest" Value="44" />
+    <Setter Property="MinimumWidthRequest" Value="44" />
+  </Style>
+
+  <Style TargetType="RadioButton">
+    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Text}, Dark={StaticResource TextDark}}" />
+    <Setter Property="BackgroundColor" Value="Transparent" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="MinimumHeightRequest" Value="44" />
+  </Style>
+
+</ResourceDictionary>

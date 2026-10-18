@@ -1,0 +1,114 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+      The plain net10.0 target holds only the shared code. The unit tests run against it without a device, and
+      NuGet uses it for net10.0 projects that are not MAUI apps.
+    -->
+    <TargetFrameworks>net10.0;net10.0-android</TargetFrameworks>
+    <!-- There are no iOS and Mac Catalyst workloads on Linux. -->
+    <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+    <!-- The Windows App SDK builds only on Windows. -->
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+    <!-- eng/update-public-api.sh builds one target at a time, because dotnet format fixes only the first target. -->
+    <TargetFrameworks Condition="'$(SIGNATUREPAD_SINGLE_TARGET)' != ''">$(SIGNATUREPAD_SINGLE_TARGET)</TargetFrameworks>
+
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <RootNamespace>Plugin.Maui.SignaturePad</RootNamespace>
+    <!-- The library has no Android resources, so it needs no public Resource class. -->
+    <AndroidGenerateResourceDesigner>false</AndroidGenerateResourceDesigner>
+
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+
+    <!--
+      The library uses no reflection, so it is safe for trimming and Native AOT. Marking it makes apps trim it and
+      runs the analyzers on every target. Without _MauiDoNotConfigureTrimAnalyzer the MAUI build turns the trim
+      analyzer off and hides its warnings (xamarin/xamarin-macios#21351).
+    -->
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+    <_MauiDoNotConfigureTrimAnalyzer>true</_MauiDoNotConfigureTrimAnalyzer>
+
+    <!-- Every public member is documented. -->
+    <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
+
+    <!-- NuGet -->
+    <PackageId>Plugin.Maui.SignaturePad</PackageId>
+    <Version>0.1.0-preview.1</Version>
+    <Title>Signature pad for .NET MAUI</Title>
+    <Description>A signature pad for .NET MAUI with natural, pen-like ink: the stroke width follows velocity and pen pressure. Strokes keep their timestamps and pressure, and export as lossless JSON, SVG, PNG and JPEG. Android, iOS, Mac Catalyst and Windows; pure managed code.</Description>
+    <PackageTags>maui;dotnet-maui;signature;signature-pad;signaturepad;ink;stylus;apple-pencil;pressure;svg</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>nuget.png</PackageIcon>
+    <PackageReleaseNotes>https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/blob/main/CHANGELOG.md</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <!--
+      CompatibilitySuppressions.xml lists the expected differences between the targets for all five of them, and a
+      host packs only some (Windows only on Windows), so the entries of the targets it does not build are allowed.
+    -->
+    <ApiCompatPermitUnnecessarySuppressions>true</ApiCompatPermitUnnecessarySuppressions>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      The lowest MAUI 10 version, so that any MAUI 10 app can use the package: a new app references the MauiVersion of
+      its workload, which is often older than the latest MAUI, and NuGet refuses a package that needs a newer one (NU1605).
+      Compiling against it also keeps the library off APIs that later versions added. The tests and apps run on the
+      version in Directory.Packages.props.
+    -->
+    <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="10.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!--
+    Platform code is chosen by file suffix, so a feature's shared and platform files sit side by side:
+    *.android.cs, *.macios.cs (iOS and Mac Catalyst), *.windows.cs, and *.net.cs for the plain net10.0 target.
+  -->
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'android'">
+    <Compile Remove="**\*.android.cs" />
+    <None Include="**\*.android.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'ios' and $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'maccatalyst'">
+    <Compile Remove="**\*.macios.cs" />
+    <None Include="**\*.macios.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'windows'">
+    <Compile Remove="**\*.windows.cs" />
+    <None Include="**\*.windows.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != ''">
+    <Compile Remove="**\*.net.cs" />
+    <None Include="**\*.net.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
+
+  <!-- The public API of each target is tracked in PublicAPI/<target>, because platform types differ between targets. -->
+  <PropertyGroup>
+    <_PublicApiTarget>net</_PublicApiTarget>
+    <_PublicApiTarget Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != ''">net-$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))</_PublicApiTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="PublicAPI\$(_PublicApiTarget)\PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI\$(_PublicApiTarget)\PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Plugin.Maui.SignaturePad.Tests" />
+  </ItemGroup>
+
+  <!-- Package content -->
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <!-- Drawn by the library itself: eng/package-icon/make-icon.cs. -->
+    <None Include="..\..\nuget.png" Pack="true" PackagePath="\" />
+    <!-- The reference for AI coding assistants, at the package root as in other Plugin.Maui packages. -->
+    <None Include="..\..\llms-full.txt" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

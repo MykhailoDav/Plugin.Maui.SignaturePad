@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Export as PNG, JPEG or SVG with options, preview the result and share it as a file. -->
+<ContentPage x:Class="Plugin.Maui.SignaturePad.Sample.Pages.ExportPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sp="clr-namespace:Plugin.Maui.SignaturePad;assembly=Plugin.Maui.SignaturePad"
+             xmlns:vm="clr-namespace:Plugin.Maui.SignaturePad.Sample.ViewModels"
+             x:DataType="vm:ExportViewModel"
+             Title="Export">
+
+  <ScrollView>
+    <VerticalStackLayout Padding="16" Spacing="12">
+
+      <Label Style="{StaticResource Intro}"
+             Text="Export the signature as a PNG or JPEG image, or as SVG, which stays sharp at any size. The export has the same ink as the pad, without the placeholder and the line." />
+
+      <Border Style="{StaticResource PadFrame}">
+        <sp:SignaturePadView x:Name="Pad"
+                             HeightRequest="200"
+                             Placeholder="Sign here"
+                             Signature="{Binding Signature}"
+                             SemanticProperties.Description="Signature pad" />
+      </Border>
+
+      <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+        <Button Style="{StaticResource SecondaryButton}"
+                Text="Undo"
+                Command="{Binding UndoCommand, Source={x:Reference Pad}, x:DataType=sp:SignaturePadView}" />
+        <Button Grid.Column="1"
+                Style="{StaticResource SecondaryButton}"
+                Text="Clear"
+                Command="{Binding ClearCommand, Source={x:Reference Pad}, x:DataType=sp:SignaturePadView}" />
+      </Grid>
+
+      <Label Style="{StaticResource Section}" Text="Format" />
+      <HorizontalStackLayout Spacing="16"
+                             RadioButtonGroup.GroupName="Format"
+                             RadioButtonGroup.SelectedValue="{Binding Format}">
+        <!-- iOS does not read a radio button's content, so each one also has a description. -->
+        <RadioButton Content="PNG" Value="{x:Static vm:ExportFormat.Png}" SemanticProperties.Description="PNG" />
+        <RadioButton Content="JPEG" Value="{x:Static vm:ExportFormat.Jpeg}" SemanticProperties.Description="JPEG" />
+        <RadioButton Content="SVG" Value="{x:Static vm:ExportFormat.Svg}" SemanticProperties.Description="SVG" />
+      </HorizontalStackLayout>
+
+      <Label Style="{StaticResource Section}" Text="Options" />
+      <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding IsImage}">
+        <Label Text="{Binding Scale, StringFormat='Pixels per unit: {0}'}" VerticalOptions="Center" />
+        <Stepper Grid.Column="1"
+                 Minimum="1"
+                 Maximum="4"
+                 Increment="1"
+                 Value="{Binding Scale}"
+                 SemanticProperties.Description="Pixels per unit" />
+      </Grid>
+      <Grid ColumnDefinitions="*,Auto">
+        <Label Text="Crop to the ink" VerticalOptions="Center" />
+        <Switch Grid.Column="1"
+                IsToggled="{Binding CropToContent}"
+                SemanticProperties.Description="Crop to the ink" />
+      </Grid>
+      <Grid ColumnDefinitions="*,Auto">
+        <Label Text="White background" VerticalOptions="Center" />
+        <Switch Grid.Column="1"
+                IsToggled="{Binding WhiteBackground}"
+                SemanticProperties.Description="White background" />
+      </Grid>
+      <Label Style="{StaticResource Caption}"
+             Text="PNG and SVG are transparent without a background. JPEG has no transparency, so it is always white." />
+
+      <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+        <Button Text="Export" Command="{Binding ExportCommand}" />
+        <Button Grid.Column="1"
+                Style="{StaticResource SecondaryButton}"
+                Text="Share"
+                Command="{Binding ShareCommand}" />
+      </Grid>
+
+      <Border Style="{StaticResource Card}" IsVisible="{Binding HasResult}">
+        <VerticalStackLayout Spacing="8">
+          <Label Style="{StaticResource Section}" Margin="0" Text="{Binding ResultInfo}" />
+          <Border Style="{StaticResource Paper}" Padding="8" IsVisible="{Binding HasImage}">
+            <Image Source="{Binding Image}"
+                   HeightRequest="140"
+                   Aspect="AspectFit"
+                   SemanticProperties.Description="The exported signature" />
+          </Border>
+          <Label FontSize="12"
+                 Text="{Binding Svg}"
+                 MaxLines="12"
+                 LineBreakMode="CharacterWrap"
+                 IsVisible="{Binding HasSvg}" />
+        </VerticalStackLayout>
+      </Border>
+
+    </VerticalStackLayout>
+  </ScrollView>
+
+</ContentPage>

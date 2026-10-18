@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- A signature at the end of a form that scrolls. Submit is enabled once the form is complete. -->
+<ContentPage x:Class="Plugin.Maui.SignaturePad.Sample.Pages.FormPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sp="clr-namespace:Plugin.Maui.SignaturePad;assembly=Plugin.Maui.SignaturePad"
+             xmlns:vm="clr-namespace:Plugin.Maui.SignaturePad.Sample.ViewModels"
+             x:DataType="vm:FormViewModel"
+             Title="Form">
+
+  <ScrollView>
+    <VerticalStackLayout Padding="16" Spacing="12">
+
+      <Label Style="{StaticResource Intro}"
+             Text="A delivery receipt. Swipe outside the pad to scroll the page; drawing on the pad does not scroll it." />
+
+      <Border Style="{StaticResource Card}">
+        <VerticalStackLayout Spacing="4">
+          <Label Style="{StaticResource Section}" Margin="0" Text="Delivery" />
+          <Label FontAttributes="Bold" Text="Order 10482" />
+          <Label Style="{StaticResource Caption}" Text="3 parcels, 12.4 kg" />
+        </VerticalStackLayout>
+      </Border>
+
+      <Label Style="{StaticResource Section}" Text="Recipient" />
+      <Entry Placeholder="Full name"
+             Text="{Binding Name}"
+             IsReadOnly="{Binding IsSubmitted}"
+             ReturnType="Done"
+             SemanticProperties.Description="Full name" />
+      <Entry Placeholder="Notes (optional)"
+             Text="{Binding Notes}"
+             IsReadOnly="{Binding IsSubmitted}"
+             ReturnType="Done"
+             SemanticProperties.Description="Notes" />
+      <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4">
+        <CheckBox IsChecked="{Binding Confirmed}"
+                  IsEnabled="{Binding IsEditable}"
+                  SemanticProperties.Description="I received the parcels in good condition" />
+        <!-- The check box already reads this text, so screen readers skip the label. -->
+        <Label Grid.Column="1"
+               Text="I received the parcels in good condition"
+               VerticalOptions="Center"
+               AutomationProperties.IsInAccessibleTree="False">
+          <Label.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding ToggleConfirmedCommand}" />
+          </Label.GestureRecognizers>
+        </Label>
+      </Grid>
+
+      <Label Style="{StaticResource Section}" Text="Signature" />
+      <!-- After submitting, IsEnabled turns input off, so the signature cannot change. -->
+      <Border Style="{StaticResource PadFrame}">
+        <sp:SignaturePadView x:Name="Pad"
+                             HeightRequest="180"
+                             Placeholder="Sign here"
+                             Signature="{Binding Signature}"
+                             IsEnabled="{Binding IsEditable}"
+                             SemanticProperties.Description="Signature pad" />
+      </Border>
+      <Button Style="{StaticResource SecondaryButton}"
+              HorizontalOptions="Start"
+              Text="Clear signature"
+              IsVisible="{Binding IsEditable}"
+              Command="{Binding ClearCommand, Source={x:Reference Pad}, x:DataType=sp:SignaturePadView}" />
+
+      <Button Text="Submit" IsVisible="{Binding IsEditable}" Command="{Binding SubmitCommand}" />
+      <Label Style="{StaticResource Caption}"
+             Text="Enter your name, confirm the delivery and sign to submit."
+             IsVisible="{Binding IsIncomplete}" />
+
+      <Border Style="{StaticResource Card}" IsVisible="{Binding IsSubmitted}">
+        <VerticalStackLayout Spacing="8">
+          <Label Style="{StaticResource Section}" Margin="0" Text="Delivery confirmed" />
+          <Label Text="{Binding Receipt}" />
+          <Border Style="{StaticResource Paper}" Padding="8">
+            <Image Source="{Binding SignatureImage}"
+                   HeightRequest="100"
+                   Aspect="AspectFit"
+                   SemanticProperties.Description="The submitted signature" />
+          </Border>
+          <Button Style="{StaticResource SecondaryButton}" Text="New delivery" Command="{Binding NewDeliveryCommand}" />
+        </VerticalStackLayout>
+      </Border>
+
+    </VerticalStackLayout>
+  </ScrollView>
+
+</ContentPage>

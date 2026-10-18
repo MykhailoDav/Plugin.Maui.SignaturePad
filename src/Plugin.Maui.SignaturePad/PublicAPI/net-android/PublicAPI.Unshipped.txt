@@ -1,0 +1,149 @@
+#nullable enable
+override Plugin.Maui.SignaturePad.PlatformSignaturePadView.OnTouchEvent(Android.Views.MotionEvent? e) -> bool
+override Plugin.Maui.SignaturePad.SignatureData.Equals(object? obj) -> bool
+override Plugin.Maui.SignaturePad.SignatureData.GetHashCode() -> int
+override Plugin.Maui.SignaturePad.SignaturePadHandler.ConnectHandler(Plugin.Maui.SignaturePad.PlatformSignaturePadView! platformView) -> void
+override Plugin.Maui.SignaturePad.SignaturePadHandler.CreatePlatformView() -> Plugin.Maui.SignaturePad.PlatformSignaturePadView!
+override Plugin.Maui.SignaturePad.SignaturePadHandler.DisconnectHandler(Plugin.Maui.SignaturePad.PlatformSignaturePadView! platformView) -> void
+override Plugin.Maui.SignaturePad.SignaturePadView.OnPropertyChanged(string? propertyName = null) -> void
+override Plugin.Maui.SignaturePad.SignaturePadView.OnSizeAllocated(double width, double height) -> void
+override Plugin.Maui.SignaturePad.SignaturePoint.GetHashCode() -> int
+override Plugin.Maui.SignaturePad.SignatureStroke.Equals(object? obj) -> bool
+override Plugin.Maui.SignaturePad.SignatureStroke.GetHashCode() -> int
+Plugin.Maui.SignaturePad.PlatformSignaturePadView
+Plugin.Maui.SignaturePad.PlatformSignaturePadView.PlatformSignaturePadView(Android.Content.Context! context) -> void
+Plugin.Maui.SignaturePad.SignatureData
+Plugin.Maui.SignaturePad.SignatureData.Bounds.get -> Microsoft.Maui.Graphics.RectF
+Plugin.Maui.SignaturePad.SignatureData.CanvasSize.get -> Microsoft.Maui.Graphics.SizeF
+Plugin.Maui.SignaturePad.SignatureData.Duration.get -> double
+Plugin.Maui.SignaturePad.SignatureData.Equals(Plugin.Maui.SignaturePad.SignatureData? other) -> bool
+Plugin.Maui.SignaturePad.SignatureData.IsEmpty.get -> bool
+Plugin.Maui.SignaturePad.SignatureData.PointCount.get -> int
+Plugin.Maui.SignaturePad.SignatureData.SignatureData(System.Collections.Generic.IEnumerable<Plugin.Maui.SignaturePad.SignatureStroke!>! strokes, Microsoft.Maui.Graphics.SizeF canvasSize) -> void
+Plugin.Maui.SignaturePad.SignatureData.Strokes.get -> System.Collections.Generic.IReadOnlyList<Plugin.Maui.SignaturePad.SignatureStroke!>!
+Plugin.Maui.SignaturePad.SignatureData.ToImageAsync(Plugin.Maui.SignaturePad.SignatureImageExportOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<System.IO.Stream!>!
+Plugin.Maui.SignaturePad.SignatureData.ToJson() -> string!
+Plugin.Maui.SignaturePad.SignatureData.ToSvg(Plugin.Maui.SignaturePad.SignatureSvgExportOptions? options = null) -> string!
+Plugin.Maui.SignaturePad.SignatureImageExportOptions
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.BackgroundColor.get -> Microsoft.Maui.Graphics.Color?
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.BackgroundColor.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.CropToContent.get -> bool
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.CropToContent.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Format.get -> Plugin.Maui.SignaturePad.SignatureImageFormat
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Format.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.JpegQuality.get -> int
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.JpegQuality.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Padding.get -> float
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Padding.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Scale.get -> float
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.Scale.set -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.SignatureImageExportOptions() -> void
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.StrokeColor.get -> Microsoft.Maui.Graphics.Color?
+Plugin.Maui.SignaturePad.SignatureImageExportOptions.StrokeColor.set -> void
+Plugin.Maui.SignaturePad.SignatureImageFormat
+Plugin.Maui.SignaturePad.SignatureImageFormat.Jpeg = 1 -> Plugin.Maui.SignaturePad.SignatureImageFormat
+Plugin.Maui.SignaturePad.SignatureImageFormat.Png = 0 -> Plugin.Maui.SignaturePad.SignatureImageFormat
+Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignatureInputDevice.Mouse = 3 -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignatureInputDevice.Pen = 2 -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignatureInputDevice.Touch = 1 -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignatureInputDevice.Unknown = 0 -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignaturePadAppBuilderExtensions
+Plugin.Maui.SignaturePad.SignaturePadHandler
+Plugin.Maui.SignaturePad.SignaturePadHandler.SignaturePadHandler() -> void
+Plugin.Maui.SignaturePad.SignaturePadHandler.SignaturePadHandler(Microsoft.Maui.IPropertyMapper? mapper, Microsoft.Maui.CommandMapper? commandMapper = null) -> void
+Plugin.Maui.SignaturePad.SignaturePadView
+Plugin.Maui.SignaturePad.SignaturePadView.CanRedo.get -> bool
+Plugin.Maui.SignaturePad.SignaturePadView.CanUndo.get -> bool
+Plugin.Maui.SignaturePad.SignaturePadView.Clear() -> void
+Plugin.Maui.SignaturePad.SignaturePadView.ClearCommand.get -> System.Windows.Input.ICommand!
+Plugin.Maui.SignaturePad.SignaturePadView.DisplayStrokeColor.get -> Microsoft.Maui.Graphics.Color?
+Plugin.Maui.SignaturePad.SignaturePadView.DisplayStrokeColor.set -> void
+Plugin.Maui.SignaturePad.SignaturePadView.ExportImageAsync(Plugin.Maui.SignaturePad.SignatureImageExportOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<System.IO.Stream!>!
+Plugin.Maui.SignaturePad.SignaturePadView.ExportSvg(Plugin.Maui.SignaturePad.SignatureSvgExportOptions? options = null) -> string!
+Plugin.Maui.SignaturePad.SignaturePadView.IsEmpty.get -> bool
+Plugin.Maui.SignaturePad.SignaturePadView.MaxStrokeWidth.get -> double
+Plugin.Maui.SignaturePad.SignaturePadView.MaxStrokeWidth.set -> void
+Plugin.Maui.SignaturePad.SignaturePadView.MinStrokeWidth.get -> double
+Plugin.Maui.SignaturePad.SignaturePadView.MinStrokeWidth.set -> void
+Plugin.Maui.SignaturePad.SignaturePadView.Placeholder.get -> string?
+Plugin.Maui.SignaturePad.SignaturePadView.Placeholder.set -> void
+Plugin.Maui.SignaturePad.SignaturePadView.PlaceholderColor.get -> Microsoft.Maui.Graphics.Color!
+Plugin.Maui.SignaturePad.SignaturePadView.PlaceholderColor.set -> void
+Plugin.Maui.SignaturePad.SignaturePadView.Redo() -> bool
+Plugin.Maui.SignaturePad.SignaturePadView.RedoCommand.get -> System.Windows.Input.ICommand!
+Plugin.Maui.SignaturePad.SignaturePadView.ShowSignatureLine.get -> bool
+Plugin.Maui.SignaturePad.SignaturePadView.ShowSignatureLine.set -> void
+Plugin.Maui.SignaturePad.SignaturePadView.Signature.get -> Plugin.Maui.SignaturePad.SignatureData!
+Plugin.Maui.SignaturePad.SignaturePadView.Signature.set -> void
+Plugin.Maui.SignaturePad.SignaturePadView.SignatureLineColor.get -> Microsoft.Maui.Graphics.Color!
+Plugin.Maui.SignaturePad.SignaturePadView.SignatureLineColor.set -> void
+Plugin.Maui.SignaturePad.SignaturePadView.SignaturePadView() -> void
+Plugin.Maui.SignaturePad.SignaturePadView.StrokeColor.get -> Microsoft.Maui.Graphics.Color!
+Plugin.Maui.SignaturePad.SignaturePadView.StrokeColor.set -> void
+Plugin.Maui.SignaturePad.SignaturePadView.StrokeCompleted -> System.EventHandler<Plugin.Maui.SignaturePad.SignatureStrokeEventArgs!>?
+Plugin.Maui.SignaturePad.SignaturePadView.StrokeCompletedCommand.get -> System.Windows.Input.ICommand?
+Plugin.Maui.SignaturePad.SignaturePadView.StrokeCompletedCommand.set -> void
+Plugin.Maui.SignaturePad.SignaturePadView.StrokeStarted -> System.EventHandler?
+Plugin.Maui.SignaturePad.SignaturePadView.Undo() -> bool
+Plugin.Maui.SignaturePad.SignaturePadView.UndoCommand.get -> System.Windows.Input.ICommand!
+Plugin.Maui.SignaturePad.SignaturePoint
+Plugin.Maui.SignaturePad.SignaturePoint.Deconstruct(out float X, out float Y, out double Time, out float? Pressure) -> void
+Plugin.Maui.SignaturePad.SignaturePoint.Equals(Plugin.Maui.SignaturePad.SignaturePoint other) -> bool
+Plugin.Maui.SignaturePad.SignaturePoint.Pressure.get -> float?
+Plugin.Maui.SignaturePad.SignaturePoint.Pressure.init -> void
+Plugin.Maui.SignaturePad.SignaturePoint.SignaturePoint() -> void
+Plugin.Maui.SignaturePad.SignaturePoint.SignaturePoint(float X, float Y, double Time, float? Pressure = null) -> void
+Plugin.Maui.SignaturePad.SignaturePoint.Time.get -> double
+Plugin.Maui.SignaturePad.SignaturePoint.Time.init -> void
+Plugin.Maui.SignaturePad.SignaturePoint.X.get -> float
+Plugin.Maui.SignaturePad.SignaturePoint.X.init -> void
+Plugin.Maui.SignaturePad.SignaturePoint.Y.get -> float
+Plugin.Maui.SignaturePad.SignaturePoint.Y.init -> void
+Plugin.Maui.SignaturePad.SignatureStroke
+Plugin.Maui.SignaturePad.SignatureStroke.Bounds.get -> Microsoft.Maui.Graphics.RectF
+Plugin.Maui.SignaturePad.SignatureStroke.Color.get -> Microsoft.Maui.Graphics.Color!
+Plugin.Maui.SignaturePad.SignatureStroke.Device.get -> Plugin.Maui.SignaturePad.SignatureInputDevice
+Plugin.Maui.SignaturePad.SignatureStroke.EndTime.get -> double
+Plugin.Maui.SignaturePad.SignatureStroke.Equals(Plugin.Maui.SignaturePad.SignatureStroke? other) -> bool
+Plugin.Maui.SignaturePad.SignatureStroke.MaxWidth.get -> float
+Plugin.Maui.SignaturePad.SignatureStroke.MinWidth.get -> float
+Plugin.Maui.SignaturePad.SignatureStroke.Points.get -> System.Collections.Generic.IReadOnlyList<Plugin.Maui.SignaturePad.SignaturePoint>!
+Plugin.Maui.SignaturePad.SignatureStroke.SignatureStroke(System.Collections.Generic.IEnumerable<Plugin.Maui.SignaturePad.SignaturePoint>! points, Microsoft.Maui.Graphics.Color! color, float minWidth, float maxWidth, Plugin.Maui.SignaturePad.SignatureInputDevice device) -> void
+Plugin.Maui.SignaturePad.SignatureStroke.StartTime.get -> double
+Plugin.Maui.SignaturePad.SignatureStrokeEventArgs
+Plugin.Maui.SignaturePad.SignatureStrokeEventArgs.SignatureStrokeEventArgs(Plugin.Maui.SignaturePad.SignatureStroke! stroke) -> void
+Plugin.Maui.SignaturePad.SignatureStrokeEventArgs.Stroke.get -> Plugin.Maui.SignaturePad.SignatureStroke!
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.BackgroundColor.get -> Microsoft.Maui.Graphics.Color?
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.BackgroundColor.set -> void
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.CropToContent.get -> bool
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.CropToContent.set -> void
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.Padding.get -> float
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.Padding.set -> void
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.SignatureSvgExportOptions() -> void
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.StrokeColor.get -> Microsoft.Maui.Graphics.Color?
+Plugin.Maui.SignaturePad.SignatureSvgExportOptions.StrokeColor.set -> void
+static Plugin.Maui.SignaturePad.SignatureData.Empty.get -> Plugin.Maui.SignaturePad.SignatureData!
+static Plugin.Maui.SignaturePad.SignatureData.FromJson(string! json) -> Plugin.Maui.SignaturePad.SignatureData!
+static Plugin.Maui.SignaturePad.SignaturePadAppBuilderExtensions.UseSignaturePad(this Microsoft.Maui.Hosting.MauiAppBuilder! builder) -> Microsoft.Maui.Hosting.MauiAppBuilder!
+static Plugin.Maui.SignaturePad.SignaturePadHandler.MapInvalidate(Plugin.Maui.SignaturePad.SignaturePadHandler! handler, Plugin.Maui.SignaturePad.SignaturePadView! view) -> void
+static Plugin.Maui.SignaturePad.SignaturePoint.operator !=(Plugin.Maui.SignaturePad.SignaturePoint left, Plugin.Maui.SignaturePad.SignaturePoint right) -> bool
+static Plugin.Maui.SignaturePad.SignaturePoint.operator ==(Plugin.Maui.SignaturePad.SignaturePoint left, Plugin.Maui.SignaturePad.SignaturePoint right) -> bool
+static readonly Plugin.Maui.SignaturePad.SignaturePadHandler.CommandMapper -> Microsoft.Maui.CommandMapper<Plugin.Maui.SignaturePad.SignaturePadView!, Plugin.Maui.SignaturePad.SignaturePadHandler!>!
+static readonly Plugin.Maui.SignaturePad.SignaturePadHandler.Mapper -> Microsoft.Maui.IPropertyMapper<Plugin.Maui.SignaturePad.SignaturePadView!, Plugin.Maui.SignaturePad.SignaturePadHandler!>!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.CanRedoProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.CanUndoProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.DisplayStrokeColorProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.IsEmptyProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.MaxStrokeWidthProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.MinStrokeWidthProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.PlaceholderColorProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.PlaceholderProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.ShowSignatureLineProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.SignatureLineColorProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.SignatureProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.StrokeColorProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Plugin.Maui.SignaturePad.SignaturePadView.StrokeCompletedCommandProperty -> Microsoft.Maui.Controls.BindableProperty!
+~override Plugin.Maui.SignaturePad.SignaturePoint.Equals(object obj) -> bool
+~override Plugin.Maui.SignaturePad.SignaturePoint.ToString() -> string

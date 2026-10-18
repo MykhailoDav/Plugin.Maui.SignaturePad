@@ -1,0 +1,55 @@
+version: 2
+
+updates:
+  # NuGet packages (Directory.Packages.props). Minor and patch versions come in one pull request a week.
+  # The library's own Microsoft.Maui.Controls stays at the lowest MAUI 10 version (VersionOverride in its project), so
+  # apps on an older MAUI 10 can use it; do not raise that one with the others.
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+    # New versions wait a week, so a release that is withdrawn as broken or malicious is never proposed.
+    cooldown:
+      default-days: 7
+    groups:
+      nuget:
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: build
+
+  # The actions of the workflows. They are pinned to commit SHAs, and Dependabot updates the SHA with the version comment.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    # New versions wait a week, so a release that is withdrawn as broken or malicious is never proposed.
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: ci
+
+  # Appium and its drivers for the UI tests. A new major version gets a pull request of its own, because the drivers
+  # have to support the Appium they run on.
+  - package-ecosystem: npm
+    directory: /tests/Plugin.Maui.SignaturePad.UITests
+    schedule:
+      interval: weekly
+    # New versions wait a week, so a release that is withdrawn as broken or malicious is never proposed.
+    cooldown:
+      default-days: 7
+    groups:
+      appium:
+        patterns:
+          - "appium*"
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: test

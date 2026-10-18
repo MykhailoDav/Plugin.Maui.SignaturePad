@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- The ink settings, bound to controls. New strokes use the current settings; strokes already drawn keep theirs. -->
+<ContentPage x:Class="Plugin.Maui.SignaturePad.Sample.Pages.InkPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sp="clr-namespace:Plugin.Maui.SignaturePad;assembly=Plugin.Maui.SignaturePad"
+             xmlns:vm="clr-namespace:Plugin.Maui.SignaturePad.Sample.ViewModels"
+             x:DataType="vm:InkViewModel"
+             Title="Ink">
+
+  <ContentPage.Resources>
+    <!-- A color swatch: a radio button drawn as a circle of its color, with a ring when it is checked. The template
+         takes the radio button's binding context, an InkColor, to bind the color. -->
+    <ControlTemplate x:Key="Swatch">
+      <Border x:Name="Ring"
+              BindingContext="{Binding BindingContext, Source={RelativeSource TemplatedParent}, x:DataType=RadioButton}"
+              WidthRequest="44"
+              HeightRequest="44"
+              Padding="4"
+              BackgroundColor="Transparent"
+              Stroke="{AppThemeBinding Light=Transparent, Dark={StaticResource OutlineDark}}"
+              StrokeShape="Ellipse"
+              StrokeThickness="2">
+        <VisualStateManager.VisualStateGroups>
+          <VisualStateGroupList>
+            <VisualStateGroup x:Name="CheckedStates">
+              <VisualState x:Name="Checked">
+                <VisualState.Setters>
+                  <Setter TargetName="Ring"
+                          Property="Border.Stroke"
+                          Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                </VisualState.Setters>
+              </VisualState>
+              <VisualState x:Name="Unchecked" />
+            </VisualStateGroup>
+          </VisualStateGroupList>
+        </VisualStateManager.VisualStateGroups>
+        <BoxView x:DataType="vm:InkColor" CornerRadius="16" Color="{Binding Color}" />
+      </Border>
+    </ControlTemplate>
+  </ContentPage.Resources>
+
+  <ScrollView>
+    <VerticalStackLayout Padding="16" Spacing="12">
+
+      <Label Style="{StaticResource Intro}"
+             Text="Change the ink and draw again. New strokes use the new settings; strokes already drawn keep theirs. The colors are shown on paper, as they print." />
+
+      <Border Style="{StaticResource Paper}">
+        <sp:SignaturePadView x:Name="Pad"
+                             Style="{StaticResource PaperPad}"
+                             HeightRequest="220"
+                             StrokeColor="{Binding SelectedColor.Color}"
+                             MinStrokeWidth="{Binding MinWidth}"
+                             MaxStrokeWidth="{Binding MaxWidth}"
+                             Placeholder="{Binding Placeholder}"
+                             ShowSignatureLine="{Binding ShowSignatureLine}"
+                             StrokeCompletedCommand="{Binding StrokeCompletedCommand}"
+                             SemanticProperties.Description="Signature pad" />
+      </Border>
+
+      <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+        <Button Style="{StaticResource SecondaryButton}"
+                Text="Undo"
+                Command="{Binding UndoCommand, Source={x:Reference Pad}, x:DataType=sp:SignaturePadView}" />
+        <Button Grid.Column="1"
+                Style="{StaticResource SecondaryButton}"
+                Text="Clear"
+                Command="{Binding ClearCommand, Source={x:Reference Pad}, x:DataType=sp:SignaturePadView}" />
+      </Grid>
+
+      <Border Style="{StaticResource Card}">
+        <VerticalStackLayout Spacing="4">
+          <Label Style="{StaticResource Section}" Margin="0" Text="Last stroke" />
+          <Label Text="{Binding LastStroke}" />
+          <Label Style="{StaticResource Caption}" Text="{Binding LastStrokePressure}" />
+        </VerticalStackLayout>
+      </Border>
+
+      <Label Style="{StaticResource Section}" Text="Width" />
+      <Grid ColumnDefinitions="*,Auto">
+        <Label Text="Thinnest: fast strokes, light pressure" />
+        <Label Grid.Column="1" Style="{StaticResource Value}" Text="{Binding MinWidth, StringFormat='{0:0.0}'}" />
+      </Grid>
+      <Slider Minimum="0.5"
+              Maximum="6"
+              Value="{Binding MinWidth}"
+              SemanticProperties.Description="Thinnest ink" />
+      <Grid ColumnDefinitions="*,Auto">
+        <Label Text="Thickest: slow strokes, firm pressure" />
+        <Label Grid.Column="1" Style="{StaticResource Value}" Text="{Binding MaxWidth, StringFormat='{0:0.0}'}" />
+      </Grid>
+      <Slider Minimum="0.5"
+              Maximum="12"
+              Value="{Binding MaxWidth}"
+              SemanticProperties.Description="Thickest ink" />
+
+      <Label Style="{StaticResource Section}" Text="Color" />
+      <HorizontalStackLayout Spacing="8"
+                             BindableLayout.ItemsSource="{Binding InkColors}"
+                             RadioButtonGroup.GroupName="InkColor"
+                             RadioButtonGroup.SelectedValue="{Binding SelectedColor}">
+        <BindableLayout.ItemTemplate>
+          <DataTemplate x:DataType="vm:InkColor">
+            <RadioButton ControlTemplate="{StaticResource Swatch}"
+                         Value="{Binding .}"
+                         SemanticProperties.Description="{Binding Name}" />
+          </DataTemplate>
+        </BindableLayout.ItemTemplate>
+      </HorizontalStackLayout>
+
+      <Label Style="{StaticResource Section}" Text="Guides" />
+      <Grid ColumnDefinitions="*,Auto">
+        <Label Text="Signature line" VerticalOptions="Center" />
+        <Switch Grid.Column="1"
+                IsToggled="{Binding ShowSignatureLine}"
+                SemanticProperties.Description="Signature line" />
+      </Grid>
+      <Entry Placeholder="Placeholder text"
+             Text="{Binding Placeholder}"
+             ClearButtonVisibility="WhileEditing"
+             SemanticProperties.Description="Placeholder text" />
+
+    </VerticalStackLayout>
+  </ScrollView>
+
+</ContentPage>
