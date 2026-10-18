@@ -202,16 +202,40 @@ public class StrokeBuilderTests
     }
 
     [Fact]
-    public void Streamline_LagsThenSnapsToTheEnd()
+    public void Streamline_ShortSteps_LagBehind_ThenSnapToTheEnd()
     {
         var builder = Start(Touch(0, 0, 0));
 
-        builder.Add(Touch(10, 0, 10));
-        Assert.Equal(5.75f, builder.RenderPoints[1].X, Tolerance);
+        builder.Add(Touch(2, 0, 10));
+        Assert.Equal(2f * 0.575f, builder.RenderPoints[1].X, Tolerance);
 
         builder.Complete();
-        Assert.Equal(10f, builder.RenderPoints[1].X, Tolerance);
+        Assert.Equal(2f, builder.RenderPoints[1].X, Tolerance);
         Assert.True(builder.IsCompleted);
+    }
+
+    [Fact]
+    public void Streamline_LongSteps_FollowTheInput()
+    {
+        // A long step is movement, not jitter: smoothing it would only make the ink lag and cut its curves.
+        var builder = Start(Touch(0, 0, 0));
+
+        builder.Add(Touch(0, 12, 10));
+        builder.Add(Touch(0, 40, 20));
+
+        Assert.Equal(12f, builder.RenderPoints[1].Y, Tolerance);
+        Assert.Equal(40f, builder.RenderPoints[2].Y, Tolerance);
+    }
+
+    [Fact]
+    public void Streamline_StepsInBetween_AreSmoothedLessTheLongerTheyAre()
+    {
+        var builder = Start(Touch(0, 0, 0));
+
+        builder.Add(Touch(7, 0, 10));
+
+        // Halfway from a jitter step (2 DIP) to a movement step (12 DIP), the line follows halfway from 0.575 to 1.
+        Assert.Equal(7f * (0.575f + (0.425f / 2)), builder.RenderPoints[1].X, Tolerance);
     }
 
     [Fact]

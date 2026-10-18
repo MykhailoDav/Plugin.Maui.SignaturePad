@@ -154,13 +154,19 @@ internal sealed class StrokeBuilder
             var previous = _points[Count - 1];
             var dx = point.X - previous.X;
             var dy = point.Y - previous.Y;
+            var step = MathF.Sqrt((dx * dx) + (dy * dy));
             var deltaTime = Math.Max(point.Time - previous.Time, InkDefaults.MinDeltaTime);
-            var velocity = (float)(MathF.Sqrt((dx * dx) + (dy * dy)) / deltaTime);
+            var velocity = (float)(step / deltaTime);
             _filteredVelocity = (InkDefaults.VelocityFilterWeight * velocity)
                 + ((1f - InkDefaults.VelocityFilterWeight) * _filteredVelocity);
 
-            _smoothX += (point.X - _smoothX) * StreamlineFactor;
-            _smoothY += (point.Y - _smoothY) * StreamlineFactor;
+            // Streamlining removes the jitter of dense samples. A long step is movement rather than jitter, and
+            // smoothing it would only make the ink lag and cut its curves, so the longer the step, the closer the line
+            // follows it.
+            var movement = Math.Clamp((step - InkDefaults.JitterStep) / (InkDefaults.MovementStep - InkDefaults.JitterStep), 0f, 1f);
+            var follow = StreamlineFactor + ((1f - StreamlineFactor) * movement);
+            _smoothX += (point.X - _smoothX) * follow;
+            _smoothY += (point.Y - _smoothY) * follow;
         }
 
         var velocityWeight = 1f / (1f + (_filteredVelocity / InkDefaults.ReferenceVelocity));

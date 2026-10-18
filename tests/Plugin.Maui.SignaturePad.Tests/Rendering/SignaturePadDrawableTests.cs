@@ -247,6 +247,25 @@ public class SignaturePadDrawableTests
     }
 
     [Fact]
+    public void ActiveDirtyRect_CoversTheCurveBetweenSparseSamples()
+    {
+        // Far apart samples are joined by a curve, which bulges beyond the box of the samples at a turn.
+        var view = Pad();
+        var drawable = new SignaturePadDrawable(view);
+        IInkInputSink sink = view.Session;
+        sink.BeginStroke(Touch(10, 10, 0));
+        sink.ContinueStroke([Touch(210, 10, 100)]);
+        drawable.TakeActiveDirtyRect();
+
+        sink.ContinueStroke([Touch(210, 210, 200)]);
+        var rect = drawable.TakeActiveDirtyRect();
+
+        var outline = StrokeOutline.Build(view.Session.Active!.RenderPoints);
+        Assert.True(outline.Max(point => point.X) > 210 + 9, "The curve does not bulge out; the test needs a sharper turn.");
+        Assert.All(outline, point => Assert.True(rect.Contains(point), $"{point} is outside {rect}."));
+    }
+
+    [Fact]
     public void ActiveDirtyRect_StartsOverForANewStroke()
     {
         var view = Pad();

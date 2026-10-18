@@ -55,18 +55,22 @@ internal sealed class SignaturePadDrawable(SignaturePadView view, ICommittedInkR
         var start = StartOfChangedTail(points, _trackedActiveCount, StrokeOutline.EndNoiseThreshold + (2 * active.MaxWidth));
         _trackedActiveCount = points.Length;
 
-        float left = float.MaxValue, top = float.MaxValue, right = float.MinValue, bottom = float.MinValue;
+        float left = float.MaxValue, top = float.MaxValue, right = float.MinValue, bottom = float.MinValue, longestStep = 0;
         for (var i = start; i < points.Length; i++)
         {
             left = MathF.Min(left, points[i].X);
             top = MathF.Min(top, points[i].Y);
             right = MathF.Max(right, points[i].X);
             bottom = MathF.Max(bottom, points[i].Y);
+            if (i > start)
+                longestStep = MathF.Max(longestStep, MathF.Sqrt(Square(points[i].X - points[i - 1].X) + Square(points[i].Y - points[i - 1].Y)));
         }
 
-        // The outline and its round caps reach at most half the width beyond the centre line; the margin is generous
-        // because a dirty rect that is too small leaves stale ink, while one too large only costs a little drawing.
-        var margin = (2 * active.MaxWidth) + 2;
+        // The outline and its round caps reach at most half the width beyond the centre line, and the curve between
+        // far apart points bulges out from the straight line between them by much less than half their distance. The
+        // margin is generous because a dirty rect that is too small leaves stale ink, while one too large only costs a
+        // little drawing.
+        var margin = (2 * active.MaxWidth) + 2 + (longestStep / 2);
         return new RectF(left - margin, top - margin, right - left + (2 * margin), bottom - top + (2 * margin));
     }
 
@@ -97,6 +101,8 @@ internal sealed class SignaturePadDrawable(SignaturePadView view, ICommittedInkR
 
         canvas.RestoreState();
     }
+
+    private static float Square(float value) => value * value;
 
     // Walks back from the last point drawn before until the outline can no longer have changed.
     private static int StartOfChangedTail(ReadOnlySpan<InkPoint> points, int drawnCount, float reach)

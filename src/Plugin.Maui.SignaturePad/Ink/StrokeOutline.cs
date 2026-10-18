@@ -10,8 +10,9 @@ namespace Plugin.Maui.SignaturePad.Ink;
 /// <remarks>
 /// A port of <c>getStrokePoints</c> and <c>getStrokeOutlinePoints</c> from perfect-freehand 1.2 (MIT, Copyright (c)
 /// 2021 Stephen Ruiz Ltd, https://github.com/steveruizok/perfect-freehand), adapted: the radius of every point comes
-/// from <see cref="InkPoint.Radius"/> instead of simulated pressure, there are no tapers or flat caps, and the
-/// streamline smoothing has already been applied by <see cref="StrokeBuilder"/>.
+/// from <see cref="InkPoint.Radius"/> instead of simulated pressure, there are no tapers or flat caps, the streamline
+/// smoothing has already been applied by <see cref="StrokeBuilder"/>, and far apart points are first joined by a curve
+/// (<see cref="StrokeSpline"/>), because perfect-freehand needs dense input to look round.
 /// </remarks>
 internal static class StrokeOutline
 {
@@ -46,7 +47,7 @@ internal static class StrokeOutline
             return Dot(first, maxRadius);
 
         var size = 2 * maxRadius;
-        var points = Prepare(input, size, out var count);
+        var points = Prepare(StrokeSpline.Densify(input), size, out var count);
         return count == 1 ? Dot(first, maxRadius) : Outline(points.AsSpan(0, count), size);
     }
 

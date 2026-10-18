@@ -159,4 +159,27 @@ public class StrokeOutlineTests
         AssertFinite(outline);
         Assert.Equal(2 + 1.5, outline.Max(p => p.X), 1);
     }
+
+    [Fact]
+    public void SparseCurve_IsDrawnRound_NotAsStraightSegments()
+    {
+        // Seven samples over three quarters of a circle of radius 40, as a fast stroke gives. Straight segments
+        // between them would cut 3 DIP into the circle.
+        const float radius = 40, ink = 1.5f;
+        var points = Enumerable.Range(0, 7)
+            .Select(i => new InkPoint(radius * MathF.Cos(i * MathF.PI / 4), radius * MathF.Sin(i * MathF.PI / 4), ink))
+            .ToArray();
+
+        var outline = StrokeOutline.Build(points);
+
+        AssertFinite(outline);
+        foreach (var point in outline)
+        {
+            // Away from the first and the last segment, whose open ends have no neighbour to follow, both sides of the
+            // ink stay one ink radius from the circle: from 50° to 220°.
+            var angle = MathF.Atan2(point.Y, point.X);
+            if (angle is > 0.88f or < -2.45f)
+                Assert.InRange(MathF.Sqrt((point.X * point.X) + (point.Y * point.Y)), radius - ink - 0.6f, radius + ink + 0.6f);
+        }
+    }
 }

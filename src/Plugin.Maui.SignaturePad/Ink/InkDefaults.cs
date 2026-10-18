@@ -26,4 +26,10 @@ internal static class InkDefaults
 
     /// <summary>How strongly the drawn centre line trails the input to smooth it (0 = not at all).</summary>
     public const float Streamline = 0.5f;
+
+    /// <summary>Steps between samples up to this long (in DIP) are mostly jitter and get the full streamline.</summary>
+    public const float JitterStep = 2f;
+
+    /// <summary>Steps between samples at least this long (in DIP) are movement, which the centre line follows exactly.</summary>
+    public const float MovementStep = 12f;
 }
