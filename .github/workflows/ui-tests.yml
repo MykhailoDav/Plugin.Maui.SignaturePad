@@ -126,10 +126,13 @@ jobs:
       run: |
         tools="$ANDROID_HOME/cmdline-tools/latest/bin"
         image='system-images;android-37.0;google_apis;x86_64'
-        yes | "$tools/sdkmanager" --licenses > /dev/null
+        # avdmanager and the emulator otherwise disagree about where the AVD lives.
+        export ANDROID_AVD_HOME="$HOME/.android/avd"
+        mkdir -p "$ANDROID_AVD_HOME"
+        yes 2> /dev/null | "$tools/sdkmanager" --licenses > /dev/null
         "$tools/sdkmanager" --install emulator platform-tools "$image" > /dev/null
         echo no | "$tools/avdmanager" create avd --force --name test --package "$image" --device pixel_7
-        echo 'hw.cpu.ncore=4' >> "$HOME/.android/avd/test.avd/config.ini"
+        echo 'hw.cpu.ncore=4' >> "$ANDROID_AVD_HOME/test.avd/config.ini"
         nohup "$ANDROID_HOME/emulator/emulator" -avd test -port 5554 -no-window -gpu swiftshader_indirect -no-snapshot \
           -noaudio -no-boot-anim > "$RUNNER_TEMP/emulator.log" 2>&1 &
         echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
