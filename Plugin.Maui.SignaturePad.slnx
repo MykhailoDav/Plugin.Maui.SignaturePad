@@ -4,5 +4,6 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Plugin.Maui.SignaturePad.Tests/Plugin.Maui.SignaturePad.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.SignaturePad.UITests.HostApp/Plugin.Maui.SignaturePad.UITests.HostApp.csproj" />
   </Folder>
 </Solution>

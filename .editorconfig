@@ -63,3 +63,7 @@ dotnet_diagnostic.IDE0005.severity = warning
 dotnet_diagnostic.CA1707.severity = none
 dotnet_diagnostic.CA1515.severity = none
 dotnet_diagnostic.CA2007.severity = none
+
+# App entry points have the names the platforms require (AppDelegate)
+[{tests/**/Platforms/**.cs,samples/**/Platforms/**.cs}]
+dotnet_diagnostic.CA1711.severity = none
