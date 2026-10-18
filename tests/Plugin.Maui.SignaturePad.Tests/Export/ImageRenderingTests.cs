@@ -71,4 +71,12 @@ public class ImageRenderingTests
         Assert.Equal([Colors.Black, Colors.Blue], Render(new SignatureImageExportOptions()).Fills.Select(f => f.Color));
         Assert.All(Render(new SignatureImageExportOptions { StrokeColor = Colors.Red }).Fills, fill => Assert.Equal(Colors.Red, fill.Color));
     }
+
+    [Fact]
+    public async Task ToImageAsync_WithoutAPlatform_ThrowsPlatformNotSupported() =>
+        await Assert.ThrowsAsync<PlatformNotSupportedException>(() => Data().ToImageAsync(cancellationToken: TestContext.Current.CancellationToken));
+
+    [Fact]
+    public async Task ToImageAsync_Empty_ThrowsInvalidOperation() =>
+        await Assert.ThrowsAsync<InvalidOperationException>(() => SignatureData.Empty.ToImageAsync(new SignatureImageExportOptions(), TestContext.Current.CancellationToken));
 }

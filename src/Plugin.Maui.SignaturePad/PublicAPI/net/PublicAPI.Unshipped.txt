@@ -16,6 +16,7 @@ Plugin.Maui.SignaturePad.SignatureData.IsEmpty.get -> bool
 Plugin.Maui.SignaturePad.SignatureData.PointCount.get -> int
 Plugin.Maui.SignaturePad.SignatureData.SignatureData(System.Collections.Generic.IEnumerable<Plugin.Maui.SignaturePad.SignatureStroke!>! strokes, Microsoft.Maui.Graphics.SizeF canvasSize) -> void
 Plugin.Maui.SignaturePad.SignatureData.Strokes.get -> System.Collections.Generic.IReadOnlyList<Plugin.Maui.SignaturePad.SignatureStroke!>!
+Plugin.Maui.SignaturePad.SignatureData.ToImageAsync(Plugin.Maui.SignaturePad.SignatureImageExportOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<System.IO.Stream!>!
 Plugin.Maui.SignaturePad.SignatureData.ToJson() -> string!
 Plugin.Maui.SignaturePad.SignatureData.ToSvg(Plugin.Maui.SignaturePad.SignatureSvgExportOptions? options = null) -> string!
 Plugin.Maui.SignaturePad.SignatureImageExportOptions

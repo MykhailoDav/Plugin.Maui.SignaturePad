@@ -102,6 +102,18 @@ public sealed class SignatureData : IEquatable<SignatureData>
     /// <exception cref="InvalidOperationException">The signature is empty.</exception>
     public string ToSvg(SignatureSvgExportOptions? options = null) => SvgExporter.Export(this, options ?? new SignatureSvgExportOptions());
 
+    /// <summary>
+    /// Draws the signature into a PNG or JPEG image, by default cropped to the ink and at 2 pixels per
+    /// device-independent unit, with the same ink as the pad. The image is drawn off the UI thread.
+    /// </summary>
+    /// <param name="options">The export options, or <see langword="null"/> for the defaults.</param>
+    /// <param name="cancellationToken">Cancels the export.</param>
+    /// <returns>A stream with the encoded image, positioned at its start. The caller disposes it.</returns>
+    /// <exception cref="InvalidOperationException">The signature is empty, or the image would be too large.</exception>
+    /// <exception cref="PlatformNotSupportedException">The code runs on a target without a platform (plain <c>net10.0</c>).</exception>
+    public Task<Stream> ToImageAsync(SignatureImageExportOptions? options = null, CancellationToken cancellationToken = default) =>
+        SignatureImageExporter.ExportAsync(this, options ?? new SignatureImageExportOptions(), cancellationToken);
+
     /// <inheritdoc/>
     public bool Equals(SignatureData? other)
     {
