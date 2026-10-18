@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    UI tests: they drive tests/Plugin.Maui.SignaturePad.UITests.HostApp with Appium on a simulator, an emulator or the
+    desktop, check the pad's behavior through the texts the app shows, and compare screenshots of loaded signatures with
+    the baselines in Baselines/<platform>. See README.md in this folder.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- NUnit runs on Microsoft.Testing.Platform (see global.json). -->
+    <OutputType>Exe</OutputType>
+    <EnableNUnitRunner>true</EnableNUnitRunner>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Lets the tests find their baselines and the host app's build output from wherever they run. -->
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>ProjectDirectory</_Parameter1>
+      <_Parameter2>$(MSBuildProjectDirectory)</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Appium.WebDriver" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
+    <PackageReference Include="StbImageSharp" />
+    <PackageReference Include="StbImageWriteSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="node_modules\**" />
+    <Compile Remove="node_modules\**" />
+  </ItemGroup>
+
+</Project>

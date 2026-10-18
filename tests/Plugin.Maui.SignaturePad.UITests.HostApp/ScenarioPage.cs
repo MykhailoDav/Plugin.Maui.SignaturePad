@@ -39,7 +39,7 @@ public sealed class ScenarioPage : ContentPage
         var header = new HorizontalStackLayout
         {
             Spacing = 12,
-            Children = { back, new Label { Text = name, FontSize = 18, VerticalOptions = LayoutOptions.Center } },
+            Children = { back, new Label { Text = name, AutomationId = "ScenarioTitle", FontSize = 18, VerticalOptions = LayoutOptions.Center } },
         };
 
         var buttons = new FlexLayout { Wrap = Microsoft.Maui.Layouts.FlexWrap.Wrap };
