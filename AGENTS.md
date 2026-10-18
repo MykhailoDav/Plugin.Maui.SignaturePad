@@ -28,7 +28,12 @@ cd tests/Plugin.Maui.SignaturePad.UITests && npm ci && ./run.sh ios        # UI 
 dotnet pack src/Plugin.Maui.SignaturePad -c Release -o artifacts            # NuGet package
 ```
 
-The Windows target builds only on Windows. On macOS and Linux the library builds without it.
+The Windows target builds by default only on Windows. To compile it on macOS or Linux (everything but the Windows
+packaging step, which needs Windows tools), run:
+
+```bash
+SIGNATUREPAD_SINGLE_TARGET=net10.0-windows10.0.19041.0 dotnet build src/Plugin.Maui.SignaturePad -p:EnableWindowsTargeting=true -p:AppxGeneratePriEnabled=false
+```
 
 ## Conventions
 
@@ -39,7 +44,7 @@ The Windows target builds only on Windows. On macOS and Linux the library builds
   - Default to `internal`. Public API must have a demonstrated use.
   - Every public member has XML documentation; a missing doc is a build error.
   - Every public member is listed in `PublicAPI/<target>/PublicAPI.Unshipped.txt` (Microsoft.CodeAnalysis.PublicApiAnalyzers). Never disable the analyzer, and keep the `~` markers that the analyzer generates.
-  - Run `eng/update-public-api.sh` after an API change; it records the change for every target this machine can build. The Windows list can only be generated on Windows, so on other machines copy the shared entries into `PublicAPI/net-windows` by hand.
+  - Run `eng/update-public-api.sh` after an API change; it records the change for every target, Windows included.
 - **No reflection.** The library is marked `IsAotCompatible`, and JSON is read and written with `Utf8JsonReader`/`Utf8JsonWriter`.
 - **Comments explain why**, not what.
 
