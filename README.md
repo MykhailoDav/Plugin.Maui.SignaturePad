@@ -246,7 +246,7 @@ All data types are immutable and compare by value.
 - **One geometry everywhere.** The screen, PNG, JPEG and SVG all use the same geometry, so an export looks exactly like
   the pad.
 
-[docs/architecture.md](docs/architecture.md) describes the whole pipeline.
+[docs/architecture.md](https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/blob/main/docs/architecture.md) describes the whole pipeline.
 
 ## Platform notes
 
@@ -269,7 +269,7 @@ All data types are immutable and compare by value.
 
 ## Sample app
 
-[samples/Plugin.Maui.SignaturePad.Sample](samples/Plugin.Maui.SignaturePad.Sample) has a tab for each way to use the pad:
+[samples/Plugin.Maui.SignaturePad.Sample](https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/tree/main/samples/Plugin.Maui.SignaturePad.Sample) has a tab for each way to use the pad:
 
 | Tab | What it shows |
 | --- | --- |
@@ -295,15 +295,15 @@ is made for signatures:
 
 ## For AI coding assistants
 
-The package includes `llms-full.txt`, a complete reference of the API and its behavior. [llms.txt](llms.txt) points to
+The package includes `llms-full.txt`, a complete reference of the API and its behavior. [llms.txt](https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/blob/main/llms.txt) points to
 it and to the rest of the documentation.
 
 ## Contributing
 
-Contributions are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) explains how to build, test and submit changes, and
-[SECURITY.md](SECURITY.md) how to report a vulnerability.
+Contributions are welcome. [CONTRIBUTING.md](https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/blob/main/CONTRIBUTING.md) explains how to build, test and submit changes, and
+[SECURITY.md](https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/blob/main/SECURITY.md) how to report a vulnerability.
 
 ## License
 
-[MIT](LICENSE). The stroke outline is adapted from perfect-freehand (MIT); see
-[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+[MIT](https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/blob/main/LICENSE). The stroke outline is adapted from perfect-freehand (MIT); see
+[THIRD-PARTY-NOTICES.md](https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/blob/main/THIRD-PARTY-NOTICES.md).

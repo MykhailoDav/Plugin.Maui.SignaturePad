@@ -64,8 +64,10 @@ dotnet test --project tests/Plugin.Maui.SignaturePad.Tests --coverlet --coverlet
 
 1. Set `<Version>` in `src/Plugin.Maui.SignaturePad/Plugin.Maui.SignaturePad.csproj`.
 2. In CHANGELOG.md, replace "Unreleased" with the date.
-3. Merge into `main`.
-4. Tag that commit with the version, for example `v0.1.0-preview.1`, and push the tag.
+3. Move the entries of every `PublicAPI.Unshipped.txt` into the `PublicAPI.Shipped.txt` next to it. Later changes then
+   show up as changes to the released API.
+4. Merge into `main`.
+5. Tag that commit with the version, for example `v0.1.0-preview.1`, and push the tag.
 
 The [release workflow](.github/workflows/release.yml) checks the tag against the project version, builds and tests the
 package on Windows (the only OS that builds all five targets) and publishes it to nuget.org.

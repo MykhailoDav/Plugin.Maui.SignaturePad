@@ -2,7 +2,8 @@ version: 2
 
 updates:
   # NuGet packages (Directory.Packages.props). Minor and patch versions come in one pull request a week.
-  # A new Microsoft.Maui.Controls also raises the version that apps using the package need, so review it as such.
+  # The library's own Microsoft.Maui.Controls stays at the lowest MAUI 10 version (VersionOverride in its project), so
+  # apps on an older MAUI 10 can use it; do not raise that one with the others.
   - package-ecosystem: nuget
     directory: /
     schedule:

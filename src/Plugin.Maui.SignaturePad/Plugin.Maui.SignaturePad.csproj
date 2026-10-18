@@ -44,6 +44,8 @@
     <Description>A signature pad for .NET MAUI with natural, pen-like ink: the stroke width follows velocity and pen pressure. Strokes keep their timestamps and pressure, and export as lossless JSON, SVG, PNG and JPEG. Android, iOS, Mac Catalyst and Windows; pure managed code.</Description>
     <PackageTags>maui;dotnet-maui;signature;signature-pad;signaturepad;ink;stylus;apple-pencil;pressure;svg</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>nuget.png</PackageIcon>
+    <PackageReleaseNotes>https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EnablePackageValidation>true</EnablePackageValidation>
@@ -55,7 +57,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Maui.Controls" />
+    <!--
+      The lowest MAUI 10 version, so that any MAUI 10 app can use the package: a new app references the MauiVersion of
+      its workload, which is often older than the latest MAUI, and NuGet refuses a package that needs a newer one (NU1605).
+      Compiling against it also keeps the library off APIs that later versions added. The tests and apps run on the
+      version in Directory.Packages.props.
+    -->
+    <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="10.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
   </ItemGroup>
 
@@ -97,6 +105,8 @@
   <!-- Package content -->
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <!-- Drawn by the library itself: eng/package-icon/make-icon.cs. -->
+    <None Include="..\..\nuget.png" Pack="true" PackagePath="\" />
     <!-- The reference for AI coding assistants, at the package root as in other Plugin.Maui packages. -->
     <None Include="..\..\llms-full.txt" Pack="true" PackagePath="\" />
   </ItemGroup>
