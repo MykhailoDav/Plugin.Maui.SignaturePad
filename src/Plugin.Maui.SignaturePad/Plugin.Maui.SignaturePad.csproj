@@ -47,6 +47,11 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EnablePackageValidation>true</EnablePackageValidation>
+    <!--
+      CompatibilitySuppressions.xml lists the expected differences between the targets for all five of them, and a
+      host packs only some (Windows only on Windows), so the entries of the targets it does not build are allowed.
+    -->
+    <ApiCompatPermitUnnecessarySuppressions>true</ApiCompatPermitUnnecessarySuppressions>
   </PropertyGroup>
 
   <ItemGroup>
