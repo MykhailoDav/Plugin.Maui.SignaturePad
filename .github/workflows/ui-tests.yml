@@ -119,27 +119,41 @@ jobs:
       run: npm ci
     - name: Build the host app
       run: dotnet build tests/Plugin.Maui.SignaturePad.UITests.HostApp -f net10.0-android
-    - name: Run the UI tests on an emulator
-      uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
-      with:
-        # Android 17, as on the Pixel 10 emulator the baselines were recorded on. Its SDK packages are named after the
-        # minor version (platforms;android-37.0), so the level is written that way. The runner's Android tools have no
-        # Pixel 10 profile, so a phone of the same size stands in; the screenshots are not compared here anyway.
-        api-level: '37.0'
-        arch: x86_64
-        target: google_apis
-        profile: pixel_7
-        cores: 4
-        disable-animations: true
+    - name: Start an emulator
+      # Android 17, as on the Pixel 10 emulator the baselines were recorded on; its packages are named after the minor
+      # version, android-37.0. The runner's Android tools have no Pixel 10 profile, so a phone of the same size stands
+      # in; the screenshots are not compared here anyway.
+      run: |
+        tools="$ANDROID_HOME/cmdline-tools/latest/bin"
+        image='system-images;android-37.0;google_apis;x86_64'
+        yes | "$tools/sdkmanager" --licenses > /dev/null
+        "$tools/sdkmanager" --install emulator platform-tools "$image" > /dev/null
+        echo no | "$tools/avdmanager" create avd --force --name test --package "$image" --device pixel_7
+        echo 'hw.cpu.ncore=4' >> "$HOME/.android/avd/test.avd/config.ini"
+        nohup "$ANDROID_HOME/emulator/emulator" -avd test -port 5554 -no-window -gpu swiftshader_indirect -no-snapshot \
+          -noaudio -no-boot-anim > "$RUNNER_TEMP/emulator.log" 2>&1 &
+        echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+    - name: Wait for the emulator
+      # sys.boot_completed is set before every system service is up, and the tests need the input service. Pressing the
+      # menu key needs it too, and unlocks the screen.
+      timeout-minutes: 10
+      run: |
+        adb wait-for-device
+        until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 ] && adb shell input keyevent 82; do sleep 3; done
+        adb shell settings put global window_animation_scale 0
+        adb shell settings put global transition_animation_scale 0
+        adb shell settings put global animator_duration_scale 0
         # System apps such as the launcher stop responding at times on a slow runner. Their dialogs would cover the
         # app, so they are turned off and any that is already open is closed.
-        script: |
-          adb shell settings put global hide_error_dialogs 1
-          adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
-          dotnet test --project tests/Plugin.Maui.SignaturePad.UITests --output Detailed
+        adb shell settings put global hide_error_dialogs 1
+        adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
+    - name: Run the UI tests on the emulator
+      run: dotnet test --project tests/Plugin.Maui.SignaturePad.UITests --output Detailed
     - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       if: ${{ !cancelled() }}
       with:
         name: ui-tests-android
-        path: tests/Plugin.Maui.SignaturePad.UITests/TestResults/
+        path: |
+          tests/Plugin.Maui.SignaturePad.UITests/TestResults/
+          ${{ runner.temp }}/emulator.log
         if-no-files-found: ignore
