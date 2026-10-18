@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- Styles for the controls the sample uses, with light and dark theme colors. -->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:sp="clr-namespace:Plugin.Maui.SignaturePad;assembly=Plugin.Maui.SignaturePad">
 
   <Style TargetType="Page" ApplyToDerivedTypes="True">
     <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Surface}, Dark={StaticResource SurfaceDark}}" />
@@ -107,13 +108,39 @@
     <Setter Property="Padding" Value="16,12" />
   </Style>
 
-  <!-- The frame of a signature pad: white paper with a thin outline. -->
+  <!-- The frame of a signature pad, white in the light theme and dark in the dark one. -->
+  <Style x:Key="PadFrame" TargetType="Border">
+    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Pad}, Dark={StaticResource PadDark}}" />
+    <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Outline}, Dark={StaticResource OutlineDark}}" />
+    <Setter Property="StrokeThickness" Value="1" />
+    <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <!-- White paper with a thin outline, for what is shown as it prints: exported images, ink colors. -->
   <Style x:Key="Paper" TargetType="Border">
     <Setter Property="BackgroundColor" Value="{StaticResource Paper}" />
     <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Outline}, Dark={StaticResource OutlineDark}}" />
     <Setter Property="StrokeThickness" Value="1" />
     <Setter Property="StrokeShape" Value="RoundRectangle 12" />
     <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <!--
+    The pads keep their ink black, so signatures and their exports are dark ink for paper. In the dark theme the pad is
+    dark, and DisplayStrokeColor shows the ink light without changing the strokes.
+  -->
+  <Style TargetType="sp:SignaturePadView">
+    <Setter Property="DisplayStrokeColor" Value="{AppThemeBinding Light={x:Null}, Dark={StaticResource InkDark}}" />
+    <Setter Property="SignatureLineColor" Value="{AppThemeBinding Light={StaticResource PadLine}, Dark={StaticResource PadLineDark}}" />
+    <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource PadPlaceholder}, Dark={StaticResource PadPlaceholderDark}}" />
+  </Style>
+
+  <!-- A pad on paper in both themes, showing the strokes in their own colors. -->
+  <Style x:Key="PaperPad" TargetType="sp:SignaturePadView">
+    <Setter Property="DisplayStrokeColor" Value="{x:Null}" />
+    <Setter Property="SignatureLineColor" Value="{StaticResource PadLine}" />
+    <Setter Property="PlaceholderColor" Value="{StaticResource PadPlaceholder}" />
   </Style>
 
   <Style TargetType="Entry">

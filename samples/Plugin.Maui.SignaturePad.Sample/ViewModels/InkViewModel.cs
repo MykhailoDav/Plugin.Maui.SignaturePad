@@ -22,11 +22,11 @@ public partial class InkViewModel : ObservableObject
 
     public IReadOnlyList<InkColor> InkColors { get; } =
     [
-        new("Black", Color.FromArgb("#000000")),
-        new("Blue", Color.FromArgb("#1F4FBF")),
-        new("Navy", Color.FromArgb("#1E3A5F")),
-        new("Red", Color.FromArgb("#C62828")),
-        new("Green", Color.FromArgb("#2E7D32")),
+        new("Black", Color.FromArgb("#111111")),
+        new("Emerald", Color.FromArgb("#059669")),
+        new("Blue", Color.FromArgb("#2563EB")),
+        new("Red", Color.FromArgb("#DC2626")),
+        new("Violet", Color.FromArgb("#7C3AED")),
     ];
 
     [ObservableProperty]

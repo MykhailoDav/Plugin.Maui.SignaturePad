@@ -29,8 +29,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#1E3A5F" />
-    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#1E3A5F" BaseSize="128,128" />
+    <!-- Drawn by eng/package-icon/make-icon.cs, as the package icon. -->
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#059669" />
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#047857" BaseSize="128,128" />
     <MauiImage Include="Resources\Images\*" />
   </ItemGroup>
 

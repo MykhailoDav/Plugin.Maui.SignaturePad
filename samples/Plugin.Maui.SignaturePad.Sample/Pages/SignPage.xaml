@@ -15,7 +15,7 @@
       <Label Style="{StaticResource Intro}"
              Text="Sign with a finger, a pen or the mouse. Fast strokes come out thin and slow ones thick, as with a real pen." />
 
-      <Border Style="{StaticResource Paper}">
+      <Border Style="{StaticResource PadFrame}">
         <sp:SignaturePadView x:Name="Pad"
                              HeightRequest="240"
                              Placeholder="Sign here"

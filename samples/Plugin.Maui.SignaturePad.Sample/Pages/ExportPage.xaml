@@ -14,7 +14,7 @@
       <Label Style="{StaticResource Intro}"
              Text="Export the signature as a PNG or JPEG image, or as SVG, which stays sharp at any size. The export has the same ink as the pad, without the placeholder and the line." />
 
-      <Border Style="{StaticResource Paper}">
+      <Border Style="{StaticResource PadFrame}">
         <sp:SignaturePadView x:Name="Pad"
                              HeightRequest="200"
                              Placeholder="Sign here"

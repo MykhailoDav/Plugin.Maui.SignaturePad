@@ -50,7 +50,7 @@
 
       <Label Style="{StaticResource Section}" Text="Signature" />
       <!-- After submitting, IsEnabled turns input off, so the signature cannot change. -->
-      <Border Style="{StaticResource Paper}">
+      <Border Style="{StaticResource PadFrame}">
         <sp:SignaturePadView x:Name="Pad"
                              HeightRequest="180"
                              Placeholder="Sign here"

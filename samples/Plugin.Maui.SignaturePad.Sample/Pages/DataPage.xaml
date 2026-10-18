@@ -14,7 +14,7 @@
       <Label Style="{StaticResource Intro}"
              Text="Every point of a stroke keeps its time and pen pressure. Save the signature as JSON and restore it exactly, even after the app restarts." />
 
-      <Border Style="{StaticResource Paper}">
+      <Border Style="{StaticResource PadFrame}">
         <sp:SignaturePadView x:Name="Pad"
                              HeightRequest="200"
                              Placeholder="Sign here"

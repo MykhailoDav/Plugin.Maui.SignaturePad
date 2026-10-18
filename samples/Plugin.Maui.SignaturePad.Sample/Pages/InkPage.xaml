@@ -18,7 +18,7 @@
               HeightRequest="44"
               Padding="4"
               BackgroundColor="Transparent"
-              Stroke="Transparent"
+              Stroke="{AppThemeBinding Light=Transparent, Dark={StaticResource OutlineDark}}"
               StrokeShape="Ellipse"
               StrokeThickness="2">
         <VisualStateManager.VisualStateGroups>
@@ -44,10 +44,11 @@
     <VerticalStackLayout Padding="16" Spacing="12">
 
       <Label Style="{StaticResource Intro}"
-             Text="Change the ink and draw again. New strokes use the new settings; strokes already drawn keep theirs." />
+             Text="Change the ink and draw again. New strokes use the new settings; strokes already drawn keep theirs. The colors are shown on paper, as they print." />
 
       <Border Style="{StaticResource Paper}">
         <sp:SignaturePadView x:Name="Pad"
+                             Style="{StaticResource PaperPad}"
                              HeightRequest="220"
                              StrokeColor="{Binding SelectedColor.Color}"
                              MinStrokeWidth="{Binding MinWidth}"
