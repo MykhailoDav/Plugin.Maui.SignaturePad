@@ -170,10 +170,19 @@ internal sealed class StrokeBuilder
         }
 
         var velocityWeight = 1f / (1f + (_filteredVelocity / InkDefaults.ReferenceVelocity));
-        var weight = point.Pressure is { } pressure
-            ? pressure * (1f - InkDefaults.PenVelocityInfluence + (InkDefaults.PenVelocityInfluence * velocityWeight))
-            : velocityWeight;
-        var width = MinWidth + ((MaxWidth - MinWidth) * weight);
+        float width;
+        if (point.Pressure is { } pressure)
+        {
+            // A pen's pressure sets the width, and speed thins it a little.
+            var weight = pressure * (1f - InkDefaults.PenVelocityInfluence + (InkDefaults.PenVelocityInfluence * velocityWeight));
+            width = MinWidth + ((MaxWidth - MinWidth) * weight);
+        }
+        else
+        {
+            // Without pressure, speed alone thins the ink, as a pen's does: the widest at rest, half that at the
+            // reference velocity, and the narrowest from (MaxWidth / MinWidth − 1) times it on.
+            width = MathF.Max(MinWidth, MaxWidth * velocityWeight);
+        }
 
         _points[Count] = point;
         _render[Count] = isLast ? new InkPoint(point.X, point.Y, width / 2f) : new InkPoint(_smoothX, _smoothY, width / 2f);

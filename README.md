@@ -255,8 +255,9 @@ All data types are immutable and compare by value.
 ## How the ink works
 
 - **Width.** Each point gets a width between `MinStrokeWidth` and `MaxStrokeWidth`.
-  - From speed: halfway between the two at 1 device-independent unit per millisecond, thinner when faster, thicker
-    when slower.
+  - From speed, as a pen's ink: the widest when still, half the widest at 1 device-independent unit per millisecond,
+    and the narrowest from 2.5 on with the default widths. A slow stroke comes out more than twice as wide as a quick
+    one.
   - With a pen: pressure sets the width, and speed can thin it by up to 30%.
 - **Smoothing.** The line is smoothed against the jitter of dense samples. Far apart samples are joined by a curve
   through them.

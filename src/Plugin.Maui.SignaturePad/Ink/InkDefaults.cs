@@ -18,7 +18,10 @@ internal static class InkDefaults
     /// <summary>The weight of the newest velocity in the exponential filter: higher reacts faster, lower is smoother.</summary>
     public const float VelocityFilterWeight = 0.7f;
 
-    /// <summary>The velocity (DIP/ms) at which the velocity part of the width is halfway between its extremes.</summary>
+    /// <summary>
+    /// The velocity (DIP/ms) at which ink without pressure is half its widest; faster ink thins further, down to the
+    /// narrowest. Pen strokes use it for the share of their width that speed sets.
+    /// </summary>
     public const float ReferenceVelocity = 1.0f;
 
     /// <summary>How much velocity still thins a pen stroke whose width comes from pressure (0 = none, 1 = fully).</summary>

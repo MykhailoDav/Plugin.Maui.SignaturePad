@@ -129,38 +129,55 @@ public class StrokeBuilderTests
     }
 
     [Fact]
-    public void Width_AtRestStart_IsMid() =>
-        Assert.Equal(Radius(0.5f), Start(Touch(0, 0, 0)).RenderPoints[0].Radius, Tolerance);
+    public void Width_AtTheStart_IsHalfTheWidest() =>
+        Assert.Equal(Max / 4f, Start(Touch(0, 0, 0)).RenderPoints[0].Radius, Tolerance);
 
     [Fact]
     public void Width_FollowsTheFilteredVelocityFormula()
     {
-        // vf₁ = 0.7·(5 DIP / 10 ms) + 0.3·V0 = 0.65; kv = 1 / (1 + 0.65) .
+        // vf₁ = 0.7·(5 DIP / 10 ms) + 0.3·V0 = 0.65; width = max / (1 + 0.65).
         var builder = Start(Touch(0, 0, 0));
 
         builder.Add(Touch(3, 4, 10));
 
-        Assert.Equal(Radius(1f / 1.65f), builder.RenderPoints[1].Radius, Tolerance);
+        Assert.Equal(Max / 1.65f / 2f, builder.RenderPoints[1].Radius, Tolerance);
     }
 
     [Fact]
-    public void Width_FastMotion_ApproachesMin()
+    public void Width_FastMotion_ReachesMin()
     {
+        // From (max / min − 1) · V0 = 2.5 DIP/ms on, the ink is as narrow as it gets.
         var builder = Start(Touch(0, 0, 0));
-        for (var i = 1; i <= 20; i++)
-            builder.Add(Touch(i * 50, 0, i));
+        for (var i = 1; i <= 5; i++)
+            builder.Add(Touch(i * 30, 0, i * 10));
 
-        Assert.True(builder.RenderPoints[^1].Radius < 0.55f);
+        Assert.Equal(Min / 2f, builder.RenderPoints[^1].Radius, Tolerance);
     }
 
     [Fact]
     public void Width_SlowMotion_ApproachesMax()
     {
+        // 0.03 DIP/ms: width = 3.5 / 1.03.
         var builder = Start(Touch(0, 0, 0));
         for (var i = 1; i <= 30; i++)
             builder.Add(Touch(i * 0.3f, 0, i * 10));
 
-        Assert.True(builder.RenderPoints[^1].Radius > 1.7f);
+        Assert.Equal(Max / 1.03f / 2f, builder.RenderPoints[^1].Radius, 0.01f);
+    }
+
+    [Fact]
+    public void Width_FallsWithSpeed_MoreThanHalfAcrossWritingSpeeds()
+    {
+        // A slow stroke (0.25 DIP/ms) is more than twice as wide as a quick one (2 DIP/ms), so the difference shows.
+        static float WidthAt(float speed)
+        {
+            var builder = Start(Touch(0, 0, 0));
+            for (var i = 1; i <= 30; i++)
+                builder.Add(Touch(i * speed * 10, 0, i * 10));
+            return builder.RenderPoints[^1].Radius * 2;
+        }
+
+        Assert.True(WidthAt(0.25f) > 2 * WidthAt(2f));
     }
 
     [Fact]
@@ -182,12 +199,12 @@ public class StrokeBuilderTests
     [Fact]
     public void EqualTimestamps_UseMinDeltaTime()
     {
-        // dt is raised to 1 ms: vf = 0.7·5 + 0.3·1 = 3.8.
+        // dt is raised to 1 ms: vf = 0.7·5 + 0.3·1 = 3.8, fast enough for the narrowest ink.
         var builder = Start(Touch(0, 0, 0));
 
         builder.Add(Touch(5, 0, 0));
 
-        Assert.Equal(Radius(1f / 4.8f), builder.RenderPoints[1].Radius, Tolerance);
+        Assert.Equal(Min / 2f, builder.RenderPoints[1].Radius, Tolerance);
     }
 
     [Fact]
