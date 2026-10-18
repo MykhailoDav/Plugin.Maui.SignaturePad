@@ -133,8 +133,9 @@ jobs:
         "$tools/sdkmanager" --install emulator platform-tools "$image" > /dev/null
         echo no | "$tools/avdmanager" create avd --force --name test --package "$image" --device pixel_7
         echo 'hw.cpu.ncore=4' >> "$ANDROID_AVD_HOME/test.avd/config.ini"
-        nohup "$ANDROID_HOME/emulator/emulator" -avd test -port 5554 -no-window -gpu swiftshader_indirect -no-snapshot \
-          -noaudio -no-boot-anim > "$RUNNER_TEMP/emulator.log" 2>&1 &
+        # The default data partition is too small to install the host app, whose Debug APK carries its assemblies.
+        nohup "$ANDROID_HOME/emulator/emulator" -avd test -port 5554 -partition-size 6144 -no-window \
+          -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim > "$RUNNER_TEMP/emulator.log" 2>&1 &
         echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
     - name: Wait for the emulator
       # sys.boot_completed is set before every system service is up, and the tests need the input service. Pressing the
