@@ -79,8 +79,15 @@ jobs:
       with:
         user: ${{ secrets.NUGET_USER }}
     - name: Push to nuget.org
-      # The symbol package next to the package is pushed with it. A version that is already there is skipped, so the
-      # job can be run again.
+      # Each package goes by its full path: on the Windows runner, dotnet nuget push found no file for the wildcard
+      # artifacts/package/*.nupkg. The symbol package next to a package is pushed with it. A version that is already
+      # there is skipped, so the job can be run again.
       env:
         NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
-      run: dotnet nuget push artifacts/package/*.nupkg --api-key "$env:NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+      run: |
+        $packages = @(Get-ChildItem artifacts/package -Filter *.nupkg)
+        if ($packages.Count -eq 0) { throw 'There is no package in artifacts/package.' }
+        foreach ($package in $packages) {
+          dotnet nuget push $package.FullName --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        }
