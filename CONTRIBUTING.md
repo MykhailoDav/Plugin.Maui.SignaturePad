@@ -67,7 +67,7 @@ dotnet test --project tests/Plugin.Maui.SignaturePad.Tests --coverlet --coverlet
 3. Move the entries of every `PublicAPI.Unshipped.txt` into the `PublicAPI.Shipped.txt` next to it. Later changes then
    show up as changes to the released API.
 4. Merge into `main`.
-5. Tag that commit with the version, for example `v0.1.0-preview.1`, and push the tag.
+5. Tag that commit with the version, for example `v0.1.0` or `v0.2.0-preview.1`, and push the tag.
 
 The [release workflow](.github/workflows/release.yml) checks the tag against the project version, builds and tests the
 package on Windows (the only OS that builds all five targets) and publishes it to nuget.org.

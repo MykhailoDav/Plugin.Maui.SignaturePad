@@ -1,7 +1,7 @@
 name: Release
 
-# Publishes the package to nuget.org when a maintainer pushes a version tag, such as v0.1.0-preview.1, for a commit on
-# main. Nothing else starts it. The tag must match <Version> in the library's project.
+# Publishes the package to nuget.org when a maintainer pushes a version tag, such as v0.1.0 or v0.2.0-preview.1, for a
+# commit on main. Nothing else starts it. The tag must match <Version> in the library's project.
 #
 # Publishing uses NuGet trusted publishing, so no API key is stored: nuget.org trusts this workflow file of this
 # repository and exchanges the job's OIDC token for an API key that is valid for one hour. Before the first release:

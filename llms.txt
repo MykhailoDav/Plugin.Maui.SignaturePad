@@ -2,7 +2,7 @@
 
 > A NuGet signature pad for .NET MAUI (Android, iOS, Mac Catalyst, Windows). The ink width follows the speed of the stroke and the pressure of a pen; strokes keep their points with timing and pressure; signatures export as PNG, JPEG, SVG and lossless JSON. Undo, redo, clear, a placeholder and a signature line are built in.
 
-Install with `dotnet add package Plugin.Maui.SignaturePad --prerelease` (needs .NET 10). Register it with `builder.UseSignaturePad()` in MauiProgram.cs. XAML namespace: `xmlns:sp="clr-namespace:Plugin.Maui.SignaturePad;assembly=Plugin.Maui.SignaturePad"`; the control is `SignaturePadView`.
+Install with `dotnet add package Plugin.Maui.SignaturePad` (needs .NET 10). Register it with `builder.UseSignaturePad()` in MauiProgram.cs. XAML namespace: `xmlns:sp="clr-namespace:Plugin.Maui.SignaturePad;assembly=Plugin.Maui.SignaturePad"`; the control is `SignaturePadView`.
 
 Before writing code with this package, read llms-full.txt: it lists every property with its default, the behavior rules that cause most bugs (for example, exporting an empty signature throws and PNG export is transparent by default), and the APIs that do not exist.
 
