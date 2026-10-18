@@ -1,0 +1,116 @@
+name: CI
+
+# Builds the library, the UI test host app and the sample app for every platform, runs the unit tests with the 100%
+# coverage gate and packs the NuGet package. Runs for every pull request into main, after every merge into main and on
+# demand. GitHub sets CI=true, which turns warnings into errors (Directory.Build.props).
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+# A new push to a pull request cancels the run for the previous one; every merge into main is checked.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+# The workload set for the SDK in global.json, and the Xcode its iOS workload needs. Update them together.
+env:
+  DOTNET_WORKLOAD_VERSION: 10.0.400.1
+  XCODE_VERSION: '26.6'
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  windows:
+    name: Windows, Android, unit tests and package
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+    - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+      with:
+        global-json-file: global.json
+    - name: Install .NET MAUI
+      run: dotnet workload install maui --version $env:DOTNET_WORKLOAD_VERSION
+
+    - name: Build the library
+      # Only Windows builds all five targets, so the package is made here.
+      run: dotnet build src/Plugin.Maui.SignaturePad -c Release
+    - name: Run the unit tests
+      # Fails when the line or branch coverage of the library drops below 100%. In Debug, because a Release build
+      # splits some conditions into more branches than the source has.
+      run: >-
+        dotnet test --project tests/Plugin.Maui.SignaturePad.Tests
+        --coverlet --coverlet-threshold 100 --coverlet-threshold-type line,branch --coverlet-threshold-stat total
+        --results-directory "$env:GITHUB_WORKSPACE/artifacts/unit-tests"
+        --report-xunit-trx --report-xunit-markdown --report-xunit-markdown-filename unit-tests.md
+    - name: Summarize the unit tests
+      if: ${{ !cancelled() }}
+      shell: pwsh
+      run: |
+        $results = 'artifacts/unit-tests'
+        if (Test-Path "$results/unit-tests.md") { Get-Content "$results/unit-tests.md" | Add-Content $env:GITHUB_STEP_SUMMARY }
+        $coverage = Get-ChildItem $results -Filter 'coverage.cobertura*.xml' -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($coverage) {
+          $report = [xml](Get-Content $coverage.FullName)
+          "`n**Coverage of the library:** {0:P2} of lines, {1:P2} of branches" -f [double]$report.coverage.'line-rate', [double]$report.coverage.'branch-rate' |
+            Add-Content $env:GITHUB_STEP_SUMMARY
+        }
+
+    - name: Build the UI test host app
+      run: |
+        dotnet build tests/Plugin.Maui.SignaturePad.UITests.HostApp -f net10.0-android
+        dotnet build tests/Plugin.Maui.SignaturePad.UITests.HostApp -f net10.0-windows10.0.19041.0
+    - name: Build the sample app
+      # In Release, as an app that uses the package is built: this trims the library and runs the trim analysis on it.
+      run: |
+        dotnet build samples/Plugin.Maui.SignaturePad.Sample -c Release -f net10.0-android
+        dotnet build samples/Plugin.Maui.SignaturePad.Sample -c Release -f net10.0-windows10.0.19041.0
+
+    - name: Pack
+      # Also validates the package: the public API must match between its targets (see CompatibilitySuppressions.xml).
+      run: dotnet pack src/Plugin.Maui.SignaturePad -c Release --no-build -o artifacts/package
+
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      if: ${{ !cancelled() }}
+      with:
+        name: unit-tests
+        path: artifacts/unit-tests
+        if-no-files-found: ignore
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      with:
+        name: package
+        path: artifacts/package
+
+  macos:
+    name: iOS and Mac Catalyst
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+    - name: Select Xcode
+      run: sudo xcode-select --switch "/Applications/Xcode_${XCODE_VERSION}.app"
+    - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+      with:
+        global-json-file: global.json
+    - name: Install .NET MAUI
+      run: dotnet workload install maui --version "$DOTNET_WORKLOAD_VERSION"
+
+    - name: Build the library
+      run: dotnet build src/Plugin.Maui.SignaturePad -c Release
+    - name: Build the UI test host app and the sample app
+      # In Debug: a Release build of an iOS app is for devices and needs signing.
+      run: |
+        for project in tests/Plugin.Maui.SignaturePad.UITests.HostApp samples/Plugin.Maui.SignaturePad.Sample; do
+          dotnet build "$project" -f net10.0-ios
+          dotnet build "$project" -f net10.0-maccatalyst
+        done
