@@ -2,6 +2,9 @@
   <Folder Name="/src/">
     <Project Path="src/Plugin.Maui.SignaturePad/Plugin.Maui.SignaturePad.csproj" />
   </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/Plugin.Maui.SignaturePad.Sample/Plugin.Maui.SignaturePad.Sample.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Plugin.Maui.SignaturePad.Tests/Plugin.Maui.SignaturePad.Tests.csproj" />
     <Project Path="tests/Plugin.Maui.SignaturePad.UITests.HostApp/Plugin.Maui.SignaturePad.UITests.HostApp.csproj" />

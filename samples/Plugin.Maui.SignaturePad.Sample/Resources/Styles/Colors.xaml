@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- The palette. Each color has a dark theme variant with the "Dark" suffix. Android also reads
+     Platforms/Android/Resources/values/colors.xml. -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+  <Color x:Key="Primary">#1E3A5F</Color>
+  <Color x:Key="PrimaryDark">#A8C7EE</Color>
+  <Color x:Key="OnPrimary">#FFFFFF</Color>
+  <Color x:Key="OnPrimaryDark">#0B1A2C</Color>
+
+  <Color x:Key="Surface">#FFFFFF</Color>
+  <Color x:Key="SurfaceDark">#121417</Color>
+  <Color x:Key="Card">#F3F5F8</Color>
+  <Color x:Key="CardDark">#1D2126</Color>
+  <Color x:Key="Outline">#D3D9E0</Color>
+  <Color x:Key="OutlineDark">#3A4149</Color>
+
+  <Color x:Key="Text">#1B1F24</Color>
+  <Color x:Key="TextDark">#E7EAEE</Color>
+  <Color x:Key="TextMuted">#5D6875</Color>
+  <Color x:Key="TextMutedDark">#A3ADB8</Color>
+
+  <!-- A signature is ink on paper, so the pads stay white in the dark theme too. -->
+  <Color x:Key="Paper">#FFFFFF</Color>
+
+</ResourceDictionary>

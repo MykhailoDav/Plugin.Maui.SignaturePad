@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- The smallest useful setup: a pad bound to a view model, buttons bound to the pad's own commands, and the
+     signature saved as an image. -->
+<ContentPage x:Class="Plugin.Maui.SignaturePad.Sample.Pages.SignPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sp="clr-namespace:Plugin.Maui.SignaturePad;assembly=Plugin.Maui.SignaturePad"
+             xmlns:vm="clr-namespace:Plugin.Maui.SignaturePad.Sample.ViewModels"
+             x:DataType="vm:SignViewModel"
+             Title="Sign">
+
+  <ScrollView>
+    <VerticalStackLayout Padding="16" Spacing="12">
+
+      <Label Style="{StaticResource Intro}"
+             Text="Sign with a finger, a pen or the mouse. Fast strokes come out thin and slow ones thick, as with a real pen." />
+
+      <Border Style="{StaticResource Paper}">
+        <sp:SignaturePadView x:Name="Pad"
+                             HeightRequest="240"
+                             Placeholder="Sign here"
+                             Signature="{Binding Signature}"
+                             SemanticProperties.Description="Signature pad"
+                             SemanticProperties.Hint="Draw your signature with a finger, a pen or the mouse" />
+      </Border>
+
+      <!-- The pad has its own commands, so these buttons need no code. -->
+      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+        <Button Style="{StaticResource SecondaryButton}"
+                Text="Undo"
+                Command="{Binding UndoCommand, Source={x:Reference Pad}, x:DataType=sp:SignaturePadView}" />
+        <Button Grid.Column="1"
+                Style="{StaticResource SecondaryButton}"
+                Text="Redo"
+                Command="{Binding RedoCommand, Source={x:Reference Pad}, x:DataType=sp:SignaturePadView}" />
+        <Button Grid.Column="2"
+                Style="{StaticResource SecondaryButton}"
+                Text="Clear"
+                Command="{Binding ClearCommand, Source={x:Reference Pad}, x:DataType=sp:SignaturePadView}" />
+      </Grid>
+
+      <Button Text="Save as image" Command="{Binding SaveCommand}" />
+
+      <Border Style="{StaticResource Card}" IsVisible="{Binding HasImage}">
+        <VerticalStackLayout Spacing="8">
+          <Label Style="{StaticResource Section}" Margin="0" Text="Saved image" />
+          <Border Style="{StaticResource Paper}" Padding="8">
+            <Image Source="{Binding Image}"
+                   HeightRequest="120"
+                   Aspect="AspectFit"
+                   SemanticProperties.Description="The saved signature" />
+          </Border>
+          <Label Style="{StaticResource Caption}" Text="{Binding ImageInfo}" />
+        </VerticalStackLayout>
+      </Border>
+
+    </VerticalStackLayout>
+  </ScrollView>
+
+</ContentPage>
