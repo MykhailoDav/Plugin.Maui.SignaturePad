@@ -113,10 +113,11 @@ public sealed class ScenarioPage : ContentPage
         yield return new("Redo", "Redo", () => { _pad.Redo(); return Task.CompletedTask; });
         yield return new("Clear", "Clear", () => { _pad.Clear(); return Task.CompletedTask; });
         yield return new("ExportPng", "PNG", ExportPngAsync);
-        yield return new("ExportSvg", "SVG", () =>
+        yield return new("ExportSvg", "SVG", async () =>
         {
-            SetStatus("LastExport", "svg " + _pad.ExportSvg().Length.ToString(CultureInfo.InvariantCulture));
-            return Task.CompletedTask;
+            var svg = _pad.ExportSvg();
+            await File.WriteAllTextAsync(ExportPath("svg"), svg);
+            SetStatus("LastExport", "svg " + svg.Length.ToString(CultureInfo.InvariantCulture));
         });
     }
 
@@ -126,12 +127,16 @@ public sealed class ScenarioPage : ContentPage
         using var memory = new MemoryStream();
         await stream.CopyToAsync(memory);
         var bytes = memory.ToArray();
+        await File.WriteAllBytesAsync(ExportPath("png"), bytes);
 
         // A PNG starts with an 8-byte signature and the IHDR chunk, whose first fields are the width and height.
         var width = (bytes[16] << 24) | (bytes[17] << 16) | (bytes[18] << 8) | bytes[19];
         var height = (bytes[20] << 24) | (bytes[21] << 16) | (bytes[22] << 8) | bytes[23];
         SetStatus("LastExport", string.Create(CultureInfo.InvariantCulture, $"png {width}x{height}"));
     }
+
+    /// <summary>Where the last export is saved, so tests (and people) can pull it from the device.</summary>
+    public static string ExportPath(string extension) => Path.Combine(FileSystem.CacheDirectory, "last-export." + extension);
 
     private static View WithRow(View view, int row)
     {

@@ -27,6 +27,12 @@ internal sealed class RecordingCanvas : ICanvas
 
     public List<string> Calls { get; } = [];
 
+    public List<(RectF Rect, Color Color)> FilledRectangles { get; } = [];
+
+    public List<(float X, float Y)> Scales { get; } = [];
+
+    public List<(float X, float Y)> Translations { get; } = [];
+
     public int SavedStates { get; private set; }
 
     public int RestoredStates { get; private set; }
@@ -102,7 +108,11 @@ internal sealed class RecordingCanvas : ICanvas
 
     public void DrawRectangle(float x, float y, float width, float height) { }
 
-    public void FillRectangle(float x, float y, float width, float height) => Calls.Add(nameof(FillRectangle));
+    public void FillRectangle(float x, float y, float width, float height)
+    {
+        Calls.Add(nameof(FillRectangle));
+        FilledRectangles.Add((new RectF(x, y, width, height), _fillColor));
+    }
 
     public void DrawRoundedRectangle(float x, float y, float width, float height, float cornerRadius) { }
 
@@ -120,9 +130,17 @@ internal sealed class RecordingCanvas : ICanvas
 
     public void Rotate(float degrees) { }
 
-    public void Scale(float sx, float sy) { }
+    public void Scale(float sx, float sy)
+    {
+        Calls.Add(nameof(Scale));
+        Scales.Add((sx, sy));
+    }
 
-    public void Translate(float tx, float ty) { }
+    public void Translate(float tx, float ty)
+    {
+        Calls.Add(nameof(Translate));
+        Translations.Add((tx, ty));
+    }
 
     public void ConcatenateTransform(Matrix3x2 transform) { }
 
