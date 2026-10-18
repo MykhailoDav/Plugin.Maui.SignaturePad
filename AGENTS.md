@@ -33,11 +33,10 @@ cd tests/Plugin.Maui.SignaturePad.UITests && npm ci && ./run.sh ios        # UI 
 dotnet pack src/Plugin.Maui.SignaturePad -c Release -o artifacts            # NuGet package
 ```
 
-The Windows target builds by default only on Windows. To compile it on macOS or Linux (everything but the Windows
-packaging step, which needs Windows tools), run:
+The Windows target builds by default only on Windows. To compile it on macOS or Linux, run:
 
 ```bash
-SIGNATUREPAD_SINGLE_TARGET=net10.0-windows10.0.19041.0 dotnet build src/Plugin.Maui.SignaturePad -p:EnableWindowsTargeting=true -p:AppxGeneratePriEnabled=false
+SIGNATUREPAD_SINGLE_TARGET=net10.0-windows10.0.19041.0 dotnet build src/Plugin.Maui.SignaturePad -p:EnableWindowsTargeting=true
 ```
 
 ## Conventions

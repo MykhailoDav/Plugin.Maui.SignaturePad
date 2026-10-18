@@ -24,6 +24,15 @@
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
     <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+    <!--
+      The library has no Windows resources, so it needs no PRI files. Otherwise the Windows App SDK hands the PRI files
+      of the MAUI version the library compiles against (10.0.0) to every app that references the project, both as build
+      output and unpacked into files, and an app on another MAUI version gets two different copies of MAUI's resources
+      (PRI277).
+    -->
+    <AppxGeneratePriEnabled Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">false</AppxGeneratePriEnabled>
+    <IncludeProjectPriFile Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">false</IncludeProjectPriFile>
+    <IncludePriFilesOutputGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">false</IncludePriFilesOutputGroup>
 
     <!--
       The library uses no reflection, so it is safe for trimming and Native AOT. Marking it makes apps trim it and

@@ -119,27 +119,54 @@ jobs:
       run: npm ci
     - name: Build the host app
       run: dotnet build tests/Plugin.Maui.SignaturePad.UITests.HostApp -f net10.0-android
-    - name: Run the UI tests on an emulator
-      uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
-      with:
-        # Android 17, as on the Pixel 10 emulator the baselines were recorded on. The runner's Android tools have no
-        # Pixel 10 profile, so a phone of the same size stands in; the screenshots are not compared here anyway.
-        api-level: 37
-        system-image-api-level: '37.0'
-        arch: x86_64
-        target: google_apis
-        profile: pixel_7
-        cores: 4
-        disable-animations: true
-        # System apps such as the launcher stop responding at times on a slow runner. Their dialogs would cover the
-        # app, so they are turned off and any that is already open is closed.
-        script: |
-          adb shell settings put global hide_error_dialogs 1
-          adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
-          dotnet test --project tests/Plugin.Maui.SignaturePad.UITests --output Detailed
+    - name: Start an emulator
+      # Android 16. On the runner's software GPU, Android 17's SurfaceFlinger aborts in its region sampling thread
+      # (hasReadColorBufferDma) and restarts the system server again and again, with either SwiftShader mode; Android 17
+      # is tested on the Pixel 10 emulator the baselines were recorded on (run.sh). The runner's Android tools have no
+      # Pixel 10 profile, so a phone of the same size stands in; the screenshots are not compared here anyway.
+      run: |
+        tools="$ANDROID_HOME/cmdline-tools/latest/bin"
+        image='system-images;android-36;google_apis;x86_64'
+        # avdmanager and the emulator otherwise disagree about where the AVD lives.
+        export ANDROID_AVD_HOME="$HOME/.android/avd"
+        mkdir -p "$ANDROID_AVD_HOME"
+        yes 2> /dev/null | "$tools/sdkmanager" --licenses > /dev/null
+        "$tools/sdkmanager" --install emulator platform-tools "$image" > /dev/null
+        echo no | "$tools/avdmanager" create avd --force --name test --package "$image" --device pixel_7
+        echo 'hw.cpu.ncore=4' >> "$ANDROID_AVD_HOME/test.avd/config.ini"
+        # The default data partition is too small to install the host app, whose Debug APK carries its assemblies.
+        nohup "$ANDROID_HOME/emulator/emulator" -avd test -port 5554 -partition-size 6144 -no-window \
+          -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim > "$RUNNER_TEMP/emulator.log" 2>&1 &
+        echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+    - name: Wait for the emulator
+      # sys.boot_completed is set before every system service is up, and the system server can still restart on a slow
+      # runner, so the setup is repeated until all of it goes through in one pass. Pressing the menu key needs the
+      # input service the tests use, and unlocks the screen. System apps such as the launcher stop responding at times
+      # on a slow runner; their dialogs would cover the app, so they are turned off and any that is open is closed.
+      timeout-minutes: 10
+      run: |
+        adb wait-for-device
+        until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 ] \
+          && adb shell input keyevent 82 \
+          && adb shell settings put global window_animation_scale 0 \
+          && adb shell settings put global transition_animation_scale 0 \
+          && adb shell settings put global animator_duration_scale 0 \
+          && adb shell settings put global hide_error_dialogs 1 \
+          && adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS > /dev/null
+        do
+          sleep 5
+        done
+    - name: Run the UI tests on the emulator
+      run: dotnet test --project tests/Plugin.Maui.SignaturePad.UITests --output Detailed
+    - name: Save the emulator's system log
+      if: ${{ failure() }}
+      run: adb logcat -d -b main -b system -b crash > "$RUNNER_TEMP/logcat.txt" || true
     - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       if: ${{ !cancelled() }}
       with:
         name: ui-tests-android
-        path: tests/Plugin.Maui.SignaturePad.UITests/TestResults/
+        path: |
+          tests/Plugin.Maui.SignaturePad.UITests/TestResults/
+          ${{ runner.temp }}/emulator.log
+          ${{ runner.temp }}/logcat.txt
         if-no-files-found: ignore
