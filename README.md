@@ -11,7 +11,7 @@ managed code.
 
 ![The sample app: a signature on iOS with thin fast strokes and thick slow ones, the same signature restored from JSON on Android in the dark theme, and its PNG export on iOS](https://raw.githubusercontent.com/MykhailoDav/Plugin.Maui.SignaturePad/main/docs/images/screenshots.png)
 
-> **Preview.** 0.1.0-preview.1 is the first release. The API can still change before 1.0.
+> **Before 1.0.** 0.1.0 is the first release. The API can still change between minor versions until 1.0.
 
 ## Features
 
@@ -40,7 +40,7 @@ managed code.
 ## Installation
 
 ```bash
-dotnet add package Plugin.Maui.SignaturePad --prerelease
+dotnet add package Plugin.Maui.SignaturePad
 ```
 
 Register the control in `MauiProgram.cs`:

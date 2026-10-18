@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Security fixes go into the latest release only. While the package is in preview, that is the latest preview.
+Security fixes go into the latest release only.
 
 ## Reporting a vulnerability
 
