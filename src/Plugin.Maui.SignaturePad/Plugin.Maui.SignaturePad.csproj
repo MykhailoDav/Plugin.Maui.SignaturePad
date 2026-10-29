@@ -48,7 +48,7 @@
 
     <!-- NuGet -->
     <PackageId>Plugin.Maui.SignaturePad</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Title>Signature pad for .NET MAUI</Title>
     <Description>A signature pad for .NET MAUI with natural, pen-like ink: the stroke width follows velocity and pen pressure. Strokes keep their timestamps and pressure, and export as lossless JSON, SVG, PNG and JPEG. Android, iOS, Mac Catalyst and Windows; pure managed code.</Description>
     <PackageTags>maui;dotnet-maui;signature;signature-pad;signaturepad;ink;stylus;apple-pencil;pressure;svg</PackageTags>

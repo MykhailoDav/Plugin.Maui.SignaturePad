@@ -142,3 +142,4 @@ static readonly Plugin.Maui.SignaturePad.SignaturePadView.StrokeColorProperty ->
 static readonly Plugin.Maui.SignaturePad.SignaturePadView.StrokeCompletedCommandProperty -> Microsoft.Maui.Controls.BindableProperty!
 ~override Plugin.Maui.SignaturePad.SignaturePoint.Equals(object obj) -> bool
 ~override Plugin.Maui.SignaturePad.SignaturePoint.ToString() -> string
+override Plugin.Maui.SignaturePad.SignaturePadView.MeasureOverride(double widthConstraint, double heightConstraint) -> Microsoft.Maui.Graphics.Size
