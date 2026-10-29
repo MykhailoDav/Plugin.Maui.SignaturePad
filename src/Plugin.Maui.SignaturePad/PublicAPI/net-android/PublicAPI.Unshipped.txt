@@ -1,1 +1,2 @@
 #nullable enable
+override Plugin.Maui.SignaturePad.SignaturePadView.MeasureOverride(double widthConstraint, double heightConstraint) -> Microsoft.Maui.Graphics.Size

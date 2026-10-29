@@ -24,6 +24,7 @@ public static class ScenarioCatalog
         new("Tabs", Tabs),
         new("BindableLayout", BindableLayoutScenario),
         new("Benchmark", Benchmark),
+        new("NaturalSize", NaturalSize),
     ];
 
     /// <summary>A pad with the size, colors and placeholder the scenarios share.</summary>
@@ -123,6 +124,17 @@ public static class ScenarioCatalog
                 },
             },
         };
+    }
+
+    /// <summary>
+    /// A pad with no size of its own in a vertical stack, below a ruler 100 tall: the pad takes its natural height, twice
+    /// the ruler's, and fills the width as the ruler does.
+    /// </summary>
+    private static ScenarioPage NaturalSize()
+    {
+        var pad = new SignaturePadView { BackgroundColor = Color.FromArgb("#FAFAFA"), Placeholder = "Sign here" };
+        var ruler = new BoxView { AutomationId = "Ruler", HeightRequest = 100, Color = Color.FromArgb("#BBDEFB") };
+        return new ScenarioPage("NaturalSize", pad, new VerticalStackLayout { Spacing = 8, Children = { ruler, pad } });
     }
 
     /// <summary>A pad that loads a heavy signature, to measure the cost of drawing over it.</summary>

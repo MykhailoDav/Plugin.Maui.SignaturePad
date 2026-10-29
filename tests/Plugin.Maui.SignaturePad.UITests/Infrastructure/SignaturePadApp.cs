@@ -115,6 +115,9 @@ public sealed class SignaturePadApp : IDisposable
 
     public bool Exists(string automationId) => _driver.FindElements(ByAutomationId(automationId)).Count > 0;
 
+    /// <summary>The size of the element with <paramref name="automationId"/>: in points on iOS, in pixels on Android.</summary>
+    public Size SizeOf(string automationId) => Element(automationId).Size;
+
     /// <summary>Whether the element with <paramref name="automationId"/> exists within <paramref name="timeout"/>.</summary>
     public bool Appears(string automationId, TimeSpan timeout)
     {
