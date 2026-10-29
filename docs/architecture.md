@@ -36,7 +36,7 @@ The library's folders are features:
 | `Data` | The public data types, JSON and colors. |
 | `Ink` | The ink engine. |
 | `Capture` | The session, the input sink and the input mapping helpers. |
-| `Controls` | `SignaturePadView`. |
+| `Controls` | `SignaturePadView` and the size it asks for (`PadSize`). |
 | `Rendering` | The drawable, the renderer and the path cache. |
 | `Export` | Export options, layout, SVG, and image export per platform. |
 | `Handlers` | The handler and `UseSignaturePad`. |
@@ -49,6 +49,11 @@ only translate native events and call shared code, so every decision can be unit
 **Units.** Coordinates are in device-independent units (DIP) from the pad's top-left corner. Android pixels are divided
 by the display density; iOS points and Windows effective pixels already are DIP. Time is in milliseconds since the first
 point of the signature.
+
+**Size.** The pad has no content to measure. `SignaturePadView.MeasureOverride` asks `PadSize` for its size: the space
+the layout gives it, or 300 × 200 where the layout leaves a length open, as a vertical stack, a scroll view or an Auto
+row leaves the height. As in MAUI's own measuring, a requested size wins, the minimum and maximum bound the result, and
+it never exceeds the space.
 
 ## Input
 

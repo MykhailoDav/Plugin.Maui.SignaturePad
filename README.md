@@ -71,7 +71,7 @@ The package needs .NET 10 with .NET MAUI 10, and supports these platform version
 
   <VerticalStackLayout Padding="16" Spacing="12">
     <Border BackgroundColor="White" Stroke="LightGray" StrokeShape="RoundRectangle 12">
-      <sp:SignaturePadView x:Name="Pad" HeightRequest="200" Placeholder="Sign here" />
+      <sp:SignaturePadView x:Name="Pad" Placeholder="Sign here" />
     </Border>
 
     <!-- The pad has its own commands, so these buttons need no code. -->
@@ -100,7 +100,7 @@ if (!Pad.IsEmpty)
 Bind `Signature` and work with the data. The view model needs no reference to the view:
 
 ```xml
-<sp:SignaturePadView Signature="{Binding Signature}" Placeholder="Sign here" HeightRequest="200" />
+<sp:SignaturePadView Signature="{Binding Signature}" Placeholder="Sign here" />
 <Button Text="Submit" Command="{Binding SubmitCommand}" />
 ```
 
@@ -150,6 +150,9 @@ All are bindable properties.
 
 - `IsEnabled="False"` turns input off. A stroke being drawn at that moment ends and keeps its ink.
 - The pad itself is transparent: set `BackgroundColor`, or put it in a `Border` as above.
+- The pad fills the space its layout gives it. Where the layout leaves the height open, as a `VerticalStackLayout`, a
+  `ScrollView` or an `Auto` row does, it is 200 tall, and where it leaves the width open, 300 wide. `HeightRequest` and
+  `WidthRequest` give it another size.
 
 ### Dark theme
 
@@ -158,8 +161,7 @@ show the strokes in a light color while the theme is dark:
 
 ```xml
 <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#18211C}" StrokeShape="RoundRectangle 12">
-  <sp:SignaturePadView HeightRequest="200"
-                       Placeholder="Sign here"
+  <sp:SignaturePadView Placeholder="Sign here"
                        DisplayStrokeColor="{AppThemeBinding Light={x:Null}, Dark=White}"
                        SignatureLineColor="{AppThemeBinding Light=#BDBDBD, Dark=#3A4A41}" />
 </Border>
