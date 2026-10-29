@@ -4,7 +4,7 @@ All notable changes to this package are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.0] - 2026-10-29
 
 ### Changed
 
@@ -34,5 +34,5 @@ The first release. Until 1.0 the API can still change between minor versions.
 - Drawing inside a `ScrollView` does not scroll it, the ink survives Shell tabs and navigation, and `IsEnabled` turns
   input off.
 
-[Unreleased]: https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/compare/v0.1.0...HEAD
+[0.2.0]: https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/MykhailoDav/Plugin.Maui.SignaturePad/releases/tag/v0.1.0
